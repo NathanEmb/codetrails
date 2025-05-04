@@ -4,11 +4,6 @@
     <title>Nathan Embaugh | codetrails</title>
     <link>https://nathanemb.github.io/codetrails/</link>
     <description>Recent content on Nathan Embaugh | codetrails</description>
-    <image>
-      <title>Nathan Embaugh | codetrails</title>
-      <url>https://nathanemb.github.io/codetrails/logo_outlined_6.png</url>
-      <link>https://nathanemb.github.io/codetrails/logo_outlined_6.png</link>
-    </image>
     <generator>Hugo -- 0.147.1</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 03 May 2025 22:55:59 -0400</lastBuildDate>
@@ -28,6 +23,13 @@
       <description>&lt;p&gt;This is my first post on this topic, and first post on this site. I hope to use this site primarily as a notebook for myself on what I&amp;rsquo;ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that&amp;rsquo;s a cherry on top.&lt;/p&gt;
 &lt;h2 id=&#34;my-home-lab&#34;&gt;My Home Lab&lt;/h2&gt;
 &lt;p&gt;A home lab is a lot of things for a lot of people. For me it&amp;rsquo;s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Tags</title>
+      <link>https://nathanemb.github.io/codetrails/tags/</link>
+      <pubDate>Sat, 03 May 2025 19:55:59 -0400</pubDate>
+      <guid>https://nathanemb.github.io/codetrails/tags/</guid>
+      <description>&lt;p&gt;In progress&amp;hellip;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
