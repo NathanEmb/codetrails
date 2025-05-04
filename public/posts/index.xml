@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on Nathan Embaugh | codetrails</title>
-    <link>http://localhost:1313/codetrails/posts/</link>
+    <link>https://nathanemb.github.io/codetrails/posts/</link>
     <description>Recent content in Posts on Nathan Embaugh | codetrails</description>
     <image>
       <title>Nathan Embaugh | codetrails</title>
-      <url>http://localhost:1313/codetrails/logo_outlined_6.png</url>
-      <link>http://localhost:1313/codetrails/logo_outlined_6.png</link>
+      <url>https://nathanemb.github.io/codetrails/logo_outlined_6.png</url>
+      <link>https://nathanemb.github.io/codetrails/logo_outlined_6.png</link>
     </image>
     <generator>Hugo -- 0.147.1</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 03 May 2025 22:55:59 -0400</lastBuildDate>
-    <atom:link href="http://localhost:1313/codetrails/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://nathanemb.github.io/codetrails/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>My Home Lab Setup</title>
-      <link>http://localhost:1313/codetrails/posts/first-home-lab-post/</link>
+      <link>https://nathanemb.github.io/codetrails/posts/first-home-lab-post/</link>
       <pubDate>Sat, 03 May 2025 19:55:59 -0400</pubDate>
-      <guid>http://localhost:1313/codetrails/posts/first-home-lab-post/</guid>
+      <guid>https://nathanemb.github.io/codetrails/posts/first-home-lab-post/</guid>
       <description>&lt;p&gt;This is my first post on this topic, and first post on this site. I hope to use this site primarily as a notebook for myself on what I&amp;rsquo;ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that&amp;rsquo;s a cherry on top.&lt;/p&gt;
 &lt;h2 id=&#34;my-home-lab&#34;&gt;My Home Lab&lt;/h2&gt;
 &lt;p&gt;A home lab is a lot of things for a lot of people. For me it&amp;rsquo;s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.&lt;/p&gt;</description>

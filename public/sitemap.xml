@@ -2,20 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/codetrails/about/</loc>
+    <loc>https://nathanemb.github.io/codetrails/about/</loc>
     <lastmod>2025-05-03T20:53:59-04:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/codetrails/</loc>
+    <loc>https://nathanemb.github.io/codetrails/</loc>
     <lastmod>2025-05-03T22:55:59-04:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/codetrails/posts/first-home-lab-post/</loc>
+    <loc>https://nathanemb.github.io/codetrails/posts/first-home-lab-post/</loc>
     <lastmod>2025-05-03T22:55:59-04:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/codetrails/posts/</loc>
+    <loc>https://nathanemb.github.io/codetrails/posts/</loc>
     <lastmod>2025-05-03T22:55:59-04:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/codetrails/categories/</loc>
+    <loc>https://nathanemb.github.io/codetrails/categories/</loc>
   </url><url>
-    <loc>http://localhost:1313/codetrails/tags/</loc>
+    <loc>https://nathanemb.github.io/codetrails/tags/</loc>
   </url>
 </urlset>
