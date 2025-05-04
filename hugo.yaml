@@ -2,7 +2,7 @@ baseURL: https://nathanemb.github.io/codetrails/
 languageCode: en-us
 title: Nathan Embaugh | codetrails
 theme: ["PaperMod"] 
-googleAnalytics: G-TR2MH8J8BF
+# googleAnalytics: G-TR2MH8J8BF
 
 pagination:
   paperSize: 5
