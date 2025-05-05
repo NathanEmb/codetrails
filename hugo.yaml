@@ -18,7 +18,7 @@ params:
   description: "Software Developer | OMSCS Student | Homelab Beginner" # Shown when website is posted in socials
   keywords: [Nathan Embaugh, Blog, Portfolio, GT, OMSCS, Computer Science, Homelab, Software Engineer]
   author: "Nathan Embaugh"
-  images: ["codetrails-logo.svg"]  # Image displayed when posting site link on socials
+  images: ["/codetrails-logo.png"]  # Image displayed when posting site link on socials
   DateFormat: "January 2, 2006"
   defaultTheme: dark
   disableThemeToggle: false
