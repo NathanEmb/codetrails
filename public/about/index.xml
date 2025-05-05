@@ -4,21 +4,20 @@
     <title>Abouts on Nathan Embaugh | codetrails</title>
     <link>http://localhost:1313/codetrails/about/</link>
     <description>Recent content in Abouts on Nathan Embaugh | codetrails</description>
-    <image>
-      <title>Nathan Embaugh | codetrails</title>
-      <url>http://localhost:1313/codetrails/logo_outlined_6.png</url>
-      <link>http://localhost:1313/codetrails/logo_outlined_6.png</link>
-    </image>
     <generator>Hugo -- 0.147.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 10 May 2023 16:53:59 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 04 May 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/codetrails/about/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About Me</title>
       <link>http://localhost:1313/codetrails/about/about/</link>
-      <pubDate>Wed, 10 May 2023 16:53:59 -0400</pubDate>
+      <pubDate>Sun, 04 May 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/codetrails/about/about/</guid>
-      <description>Information about me.</description>
+      <description>&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;hello-im-nathan&#34;&gt;Hello, I&amp;rsquo;m Nathan&lt;/h1&gt;
+&lt;p&gt;I&amp;rsquo;m a software engineer specializing in Python development for machine learning and data engineering applications. With several years of experience in the tech industry, I&amp;rsquo;ve worked on projects ranging from AI/ML implementations to data processing pipelines and cloud architecture.&lt;/p&gt;
+&lt;h2 id=&#34;what-i-do&#34;&gt;What I Do&lt;/h2&gt;
+&lt;p&gt;I build scalable data systems, optimize machine learning workflows, and develop tools that make data more accessible and useful. My experience spans:&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

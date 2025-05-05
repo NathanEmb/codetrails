@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Blog on Nathan Embaugh | codetrails</title>
+    <link>https://nathanemb.github.io/codetrails/tags/blog/</link>
+    <description>Recent content in Blog on Nathan Embaugh | codetrails</description>
+    <image>
+      <title>Nathan Embaugh | codetrails</title>
+      <url>https://nathanemb.github.io/codetrails/codetrails-logo.svg</url>
+      <link>https://nathanemb.github.io/codetrails/codetrails-logo.svg</link>
+    </image>
+    <generator>Hugo -- 0.147.1</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 03 May 2025 22:55:59 -0400</lastBuildDate>
+    <atom:link href="https://nathanemb.github.io/codetrails/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My Home Lab Setup</title>
+      <link>https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/</link>
+      <pubDate>Sat, 03 May 2025 19:55:59 -0400</pubDate>
+      <guid>https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/</guid>
+      <description>This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN</description>
+    </item>
+    <item>
+      <title>Blogging with Hugo</title>
+      <link>https://nathanemb.github.io/codetrails/posts/1-how-to-use-hugo/</link>
+      <pubDate>Fri, 02 May 2025 19:55:59 -0400</pubDate>
+      <guid>https://nathanemb.github.io/codetrails/posts/1-how-to-use-hugo/</guid>
+      <description>Quick notes about how to make a post within Hugo framework</description>
+    </item>
+  </channel>
+</rss>

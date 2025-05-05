@@ -1,59 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/codetrails/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=codetrails/livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>My Home Lab Setup | Nathan Embaugh | codetrails</title>
-<meta name="keywords" content="">
-<meta name="description" content="This is my first post on this topic, and first post on this site. I hope to use this site primarily as a notebook for myself on what I&rsquo;ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that&rsquo;s a cherry on top.
-My Home Lab
-A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.">
+<meta name="keywords" content="Homelab, Blog">
+<meta name="description" content="This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN">
 <meta name="author" content="Nathan Embaugh">
-<link rel="canonical" href="https://nathanemb.github.io/codetrails/posts/first-home-lab-post/">
+<link rel="canonical" href="http://localhost:1313/codetrails/posts/first-home-lab-post/">
 <link crossorigin="anonymous" href="/codetrails/assets/css/stylesheet.f49d66caae9ea0fd43f21f29e71a8d3e284517ed770f2aa86fa012953ad3c9ef.css" integrity="sha256-9J1myq6eoP1D8h8p5xqNPihFF&#43;13Dyqob6ASlTrTye8=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://nathanemb.github.io/codetrails/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://nathanemb.github.io/codetrails/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://nathanemb.github.io/codetrails/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://nathanemb.github.io/codetrails/apple-touch-icon.png">
-<link rel="mask-icon" href="https://nathanemb.github.io/codetrails/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/codetrails/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/codetrails/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/codetrails/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/codetrails/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/codetrails/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://nathanemb.github.io/codetrails/posts/first-home-lab-post/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/codetrails/posts/first-home-lab-post/">
 <noscript>
     <style>
         #theme-toggle,
         .top-link {
             display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
         }
 
     </style>
@@ -71,21 +41,22 @@ A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to ho
           gtag('js', new Date());
           gtag('config', 'G-TR2MH8J8BF');
         }
-      </script><meta property="og:url" content="https://nathanemb.github.io/codetrails/posts/first-home-lab-post/">
+      </script><meta property="og:url" content="http://localhost:1313/codetrails/posts/first-home-lab-post/">
   <meta property="og:site_name" content="Nathan Embaugh | codetrails">
   <meta property="og:title" content="My Home Lab Setup">
-  <meta property="og:description" content="This is my first post on this topic, and first post on this site. I hope to use this site primarily as a notebook for myself on what I’ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that’s a cherry on top.
-My Home Lab A home lab is a lot of things for a lot of people. For me it’s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.">
+  <meta property="og:description" content="This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2025-05-03T19:55:59-04:00">
     <meta property="article:modified_time" content="2025-05-03T22:55:59-04:00">
-<meta name="twitter:card" content="summary">
+    <meta property="article:tag" content="Homelab">
+    <meta property="article:tag" content="Blog">
+    <meta property="og:image" content="http://localhost:1313/codetrails/homelab.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:1313/codetrails/homelab.webp">
 <meta name="twitter:title" content="My Home Lab Setup">
-<meta name="twitter:description" content="This is my first post on this topic, and first post on this site. I hope to use this site primarily as a notebook for myself on what I&rsquo;ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that&rsquo;s a cherry on top.
-My Home Lab
-A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.">
+<meta name="twitter:description" content="This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN">
 
 
 <script type="application/ld+json">
@@ -97,13 +68,13 @@ A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to ho
       "@type": "ListItem",
       "position":  1 ,
       "name": "Posts",
-      "item": "https://nathanemb.github.io/codetrails/posts/"
+      "item": "http://localhost:1313/codetrails/posts/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "My Home Lab Setup",
-      "item": "https://nathanemb.github.io/codetrails/posts/first-home-lab-post/"
+      "item": "http://localhost:1313/codetrails/posts/first-home-lab-post/"
     }
   ]
 }
@@ -114,14 +85,14 @@ A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to ho
   "@type": "BlogPosting",
   "headline": "My Home Lab Setup",
   "name": "My Home Lab Setup",
-  "description": "This is my first post on this topic, and first post on this site. I hope to use this site primarily as a notebook for myself on what I\u0026rsquo;ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that\u0026rsquo;s a cherry on top.\nMy Home Lab A home lab is a lot of things for a lot of people. For me it\u0026rsquo;s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.\n",
+  "description": "This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN",
   "keywords": [
-    
+    "Homelab", "Blog"
   ],
-  "articleBody": "This is my first post on this topic, and first post on this site. I hope to use this site primarily as a notebook for myself on what I’ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that’s a cherry on top.\nMy Home Lab A home lab is a lot of things for a lot of people. For me it’s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.\nI’ve done things like make my own websites and hosted them off of it for trial runs, hosting open source projects and using them to see if I like them, and just general satisfactions of curiousities that I have.\nI once vibe-coded (before they called it vibe coding thank you very much) a “homelab-homepage” that I thought was neat. If you don’t know me, I’m a python developer, with zero JS and zero frontend experience, so I got deep into the weeds with CSS + HTML + Jinja2 + Copilot to create a semi-functional dashboard page. The goal was it would would be a landing page I could access all my services from without having to create a million bookmarks or remember what port my Wireguard server was running on when I need to access it 5 months after I set it up.\n“homelab-homepage” has:\nSimple Auth (Simple login that’s setup on first startup) Docker Health Monitoring (periodically check status of docker containers) Fully Responsive (Thanks chatgpt and an absurd amount of css) Hot links to all my home server landing pages (ports be gone) A Dockerfile and accompanying compose.yaml that I thought maybe one day people would use Here’s a short screenshot: I then of course found a much better already completed product at homepage and promptly abandoned that project, but I learned a lot so I still see it as a win.\nAnyways…on to what I was originally going to write about.\nMy Homelab setup Here is the current list of things that makeup my homelab. It’s not much, but it’s more than enough to satisfy my current usecase.\nCompute HP Prodesk 600 G3\nIntel Core i5-7500T 2.7 GHz 8 GB RAM 1 TB OS SSD 2 TB External Media Drive Services Home Assistant - Home Automation Frigate - Home Surveillance Plex - Home Media Server audiobookshelf - Hosted Ebooks and Audiobooks Mosquitto - MQTT Server WG-Easy - Wireguard Tunnel ",
-  "wordCount" : "441",
+  "articleBody": "This is my first post on this topic, and first post on this site. I hope to use this site primarily as a notebook for myself on what I’ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that’s a cherry on top.\nMy Home Lab A home lab is a lot of things for a lot of people. For me it’s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.\nI’ve done things like make my own websites and hosted them off of it for trial runs, hosting open source projects and using them to see if I like them, and just general satisfactions of curiousities that I have.\nI vibe-coded (before they called it vibe coding) a “homelab-homepage” that I thought was neat. If you don’t know me, I’m a python developer, with zero JS and zero frontend experience, so I got deep into the weeds with CSS + HTML + Jinja2 + Copilot to create a semi-functional dashboard page. The goal was it would would be a landing page I could access all my services from without having to create a million bookmarks or remember what port my Wireguard server was running on when I need to access it 5 months after I set it up.\n“homelab-homepage” has:\nSimple Auth (Simple login that’s setup on first startup) Docker Health Monitoring (periodically check status of docker containers) Fully Responsive (Thanks chatgpt and an absurd amount of css) Hot links to all my home server landing pages (ports be gone) A Dockerfile and accompanying compose.yaml that I thought maybe one day people would use Here’s a short screenshot: I then of course found a much better already completed product at homepage and promptly abandoned that project, but I learned a lot so I still see it as a win.\nAnyways…on to what I was originally going to write about.\nMy Homelab setup Here is the current list of things that makeup my homelab. It’s not much, but it’s more than enough to satisfy my current usecase.\nCompute HP Prodesk 600 G3 (Bought used for $50 USD)\nIntel Core i5-7500T 2.7 GHz 8 GB RAM 500 GB HDD Ubuntu 24.04 LTS Upgrades 1 TB OS SSD 2 TB External Media Drive Services All of my services, are run via Docker, using compose.yamls. There is an incredible ecosystem out there of people who have created cool FOSS projects, and then created a Dockerfile and associated compose.yaml that makes spinning up a new service as simple as copy-pasting a compose into a new directory, mapping a couple volumes, and a final docker compose up.\nThis isn’t the only way to run many of these services, lots of people like to use things like proxmox, some people are just installing these services on baremetal all on the same\nHome Assistant - Home Automation Frigate - Home Surveillance Plex - Home Media Server audiobookshelf - Hosted Ebooks and Audiobooks Mosquitto - MQTT Server WG-Easy - Wireguard Tunnel Mealie - Meal Planning and Recipe Book Home Assistant This was my very first hosted servi\n",
+  "wordCount" : "557",
   "inLanguage": "en",
-  "datePublished": "2025-05-03T19:55:59-04:00",
+  "image":"http://localhost:1313/codetrails/homelab.webp","datePublished": "2025-05-03T19:55:59-04:00",
   "dateModified": "2025-05-03T22:55:59-04:00",
   "author":{
     "@type": "Person",
@@ -129,28 +100,24 @@ A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to ho
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://nathanemb.github.io/codetrails/posts/first-home-lab-post/"
+    "@id": "http://localhost:1313/codetrails/posts/first-home-lab-post/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Nathan Embaugh | codetrails",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://nathanemb.github.io/codetrails/favicon.ico"
+      "url": "http://localhost:1313/codetrails/favicon.ico"
     }
   }
 }
 </script>
 </head>
 
-<body class="" id="top">
+<body class=" dark" id="top">
 <script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
+    if (localStorage.getItem("pref-theme") === "light") {
         document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
     }
 
 </script>
@@ -158,7 +125,7 @@ A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to ho
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://nathanemb.github.io/codetrails/" accesskey="h" title="Nathan Embaugh | codetrails (Alt + H)">Nathan Embaugh | codetrails</a>
+            <a href="http://localhost:1313/codetrails/" accesskey="h" title="Nathan Embaugh | codetrails (Alt + H)">Nathan Embaugh | codetrails</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -184,12 +151,12 @@ A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to ho
         </div>
         <ul id="menu">
             <li>
-                <a href="https://nathanemb.github.io/codetrails/posts/" title="Posts">
-                    <span>Posts</span>
+                <a href="http://localhost:1313/codetrails/" title="Blog">
+                    <span>Blog</span>
                 </a>
             </li>
             <li>
-                <a href="https://nathanemb.github.io/codetrails/about/" title="About">
+                <a href="http://localhost:1313/codetrails/about/" title="About">
                     <span>About</span>
                 </a>
             </li>
@@ -200,19 +167,28 @@ A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to ho
 
 <article class="post-single">
   <header class="post-header">
-    
+    <div class="breadcrumbs"><a href="http://localhost:1313/codetrails/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/codetrails/posts/">Posts</a></div>
     <h1 class="post-title entry-hint-parent">
       My Home Lab Setup
     </h1>
-    <div class="post-meta"><span title='2025-05-03 19:55:59 -0400 EDT'>May 3, 2025</span>&nbsp;·&nbsp;Nathan Embaugh
+    <div class="post-meta"><span title='2025-05-03 19:55:59 -0400 EDT'>May 3, 2025</span>&nbsp;·&nbsp;3 min&nbsp;·&nbsp;Nathan Embaugh&nbsp;|&nbsp;<a href="https://github.com/NathanEmb/codetrails/content/posts/first-home-lab-post/index.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
 
 </div>
   </header> 
+<figure class="entry-cover">
+            <img loading="eager"
+                srcset='http://localhost:1313/codetrails/posts/first-home-lab-post/homelab_hu_801ccc6b32bbd007.webp 360w,http://localhost:1313/codetrails/posts/first-home-lab-post/homelab_hu_ce11b8ab8f0beb09.webp 480w,http://localhost:1313/codetrails/posts/first-home-lab-post/homelab_hu_7727ba893c0d3dd4.webp 720w,http://localhost:1313/codetrails/posts/first-home-lab-post/homelab.webp 1000w'
+                src="http://localhost:1313/codetrails/posts/first-home-lab-post/homelab.webp"
+                sizes="(min-width: 768px) 720px, 100vw"
+                width="1000" height="420"
+                alt="Homelab">
+        <figcaption>Buidling Your Homelab <a href="https://dev.to/mjhossain/from-dream-to-server-rack-unveiling-the-epic-journey-of-crafting-my-homelab-server-1hif">(Image Credit)</a></figcaption>
+</figure>
   <div class="post-content"><p>This is my first post on this topic, and first post on this site. I hope to use this site primarily as a notebook for myself on what I&rsquo;ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that&rsquo;s a cherry on top.</p>
 <h2 id="my-home-lab">My Home Lab<a hidden class="anchor" aria-hidden="true" href="#my-home-lab">#</a></h2>
 <p>A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.</p>
 <p>I&rsquo;ve done things like make my own websites and hosted them off of it for trial runs, hosting open source projects and using them to see if I like them, and just general satisfactions of curiousities that I have.</p>
-<p>I once vibe-coded (before they called it vibe coding thank you very much) a &ldquo;homelab-homepage&rdquo; that I thought was neat. If you don&rsquo;t know me, I&rsquo;m a python developer, with zero JS and zero frontend experience, so I got deep into the weeds with CSS + HTML + Jinja2 + Copilot to create a semi-functional dashboard page. The goal was it would would be a landing page I could access all my services from without having to create a million bookmarks or remember what port my Wireguard server was running on when I need to access it 5 months after I set it up.</p>
+<p>I vibe-coded (before they called it vibe coding) a &ldquo;homelab-homepage&rdquo; that I thought was neat. If you don&rsquo;t know me, I&rsquo;m a python developer, with zero JS and zero frontend experience, so I got deep into the weeds with CSS + HTML + Jinja2 + Copilot to create a semi-functional dashboard page. The goal was it would would be a landing page I could access all my services from without having to create a million bookmarks or remember what port my Wireguard server was running on when I need to access it 5 months after I set it up.</p>
 <p>&ldquo;homelab-homepage&rdquo; has:</p>
 <ul>
 <li>Simple Auth (Simple login that&rsquo;s setup on first startup)</li>
@@ -228,14 +204,21 @@ Here&rsquo;s a short screenshot:
 <h1 id="my-homelab-setup">My Homelab setup<a hidden class="anchor" aria-hidden="true" href="#my-homelab-setup">#</a></h1>
 <p>Here is the current list of things that makeup my homelab. It&rsquo;s not much, but it&rsquo;s more than enough to satisfy my current usecase.</p>
 <h2 id="compute">Compute<a hidden class="anchor" aria-hidden="true" href="#compute">#</a></h2>
-<p>HP Prodesk 600 G3</p>
+<p>HP Prodesk 600 G3 (Bought used for $50 USD)</p>
 <ul>
 <li>Intel Core i5-7500T 2.7  GHz</li>
 <li>8 GB RAM</li>
+<li>500 GB HDD</li>
+<li>Ubuntu 24.04 LTS</li>
+</ul>
+<h2 id="upgrades">Upgrades<a hidden class="anchor" aria-hidden="true" href="#upgrades">#</a></h2>
+<ul>
 <li>1 TB OS SSD</li>
 <li>2 TB External Media Drive</li>
 </ul>
 <h2 id="services">Services<a hidden class="anchor" aria-hidden="true" href="#services">#</a></h2>
+<p><strong>All</strong> of my services, are run via Docker, using <code>compose.yaml</code>s. There is an incredible ecosystem out there of people who have created cool FOSS projects, and then created a <code>Dockerfile</code> and associated <code>compose.yaml</code> that makes spinning up a new service as simple as copy-pasting a compose into a new directory, mapping a couple volumes, and a final <code>docker compose up</code>.</p>
+<p>This isn&rsquo;t the only way to run many of these services, lots of people like to use things like <a href="https://www.proxmox.com/en/">proxmox</a>, some people are just installing these services on baremetal all on the same</p>
 <ul>
 <li><a href="https://www.home-assistant.io/">Home Assistant</a> - Home Automation</li>
 <li><a href="https://frigate.video/">Frigate</a> - Home Surveillance</li>
@@ -243,20 +226,25 @@ Here&rsquo;s a short screenshot:
 <li><a href="https://www.audiobookshelf.org/">audiobookshelf</a> - Hosted Ebooks and Audiobooks</li>
 <li><a href="https://mosquitto.org/">Mosquitto</a> - MQTT Server</li>
 <li><a href="https://github.com/wg-easy/wg-easy">WG-Easy</a> - Wireguard Tunnel</li>
+<li><a href="https://mealie.io/">Mealie</a> - Meal Planning and Recipe Book</li>
 </ul>
+<h3 id="home-assistant">Home Assistant<a hidden class="anchor" aria-hidden="true" href="#home-assistant">#</a></h3>
+<p>This was my very first hosted servi</p>
 
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
+      <li><a href="http://localhost:1313/codetrails/tags/homelab/">Homelab</a></li>
+      <li><a href="http://localhost:1313/codetrails/tags/blog/">Blog</a></li>
     </ul>
   </footer>
 </article>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="https://nathanemb.github.io/codetrails/">Nathan Embaugh | codetrails</a></span>
+        <span>&copy; 2025 <a href="http://localhost:1313/codetrails/">Nathan Embaugh | codetrails</a></span>
 
 </footer>
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
@@ -318,6 +306,53 @@ Here&rsquo;s a short screenshot:
         }
     })
 
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
 </script>
 </body>
 

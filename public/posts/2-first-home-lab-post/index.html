@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>My Home Lab Setup | Nathan Embaugh | codetrails</title>
+<meta name="keywords" content="Homelab, Blog">
+<meta name="description" content="This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN">
+<meta name="author" content="Nathan Embaugh">
+<link rel="canonical" href="https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/">
+<link crossorigin="anonymous" href="/codetrails/assets/css/stylesheet.f49d66caae9ea0fd43f21f29e71a8d3e284517ed770f2aa86fa012953ad3c9ef.css" integrity="sha256-9J1myq6eoP1D8h8p5xqNPihFF&#43;13Dyqob6ASlTrTye8=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://nathanemb.github.io/codetrails/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://nathanemb.github.io/codetrails/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://nathanemb.github.io/codetrails/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://nathanemb.github.io/codetrails/apple-touch-icon.png">
+<link rel="mask-icon" href="https://nathanemb.github.io/codetrails/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-TR2MH8J8BF"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-TR2MH8J8BF');
+        }
+      </script><meta property="og:url" content="https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/">
+  <meta property="og:site_name" content="Nathan Embaugh | codetrails">
+  <meta property="og:title" content="My Home Lab Setup">
+  <meta property="og:description" content="This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-05-03T19:55:59-04:00">
+    <meta property="article:modified_time" content="2025-05-03T22:55:59-04:00">
+    <meta property="article:tag" content="Homelab">
+    <meta property="article:tag" content="Blog">
+    <meta property="og:image" content="https://nathanemb.github.io/codetrails/homelab.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nathanemb.github.io/codetrails/homelab.webp">
+<meta name="twitter:title" content="My Home Lab Setup">
+<meta name="twitter:description" content="This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://nathanemb.github.io/codetrails/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "My Home Lab Setup",
+      "item": "https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "My Home Lab Setup",
+  "name": "My Home Lab Setup",
+  "description": "This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN",
+  "keywords": [
+    "Homelab", "Blog"
+  ],
+  "articleBody": "This is my first post on this topic. I hope to use this site primarily as a notebook for myself on what I’ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that’s a cherry on top.\nMy Home Lab A home lab is a lot of things for a lot of people. For me it’s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.\nI’ve done things like make my own websites and hosted them off of it for trial runs, hosting open source projects and using them to see if I like them, and just general satisfactions of curiousities that I have.\nMy favorite was a homelab dashboard idea that I had and implemented in a couple days. I wrote about it more below if you’re curious.\nAnyways…on to what I was originally going to write about.\nMy Homelab setup Here is the current list of things that makeup my homelab. It’s not much, but it’s more than enough to satisfy my current usecase.\nCompute HP Prodesk 600 G3 (Bought used for $50 USD)\nIntel Core i5-7500T 2.7 GHz 8 GB RAM 500 GB HDD Ubuntu 24.04 LTS Upgrades 1 TB OS SSD 2 TB External Media Drive Services All of my services, are run via Docker, using compose.yamls. There is an incredible ecosystem out there of people who have created cool FOSS projects, and then created a Dockerfile and associated compose.yaml that makes spinning up a new service as simple as copy-pasting a compose into a new directory, mapping a couple volumes, and a final docker compose up.\nThis isn’t the only way to run many of these services, lots of people like to use things like proxmox, some people are just installing these services on baremetal all on the same machine. The world is really your\nHome Assistant - Home Automation Frigate - Home Surveillance Plex - Home Media Server audiobookshelf - Hosted Ebooks and Audiobooks Mosquitto - MQTT Server Zigbee2mqtt - Zigbee 2 MQTT service WG-Easy - Wireguard Tunnel Mealie - Meal Planning and Recipe Book Home Assistant This was my very first hosted service and it actually started on an old Raspberry Pi4 1Gb as most people’s homelabs do. I still have that Pi sitting around, I need to figure out what to do with it. Maybe a custom NAS.\nAnyways, Home Assistant is a home automation software that integrates with seemingly everything. It takes things that Apple Homekit, Google Home, and all the other home automation cloud apps do, and gives you the ability to do it locally, with fully local hardware.\nHome assistant has a few benefits:\nYou don’t rely on a company not shutting down their cloud server Privacy is by default higher, as it is not a requirement that devices are able to “phone-home” You get a lot more customization, like, it’s not even close I love it. I have lights that turn on when I open my front door, automations that change the hue of my lights depending on what the sun would look like outside, power monitoring, laundry finished notifications using power monitoring….the list could go on.\nMy Home Assistant dashboard This is an excellent entry to self-hosted/homelab things if you’re thinking about fiddling.\nFrigate This was second. An NVR system with built-in object detection, for free! This is one of my favorite projects to watch, and I hope to contribute some day. It works very well, and integrates directly with Home Assistant as well.\nFor obvious reasons I won’t get into specifics, but this is a really fun solution if to host if you’d like to setup some cameras around your house for your own surveillance purposes. Again, you get to sidestep these cloud hosts having your video, seeing your data, and doing who knows what with it by self-hosting this.\nPlex A pretty good media server. Honestly the best thing about it is that there are many pretty good clients on TVs, phones, computers, etc. This makes watching from anywhere easy and the defacto home media server for many years, but has up and coming competitors like Jellyfin that may take it over. Plex is not FOSS, and not totally free, but they provide a pretty decent subset of features for free and it has been enough for me.\nPlex Media Server UI They’re currently reducing those free features though, so I might start thinking about other apps.\naudiobookshelf I love ebooks, and my wife loves audiobooks so when we purchase and download them we put them here. It’s a bit new to us, but it integrates with Kindle, and has some pretty decent client apps.\nAudiobookshelf - ebooks and audiobooks management Mosquitto This thing is a bit obscure. It’s a MQTT server which is a common iot communication framework. I got it because Frigate \u003c\u003e Home Assistant integration requires it, but then have increased it’s usage by getting things like Zigbee2mqtt, making zigbee protocol devices available on the mqtt server. Then I connect Home Assistant to Mosquitto and all of a sudden I can use so many devices.\nZigbee2mqtt Zigbee2mqtt creates an interface where you can pair zigbee devices, and expose their parameters to an mqtt server. This makes things like Home Assistant and Frigate and anything else running on my home network be able to communicate with all of these zigbee devices. This is an amazing project with thousands of devices supported, I highly recommend it.\nZigbee2MQTT dashboard for managing IoT devices WG-Easy My Wireguard VPN server! If you don’t know why having a VPN into your home is useful, boy you’re missing out..read here for why\nWG-Easy does what it says, it makes wireguard easy. I originally set up my wireguard server like a caveman using this blog post. I learned a lot, and then my server crashed and I didn’t want to do this all again.\nEnter WG-Easy. It’s a docker image that you can spin up a wireguard server with, and provides a really nice web UI for adding clients and monitoring their usage.\nMealie Mealie is a wonderful new-to-me application which takes cooking blog URLS, de-shittifies them, and gives you the ingredients and directions in a no-nonsense way. It’s so helpful for finding recipes you like, dumping the ones you don’t and even has built in shopping lists that you can just click on a recipe and it automatically populates everything you need.\nMealie Recipe Manager interface It’s very convenient and it’s pretty!\nServices I’m thinking about The journey never ends with self-hosting and homelabs. Here is a couple things I’m thinking about doing next\nReverse proxy like traefik, so I don’t need to remember ports Pihole, for whole home ad blocking A NAS, for a larger more available media center A 3-2-1 data backup solution A homepage I’m sure there are others I’m forgetting but I’ll keep browsing https://reddit.com/r/homelab and https://redditcom/r/selfhosted so I’m sure it won’t be long till another idea hits me.\nSidenotes When I start rambling I break them out into these sidenotes…maybe they’ll become their own post at some point, probably not.\nHomelab-homepage I vibe-coded (before they called it vibe coding) a “homelab-homepage” that I thought was neat. If you don’t know me, I’m a python developer, with zero JS and zero frontend experience, so I got deep into the weeds with CSS + HTML + Jinja2 + Copilot to create a semi-functional dashboard page. The goal was it would would be a landing page I could access all my services from without having to create a million bookmarks or remember what port my Wireguard server was running on when I need to access it 5 months after I set it up.\n“homelab-homepage” has:\nSimple Auth (Simple login that’s setup on first startup) Docker Health Monitoring (periodically check status of docker containers) Fully Responsive (Thanks chatgpt and an absurd amount of css) Hot links to all my home server landing pages (ports be gone) A Dockerfile and accompanying compose.yaml that I thought maybe one day people would use Here’s a short screenshot: My custom homelab homepage dashboard I then of course found a much better already completed product at homepage and promptly abandoned that project, but I learned a lot so I still see it as a win.\nHome Network access Abroad When I have all these services running on my home network, it’s great when I’m home, but the second I leave the house, I can’t connect! There are a couple ways to solve this…\nExpose service port directly Some people expose their services to the internet directly! This is a terrible idea, if there are any vulnerabilities in the service, you are potentially compromising your network, I don’t recommend.\nReverse Proxy Some people setup a reverse proxy like nginx or traefik, this is better, assuming you use security measures in addition to the reverse proxy, and implement auth. It comes with the advantage of instead of navigating to services by ports, you can specify plex.mydomain.com or frigate.mydomain.com and you’ll magically end up at your service.\nYou also get HTTPS certs, ssl, etc….it’s very nice. I have thought about doing this a lot but haven’t gotten around to it.\nTailscale A lot of people use something called Tailscale, which is essentially cloud hosted wireguard, but you don’t have to make it yourself (I think). I don’t use this, mostly because I didn’t realize it existed, but also I like things the hard way.\nVPN Lastly, there’s the VPN solution. This involves forwards one port of my router to my VPN server, and then allowing the wireguard server to handle all the auth. The only connections allowed in have to have the right WG profile, and if they don’t they’re kicked to the curb.\nThis is what I’ve done, it’s pretty easy. It requires the ability to forward incoming traffic on a specific port to your Router/Modem to your VPN server, but other than that it’s actually not too bad.\n",
+  "wordCount" : "1702",
+  "inLanguage": "en",
+  "image":"https://nathanemb.github.io/codetrails/homelab.webp","datePublished": "2025-05-03T19:55:59-04:00",
+  "dateModified": "2025-05-03T22:55:59-04:00",
+  "author":{
+    "@type": "Person",
+    "name": "Nathan Embaugh"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Nathan Embaugh | codetrails",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://nathanemb.github.io/codetrails/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://nathanemb.github.io/codetrails/" accesskey="h" title="Nathan Embaugh | codetrails (Alt + H)">Nathan Embaugh | codetrails</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://nathanemb.github.io/codetrails/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://nathanemb.github.io/codetrails/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://nathanemb.github.io/codetrails/">Home</a>&nbsp;»&nbsp;<a href="https://nathanemb.github.io/codetrails/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      My Home Lab Setup
+    </h1>
+    <div class="post-meta"><span title='2025-05-03 19:55:59 -0400 EDT'>May 3, 2025</span>&nbsp;·&nbsp;8 min&nbsp;·&nbsp;Nathan Embaugh&nbsp;|&nbsp;<a href="https://github.com/NathanEmb/codetrails/content/posts/2-first-home-lab-post/index.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+<figure class="entry-cover">
+            <img loading="eager"
+                srcset='https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/homelab_hu_801ccc6b32bbd007.webp 360w,https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/homelab_hu_ce11b8ab8f0beb09.webp 480w,https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/homelab_hu_7727ba893c0d3dd4.webp 720w,https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/homelab.webp 1000w'
+                src="https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/homelab.webp"
+                sizes="(min-width: 768px) 720px, 100vw"
+                width="1000" height="420"
+                alt="Homelab">
+        <figcaption>Buidling Your Homelab <a href="https://dev.to/mjhossain/from-dream-to-server-rack-unveiling-the-epic-journey-of-crafting-my-homelab-server-1hif">(Image Credit)</a></figcaption>
+</figure>
+  <div class="post-content"><p>This is my first post on this topic. I hope to use this site primarily as a notebook for myself on what I&rsquo;ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that&rsquo;s a cherry on top.</p>
+<h2 id="my-home-lab">My Home Lab<a hidden class="anchor" aria-hidden="true" href="#my-home-lab">#</a></h2>
+<p>A home lab is a lot of things for a lot of people. For me it&rsquo;s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.</p>
+<p>I&rsquo;ve done things like make my own websites and hosted them off of it for trial runs, hosting open source projects and using them to see if I like them, and just general satisfactions of curiousities that I have.</p>
+<p>My favorite was a homelab dashboard idea that I had and implemented in a couple days. I wrote about it <a href="#homelab-homepage">more below</a> if you&rsquo;re curious.</p>
+<p>Anyways&hellip;on to what I was originally going to write about.</p>
+<h1 id="my-homelab-setup">My Homelab setup<a hidden class="anchor" aria-hidden="true" href="#my-homelab-setup">#</a></h1>
+<p>Here is the current list of things that makeup my homelab. It&rsquo;s not much, but it&rsquo;s more than enough to satisfy my current usecase.</p>
+<h2 id="compute">Compute<a hidden class="anchor" aria-hidden="true" href="#compute">#</a></h2>
+<p>HP Prodesk 600 G3 (Bought used for $50 USD)</p>
+<ul>
+<li>Intel Core i5-7500T 2.7  GHz</li>
+<li>8 GB RAM</li>
+<li>500 GB HDD</li>
+<li>Ubuntu 24.04 LTS</li>
+</ul>
+<h2 id="upgrades">Upgrades<a hidden class="anchor" aria-hidden="true" href="#upgrades">#</a></h2>
+<ul>
+<li>1 TB OS SSD</li>
+<li>2 TB External Media Drive</li>
+</ul>
+<h2 id="services">Services<a hidden class="anchor" aria-hidden="true" href="#services">#</a></h2>
+<p><strong>All</strong> of my services, are run via Docker, using <code>compose.yaml</code>s. There is an incredible ecosystem out there of people who have created cool FOSS projects, and then created a <code>Dockerfile</code> and associated <code>compose.yaml</code> that makes spinning up a new service as simple as copy-pasting a compose into a new directory, mapping a couple volumes, and a final <code>docker compose up</code>.</p>
+<p>This isn&rsquo;t the only way to run many of these services, lots of people like to use things like <a href="https://www.proxmox.com/en/">proxmox</a>, some people are just installing these services on baremetal all on the same machine. The world is really your</p>
+<ul>
+<li><a href="https://www.home-assistant.io/">Home Assistant</a> - Home Automation</li>
+<li><a href="https://frigate.video/">Frigate</a> - Home Surveillance</li>
+<li><a href="https://www.plex.tv/">Plex</a> - Home Media Server</li>
+<li><a href="https://www.audiobookshelf.org/">audiobookshelf</a> - Hosted Ebooks and Audiobooks</li>
+<li><a href="https://mosquitto.org/">Mosquitto</a> - MQTT Server</li>
+<li><a href="https://www.zigbee2mqtt.io/">Zigbee2mqtt</a> - Zigbee 2 MQTT service</li>
+<li><a href="https://github.com/wg-easy/wg-easy">WG-Easy</a> - Wireguard Tunnel</li>
+<li><a href="https://mealie.io/">Mealie</a> - Meal Planning and Recipe Book</li>
+</ul>
+<h3 id="home-assistant">Home Assistant<a hidden class="anchor" aria-hidden="true" href="#home-assistant">#</a></h3>
+<p>This was my very first hosted service and it actually started on an old Raspberry Pi4 1Gb as most people&rsquo;s homelabs do. I still have that Pi sitting around, I need to figure out what to do with it. Maybe a custom NAS.</p>
+<p>Anyways, Home Assistant is a home automation software that integrates with seemingly everything. It takes things that Apple Homekit, Google Home, and all the other home automation cloud apps do, and gives you the ability to do it locally, with fully local hardware.</p>
+<p>Home assistant has a few benefits:</p>
+<ol>
+<li>You don&rsquo;t rely on a company not shutting down their cloud server</li>
+<li>Privacy is by default higher, as it is not a requirement that devices are able to &ldquo;phone-home&rdquo;</li>
+<li>You get a lot more customization, like, it&rsquo;s not even close</li>
+</ol>
+<p>I love it. I have lights that turn on when I open my front door, automations that change the hue of my lights depending on what the sun would look like outside, power monitoring, laundry finished notifications using power monitoring&hellip;.the list could go on.</p>
+<figure style="text-align: center;">
+  <img src="homeassistant.png" alt="Home Assistant Dashboard" style="max-height: 400px; margin: 0 auto;" />
+  <figcaption>My Home Assistant dashboard</figcaption>
+</figure>
+<p>This is an excellent entry to self-hosted/homelab things if you&rsquo;re thinking about fiddling.</p>
+<h3 id="frigate">Frigate<a hidden class="anchor" aria-hidden="true" href="#frigate">#</a></h3>
+<p>This was second. An NVR system with built-in object detection, for free! This is one of my favorite projects to watch, and I hope to contribute some day. It works very well, and integrates directly with Home Assistant as well.</p>
+<p>For obvious reasons I won&rsquo;t get into specifics, but this is a really fun solution if to host if you&rsquo;d like to setup some cameras around your house for your own surveillance purposes. Again, you get to sidestep these cloud hosts having your video, seeing your data, and doing who knows what with it by self-hosting this.</p>
+<h3 id="plex">Plex<a hidden class="anchor" aria-hidden="true" href="#plex">#</a></h3>
+<p>A pretty good media server. Honestly the best thing about it is that there are many pretty good clients on TVs, phones, computers, etc. This makes watching from anywhere easy and the defacto home media server for many years, but has up and coming competitors like <a href="https://jellyfin.org/">Jellyfin</a> that may take it over. Plex is not FOSS, and not totally free, but they provide a pretty decent subset of features for free and it has been enough for me.</p>
+<figure style="text-align: center;">
+  <img src="plex.png" alt="Plex Media Server" style="max-height: 400px; margin: 0 auto;" />
+  <figcaption>Plex Media Server UI</figcaption>
+</figure>
+<p>They&rsquo;re currently reducing those free features though, so I might start thinking about other apps.</p>
+<h3 id="audiobookshelf">audiobookshelf<a hidden class="anchor" aria-hidden="true" href="#audiobookshelf">#</a></h3>
+<p>I love ebooks, and my wife loves audiobooks so when we purchase and download them we put them here. It&rsquo;s a bit new to us, but it integrates with Kindle, and has some pretty decent client apps.</p>
+<figure style="text-align: center;">
+  <img src="audiobookshelf.png" alt="Audiobookshelf" style="max-height: 400px; margin: 0 auto;" />
+  <figcaption>Audiobookshelf - ebooks and audiobooks management</figcaption>
+</figure>
+<h3 id="mosquitto">Mosquitto<a hidden class="anchor" aria-hidden="true" href="#mosquitto">#</a></h3>
+<p>This thing is a bit obscure. It&rsquo;s a MQTT server which is a common iot communication framework. I got it because Frigate &lt;&gt; Home Assistant integration requires it, but then have increased it&rsquo;s usage by getting things like Zigbee2mqtt, making zigbee protocol devices available on the mqtt server. Then I connect Home Assistant to Mosquitto and all of a sudden I can use so many devices.</p>
+<h3 id="zigbee2mqtt">Zigbee2mqtt<a hidden class="anchor" aria-hidden="true" href="#zigbee2mqtt">#</a></h3>
+<p>Zigbee2mqtt creates an interface where you can pair zigbee devices, and expose their parameters to an mqtt server. This makes things like Home Assistant and Frigate and anything else running on my home network be able to communicate with all of these zigbee devices. This is an amazing project with thousands of devices supported, I highly recommend it.</p>
+<figure style="text-align: center;">
+  <img src="z2mqtt.png" alt="Zigbee2MQTT" style="max-height: 400px; margin: 0 auto;" />
+  <figcaption>Zigbee2MQTT dashboard for managing IoT devices</figcaption>
+</figure>
+<h3 id="wg-easy">WG-Easy<a hidden class="anchor" aria-hidden="true" href="#wg-easy">#</a></h3>
+<p>My Wireguard VPN server! If you don&rsquo;t know why having a VPN into your home is useful, boy you&rsquo;re missing out..<a href="#sidenote-home-network-access-abroad">read here for why</a></p>
+<p>WG-Easy does what it says, it makes wireguard easy. I originally set up my wireguard server like a caveman using this <a href="https://markliversedge.blogspot.com/2023/09/wireguard-setup-for-dummies.html">blog post</a>. I learned a lot, and then my server crashed and I didn&rsquo;t want to do this all again.</p>
+<p>Enter WG-Easy. It&rsquo;s a docker image that you can spin up a wireguard server with, and provides a really nice web UI for adding clients and monitoring their usage.</p>
+<h3 id="mealie">Mealie<a hidden class="anchor" aria-hidden="true" href="#mealie">#</a></h3>
+<p>Mealie is a wonderful new-to-me application which takes cooking blog URLS, de-shittifies them, and gives you the ingredients and directions in a no-nonsense way. It&rsquo;s so helpful for finding recipes you like, dumping the ones you don&rsquo;t and even has built in shopping lists that you can just click on a recipe and it automatically populates everything you need.</p>
+<figure style="text-align: center;">
+  <img src="mealie.png" alt="Mealie Recipe Manager" style="max-height: 400px; margin: 0 auto;" />
+  <figcaption>Mealie Recipe Manager interface</figcaption>
+</figure>
+<p>It&rsquo;s very convenient and it&rsquo;s pretty!</p>
+<h2 id="services-im-thinking-about">Services I&rsquo;m thinking about<a hidden class="anchor" aria-hidden="true" href="#services-im-thinking-about">#</a></h2>
+<p>The journey never ends with self-hosting and homelabs. Here is a couple things I&rsquo;m thinking about doing next</p>
+<ul>
+<li>Reverse proxy like <a href="https://traefik.io/traefik/">traefik</a>, so I don&rsquo;t need to remember ports</li>
+<li><a href="https://pi-hole.net/">Pihole</a>, for whole home ad blocking</li>
+<li>A <a href="https://www.techtarget.com/searchstorage/definition/network-attached-storage">NAS</a>, for a larger more available media center</li>
+<li>A <a href="https://www.backblaze.com/blog/the-3-2-1-backup-strategy/">3-2-1 data backup</a> solution</li>
+<li>A <a href="https://gethomepage.dev/">homepage</a></li>
+</ul>
+<p>I&rsquo;m sure there are others I&rsquo;m forgetting but I&rsquo;ll keep browsing <a href="https://reddit.com/r/homelab">https://reddit.com/r/homelab</a> and https://redditcom/r/selfhosted so I&rsquo;m sure it won&rsquo;t be long till another idea hits me.</p>
+<h2 id="sidenotes">Sidenotes<a hidden class="anchor" aria-hidden="true" href="#sidenotes">#</a></h2>
+<p>When I start rambling I break them out into these sidenotes&hellip;maybe they&rsquo;ll become their own post at some point, probably not.</p>
+<h3 id="homelab-homepage">Homelab-homepage<a hidden class="anchor" aria-hidden="true" href="#homelab-homepage">#</a></h3>
+<p>I vibe-coded (before they called it vibe coding) a &ldquo;homelab-homepage&rdquo; that I thought was neat. If you don&rsquo;t know me, I&rsquo;m a python developer, with zero JS and zero frontend experience, so I got deep into the weeds with CSS + HTML + Jinja2 + Copilot to create a semi-functional dashboard page. The goal was it would would be a landing page I could access all my services from without having to create a million bookmarks or remember what port my Wireguard server was running on when I need to access it 5 months after I set it up.</p>
+<p>&ldquo;homelab-homepage&rdquo; has:</p>
+<ul>
+<li>Simple Auth (Simple login that&rsquo;s setup on first startup)</li>
+<li>Docker Health Monitoring (periodically check status of docker containers)</li>
+<li>Fully Responsive (Thanks chatgpt and an absurd amount of css)</li>
+<li>Hot links to all my home server landing pages (ports be gone)</li>
+<li>A <code>Dockerfile</code> and accompanying <code>compose.yaml</code> that I thought maybe one day people would use
+Here&rsquo;s a short screenshot:</li>
+</ul>
+<figure style="text-align: center;">
+  <img src="homelab-homepage.png" alt="Homelab Homepage" style="max-height: 400px; margin: 0 auto;" />
+  <figcaption>My custom homelab homepage dashboard</figcaption>
+</figure>
+<p>I then of course found a much better already completed product at <a href="https://gethomepage.dev/">homepage</a> and promptly abandoned that project, but I learned a lot so I still see it as a win.</p>
+<h3 id="home-network-access-abroad">Home Network access Abroad<a hidden class="anchor" aria-hidden="true" href="#home-network-access-abroad">#</a></h3>
+<p>When I have all these services running on my home network, it&rsquo;s great when I&rsquo;m home, but the second I leave the house, I can&rsquo;t connect! There are a couple ways to solve this&hellip;</p>
+<h4 id="expose-service-port-directly">Expose service port directly<a hidden class="anchor" aria-hidden="true" href="#expose-service-port-directly">#</a></h4>
+<p>Some people expose their services to the internet directly! This is a terrible idea, if there are any vulnerabilities in the service, you are potentially compromising your network, I don&rsquo;t recommend.</p>
+<h4 id="reverse-proxy">Reverse Proxy<a hidden class="anchor" aria-hidden="true" href="#reverse-proxy">#</a></h4>
+<p>Some people setup a reverse proxy like nginx or traefik, this is better, assuming you use security measures in addition to the reverse proxy, and implement auth. It comes with the advantage of instead of navigating to services by ports, you can specify plex.mydomain.com or frigate.mydomain.com and you&rsquo;ll magically end up at your service.</p>
+<p>You also get HTTPS certs, ssl, etc&hellip;.it&rsquo;s very nice. I have thought about doing this a lot but haven&rsquo;t gotten around to it.</p>
+<h4 id="tailscale">Tailscale<a hidden class="anchor" aria-hidden="true" href="#tailscale">#</a></h4>
+<p>A lot of people use something called Tailscale, which is essentially cloud hosted wireguard, but you don&rsquo;t have to make it yourself (I think). I don&rsquo;t use this, mostly because I didn&rsquo;t realize it existed, but also I like things the hard way.</p>
+<h4 id="vpn">VPN<a hidden class="anchor" aria-hidden="true" href="#vpn">#</a></h4>
+<p>Lastly, there&rsquo;s the VPN solution. This involves forwards one port of my router to my VPN server, and then allowing the wireguard server to handle all the auth. The <strong>only</strong> connections allowed in have to have the right WG profile, and if they don&rsquo;t they&rsquo;re kicked to the curb.</p>
+<p>This is what I&rsquo;ve done, it&rsquo;s pretty easy. It requires the ability to forward incoming traffic on a specific port to your Router/Modem to your VPN server, but other than that it&rsquo;s actually not too bad.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://nathanemb.github.io/codetrails/tags/homelab/">Homelab</a></li>
+      <li><a href="https://nathanemb.github.io/codetrails/tags/blog/">Blog</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://nathanemb.github.io/codetrails/">Nathan Embaugh | codetrails</a></span>
+
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

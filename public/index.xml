@@ -4,6 +4,11 @@
     <title>Nathan Embaugh | codetrails</title>
     <link>https://nathanemb.github.io/codetrails/</link>
     <description>Recent content on Nathan Embaugh | codetrails</description>
+    <image>
+      <title>Nathan Embaugh | codetrails</title>
+      <url>https://nathanemb.github.io/codetrails/codetrails-logo.svg</url>
+      <link>https://nathanemb.github.io/codetrails/codetrails-logo.svg</link>
+    </image>
     <generator>Hugo -- 0.147.1</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 03 May 2025 22:55:59 -0400</lastBuildDate>
@@ -11,25 +16,29 @@
     <item>
       <title>About Me</title>
       <link>https://nathanemb.github.io/codetrails/about/</link>
-      <pubDate>Sat, 03 May 2025 20:53:59 -0400</pubDate>
+      <pubDate>Sun, 04 May 2025 00:00:00 +0000</pubDate>
       <guid>https://nathanemb.github.io/codetrails/about/</guid>
-      <description>About me.</description>
+      <description>&lt;div style=&#34;text-align: center; margin-bottom: 2rem; display: flex; justify-content: center;&#34;&gt;
+  &lt;img src=&#34;headshot.jpg&#34; alt=&#34;Nathan Embaugh&#34; style=&#34;width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 3px solid rgb(124, 156, 206); box-shadow: 0 4px 8px rgba(0,0,0,0.2);&#34;&gt;
+&lt;/div&gt;
+&lt;h1 id=&#34;hello-im-nathan&#34;&gt;Hello, I&amp;rsquo;m Nathan&lt;/h1&gt;
+&lt;p&gt;I&amp;rsquo;m a software engineer specializing in Python development for machine learning and data engineering applications. With several years of experience in the tech industry, I&amp;rsquo;ve worked on projects ranging from AI/ML implementations to data processing pipelines and cloud architecture.&lt;/p&gt;
+&lt;h2 id=&#34;what-i-do&#34;&gt;What I Do&lt;/h2&gt;
+&lt;p&gt;I build scalable data systems, optimize machine learning workflows, and develop tools that make data more accessible and useful. My experience spans:&lt;/p&gt;</description>
     </item>
     <item>
       <title>My Home Lab Setup</title>
-      <link>https://nathanemb.github.io/codetrails/posts/first-home-lab-post/</link>
+      <link>https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/</link>
       <pubDate>Sat, 03 May 2025 19:55:59 -0400</pubDate>
-      <guid>https://nathanemb.github.io/codetrails/posts/first-home-lab-post/</guid>
-      <description>&lt;p&gt;This is my first post on this topic, and first post on this site. I hope to use this site primarily as a notebook for myself on what I&amp;rsquo;ve tried, and any useful notes or thoughts that come out of it. If this is ever useful for others, well that&amp;rsquo;s a cherry on top.&lt;/p&gt;
-&lt;h2 id=&#34;my-home-lab&#34;&gt;My Home Lab&lt;/h2&gt;
-&lt;p&gt;A home lab is a lot of things for a lot of people. For me it&amp;rsquo;s a way to host higher quality media than Netflix can stream, host home automation, and host some home security. It also serves as a pretty fun development playground where I can work with all sorts of interesting open source projects and fiddle to my hearts content.&lt;/p&gt;</description>
+      <guid>https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/</guid>
+      <description>This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN</description>
     </item>
     <item>
-      <title>Tags</title>
-      <link>https://nathanemb.github.io/codetrails/tags/</link>
-      <pubDate>Sat, 03 May 2025 19:55:59 -0400</pubDate>
-      <guid>https://nathanemb.github.io/codetrails/tags/</guid>
-      <description>&lt;p&gt;In progress&amp;hellip;&lt;/p&gt;</description>
+      <title>Blogging with Hugo</title>
+      <link>https://nathanemb.github.io/codetrails/posts/1-how-to-use-hugo/</link>
+      <pubDate>Fri, 02 May 2025 19:55:59 -0400</pubDate>
+      <guid>https://nathanemb.github.io/codetrails/posts/1-how-to-use-hugo/</guid>
+      <description>Quick notes about how to make a post within Hugo framework</description>
     </item>
   </channel>
 </rss>

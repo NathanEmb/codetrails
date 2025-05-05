@@ -8,44 +8,47 @@ pagination:
   paperSize: 5
 
 params:
+  socialIcons: # optional
+  - name: "github"
+    url: "https://github.com/NathanEmb"
+  - name: "linkedin"
+    url: "https://www.linkedin.com/in/nathan-embaugh/"
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: Nathan Embaugh
-  # This is shown when website is posted in Discord and other socials
-  # description: "Computer Science MS student at UNC. Welcome to my website!"
-  # keywords: [Jesse Wei, Blog, Portfolio, GT, Computer Science, Homelab, Software Engineer]
-  # author: ["Me", "You"] # multiple authors
+  description: "Software Developer | OMSCS Student | Homelab Beginner" # Shown when website is posted in socials
+  keywords: [Nathan Embaugh, Blog, Portfolio, GT, OMSCS, Computer Science, Homelab, Software Engineer]
   author: "Nathan Embaugh"
-  # Image displayed when posting site link on socials
-  # For example, if you post the link to the site in Discord, this image will be displayed
-  # images: ["logo_outlined_6.png"]
+  images: ["codetrails-logo.svg"]  # Image displayed when posting site link on socials
   DateFormat: "January 2, 2006"
-  # dark, light
-  defaultTheme: auto
+  defaultTheme: dark
   disableThemeToggle: false
+  ShowReadingTime: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  editPost:
+    URL: "https://github.com/NathanEmb/codetrails/content"
+    Text: "Suggest Changes" # edit text
+    appendFilePath: true
 
-  # profile-mode
-  profileMode:
-    # Needs to be explicitly set
-    enabled: true
-    title: Nathan Embaugh
-    subtitle: "My Sections"
-    # imageUrl: "static/headshot.jpg"
-    # imageWidth: 150
-    # imageHeight: 150
-    # imageTitle: Headshot
-    buttons:
-      - name: Posts
-        url: /codetrails/posts
-      - name: Tags
-        url: /tags
+  analytics:
+    # Google Analytics
+    googleAnalytics: G-TR2MH8J8BF
+
 
 menu:
   main:
     - identifier: posts
-      name: Posts
-      url: /posts/
+      name: Blog
+      url: /
       weight: 1
     - identifier: about
       name: About
       url: /about/
       weight: 2
+
+markup:
+  goldmark:
+    renderer:
+        unsafe: true
+
+  
