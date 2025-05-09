@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Homelab on Nathan Embaugh | codetrails</title>
-    <link>https://nathanemb.github.io/codetrails/tags/homelab/</link>
-    <description>Recent content in Homelab on Nathan Embaugh | codetrails</description>
+    <title>Raspberrypi on Nathan Embaugh | codetrails</title>
+    <link>https://nathanemb.github.io/codetrails/tags/raspberrypi/</link>
+    <description>Recent content in Raspberrypi on Nathan Embaugh | codetrails</description>
     <image>
       <title>Nathan Embaugh | codetrails</title>
       <url>https://nathanemb.github.io/codetrails-logo.png</url>
@@ -12,20 +12,13 @@
     <generator>Hugo -- 0.147.1</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 08 May 2025 21:46:45 -0400</lastBuildDate>
-    <atom:link href="https://nathanemb.github.io/codetrails/tags/homelab/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://nathanemb.github.io/codetrails/tags/raspberrypi/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Shut Your Pihole - Ad Blocking and Local DNS</title>
       <link>https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/</link>
       <pubDate>Thu, 08 May 2025 21:46:45 -0400</pubDate>
       <guid>https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/</guid>
       <description>Setting up Pihole on a fresh Raspberry Pi.</description>
-    </item>
-    <item>
-      <title>My Home Lab Setup</title>
-      <link>https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/</link>
-      <pubDate>Sat, 03 May 2025 19:55:59 -0400</pubDate>
-      <guid>https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/</guid>
-      <description>This post describes my home  lab setup, including things like Home Assistant, Frigate, and Wireguard VPN</description>
     </item>
   </channel>
 </rss>

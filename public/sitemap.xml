@@ -2,25 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://nathanemb.github.io/codetrails/tags/adblocking/</loc>
+    <lastmod>2025-05-08T21:46:45-04:00</lastmod>
+  </url><url>
+    <loc>https://nathanemb.github.io/codetrails/tags/blog/</loc>
+    <lastmod>2025-05-08T21:46:45-04:00</lastmod>
+  </url><url>
+    <loc>https://nathanemb.github.io/codetrails/tags/dns/</loc>
+    <lastmod>2025-05-08T21:46:45-04:00</lastmod>
+  </url><url>
+    <loc>https://nathanemb.github.io/codetrails/tags/homelab/</loc>
+    <lastmod>2025-05-08T21:46:45-04:00</lastmod>
+  </url><url>
+    <loc>https://nathanemb.github.io/codetrails/</loc>
+    <lastmod>2025-05-08T21:46:45-04:00</lastmod>
+  </url><url>
+    <loc>https://nathanemb.github.io/codetrails/posts/</loc>
+    <lastmod>2025-05-08T21:46:45-04:00</lastmod>
+  </url><url>
+    <loc>https://nathanemb.github.io/codetrails/tags/raspberrypi/</loc>
+    <lastmod>2025-05-08T21:46:45-04:00</lastmod>
+  </url><url>
+    <loc>https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/</loc>
+    <lastmod>2025-05-08T21:46:45-04:00</lastmod>
+  </url><url>
+    <loc>https://nathanemb.github.io/codetrails/tags/</loc>
+    <lastmod>2025-05-08T21:46:45-04:00</lastmod>
+  </url><url>
     <loc>https://nathanemb.github.io/codetrails/about/</loc>
     <lastmod>2025-05-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://nathanemb.github.io/codetrails/</loc>
-    <lastmod>2025-05-03T22:55:59-04:00</lastmod>
-  </url><url>
-    <loc>https://nathanemb.github.io/codetrails/tags/blog/</loc>
-    <lastmod>2025-05-03T22:55:59-04:00</lastmod>
-  </url><url>
-    <loc>https://nathanemb.github.io/codetrails/tags/homelab/</loc>
-    <lastmod>2025-05-03T22:55:59-04:00</lastmod>
-  </url><url>
     <loc>https://nathanemb.github.io/codetrails/posts/2-first-home-lab-post/</loc>
-    <lastmod>2025-05-03T22:55:59-04:00</lastmod>
-  </url><url>
-    <loc>https://nathanemb.github.io/codetrails/posts/</loc>
-    <lastmod>2025-05-03T22:55:59-04:00</lastmod>
-  </url><url>
-    <loc>https://nathanemb.github.io/codetrails/tags/</loc>
     <lastmod>2025-05-03T22:55:59-04:00</lastmod>
   </url><url>
     <loc>https://nathanemb.github.io/codetrails/posts/1-how-to-use-hugo/</loc>

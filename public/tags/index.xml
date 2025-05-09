@@ -6,25 +6,46 @@
     <description>Recent content in Tags on Nathan Embaugh | codetrails</description>
     <image>
       <title>Nathan Embaugh | codetrails</title>
-      <url>https://nathanemb.github.io/codetrails/codetrails-logo.svg</url>
-      <link>https://nathanemb.github.io/codetrails/codetrails-logo.svg</link>
+      <url>https://nathanemb.github.io/codetrails-logo.png</url>
+      <link>https://nathanemb.github.io/codetrails-logo.png</link>
     </image>
     <generator>Hugo -- 0.147.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 May 2025 22:55:59 -0400</lastBuildDate>
+    <lastBuildDate>Thu, 08 May 2025 21:46:45 -0400</lastBuildDate>
     <atom:link href="https://nathanemb.github.io/codetrails/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Adblocking</title>
+      <link>https://nathanemb.github.io/codetrails/tags/adblocking/</link>
+      <pubDate>Thu, 08 May 2025 21:46:45 -0400</pubDate>
+      <guid>https://nathanemb.github.io/codetrails/tags/adblocking/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Blog</title>
       <link>https://nathanemb.github.io/codetrails/tags/blog/</link>
-      <pubDate>Sat, 03 May 2025 19:55:59 -0400</pubDate>
+      <pubDate>Thu, 08 May 2025 21:46:45 -0400</pubDate>
       <guid>https://nathanemb.github.io/codetrails/tags/blog/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dns</title>
+      <link>https://nathanemb.github.io/codetrails/tags/dns/</link>
+      <pubDate>Thu, 08 May 2025 21:46:45 -0400</pubDate>
+      <guid>https://nathanemb.github.io/codetrails/tags/dns/</guid>
       <description></description>
     </item>
     <item>
       <title>Homelab</title>
       <link>https://nathanemb.github.io/codetrails/tags/homelab/</link>
-      <pubDate>Sat, 03 May 2025 19:55:59 -0400</pubDate>
+      <pubDate>Thu, 08 May 2025 21:46:45 -0400</pubDate>
       <guid>https://nathanemb.github.io/codetrails/tags/homelab/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Raspberrypi</title>
+      <link>https://nathanemb.github.io/codetrails/tags/raspberrypi/</link>
+      <pubDate>Thu, 08 May 2025 21:46:45 -0400</pubDate>
+      <guid>https://nathanemb.github.io/codetrails/tags/raspberrypi/</guid>
       <description></description>
     </item>
     <item>

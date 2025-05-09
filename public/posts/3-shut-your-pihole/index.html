@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Shut Your Pihole - Ad Blocking and Local DNS | Nathan Embaugh | codetrails</title>
+<meta name="keywords" content="Homelab, Blog, raspberrypi, dns, adblocking">
+<meta name="description" content="Setting up Pihole on a fresh Raspberry Pi.">
+<meta name="author" content="Nathan Embaugh">
+<link rel="canonical" href="https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/">
+<link crossorigin="anonymous" href="/codetrails/assets/css/stylesheet.f49d66caae9ea0fd43f21f29e71a8d3e284517ed770f2aa86fa012953ad3c9ef.css" integrity="sha256-9J1myq6eoP1D8h8p5xqNPihFF&#43;13Dyqob6ASlTrTye8=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://nathanemb.github.io/codetrails/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://nathanemb.github.io/codetrails/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://nathanemb.github.io/codetrails/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://nathanemb.github.io/codetrails/apple-touch-icon.png">
+<link rel="mask-icon" href="https://nathanemb.github.io/codetrails/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-TR2MH8J8BF"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-TR2MH8J8BF');
+        }
+      </script><meta property="og:url" content="https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/">
+  <meta property="og:site_name" content="Nathan Embaugh | codetrails">
+  <meta property="og:title" content="Shut Your Pihole - Ad Blocking and Local DNS">
+  <meta property="og:description" content="Setting up Pihole on a fresh Raspberry Pi.">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-05-08T21:46:45-04:00">
+    <meta property="article:modified_time" content="2025-05-08T21:46:45-04:00">
+    <meta property="article:tag" content="Homelab">
+    <meta property="article:tag" content="Blog">
+    <meta property="article:tag" content="Raspberrypi">
+    <meta property="article:tag" content="Dns">
+    <meta property="article:tag" content="Adblocking">
+    <meta property="og:image" content="https://nathanemb.github.io/codetrails/piholebanner.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nathanemb.github.io/codetrails/piholebanner.webp">
+<meta name="twitter:title" content="Shut Your Pihole - Ad Blocking and Local DNS">
+<meta name="twitter:description" content="Setting up Pihole on a fresh Raspberry Pi.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://nathanemb.github.io/codetrails/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Shut Your Pihole - Ad Blocking and Local DNS",
+      "item": "https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Shut Your Pihole - Ad Blocking and Local DNS",
+  "name": "Shut Your Pihole - Ad Blocking and Local DNS",
+  "description": "Setting up Pihole on a fresh Raspberry Pi.",
+  "keywords": [
+    "Homelab", "Blog", "raspberrypi", "dns", "adblocking"
+  ],
+  "articleBody": "If you remember my first homelab post I mentioned at the end that I wanted to setup a reverse proxy for all the services that I’m currently self-hosting.\nWell, the first step in doing that I’ve recently learned is that you need to have a DNS server that directs all traffic to your domain, to the appropriate location. So first, I need to pick a domain to use. Since this is just local, I’m going to use home.\nThe end goal is that if I visit http://frigate.home in my web browser, when on my home network, it should be smart enough to route the request to my server. That’s the DNS server’s job. What happens once the traffic is directed to the server? That’s for another post, about my reverse proxy (Traefik I’m coming for you.).\nPihole For those who don’t know, pihole is a fairly popular adblocking solution, that works by maintaining a list of common sources of ads based on dns, and defends your home from them bravely.\nIt’s impressive because it can provide pretty well done whole-home adblocking, network monitoring, DNS server, and even a DHCP server if you want. And all of this functionality is very lightweight!\nSo lightweight that it runs on a Raspberry Pi without even blinking. Mine in question is the Raspberry Pi 4 (1GB) that I’ve had for about 5 years. I used to run a Discord bot off of it, then a Reddit scraper, but it’s actually been powered off for a while…now that I have my mini PC chugging away with its massive 8GB of RAM I’ve left the Pi to rest and collect dust.\nResurrecting the Pi I have some stuff on this Pi, but I forgot my access credentials, and honestly I don’t care enough so I’m just going to reflash its SD card and start fresh. Everyone deserves a fresh start.\nI’m using this guide and it’s all really quite straightforward. Download the OS, flash it onto the SD card, set it up so that it allows SSH, and maybe make the credentials whatever you want right away. I highly recommend not using pi/raspberry as your user/pass…everyone knows about it.\nI chose the Raspbian x65 Light, so it’s headless, no desktop, no GUI, just ssh and a terminal. I used to hate headless installs, but now I’m a nerd and I prefer it, because monitors are a pain and the terminal is pretty good and there’s all sorts of guides out there on how to use it.\nSetting up Pihole Install Pihole So now that I’ve got a fresh new Pi it’s time to install Pihole. I’m using this install guide. I debated using Docker, but I like this being on bare-metal and available via CLI. It also avoids all of the nasty networking that I’m still not great with when using Docker.\nOnce you’ve got the installer running, follow its prompts. Your Pi does need to have a static IP address, hopefully you’ve got a router that can do that but there are other ways to do it, so make sure you do that properly.\nThe setup is pretty full featured, and we’re thankful for that. So now my Pihole is running at my raspberry pi http://{ip-address-here}/admin and it looks great.\nSo nice, clean, and pretty, but no traffic :/ Troubleshooting I did have a small issue where it didn’t have the list of domains that are ad domains, but you simply have to go to Tools\u003eUpdate Gravity\u003eUpdate and it pulls the most recent list of domains.\nNotice that I have zero queries. This is suspicious, because all of our dumb connected devices are making calls out to the internet ALL the time. It’s because traffic isn’t being routed through pihole quite yet.\nRouting DNS To do this, you need to either specify on every device that they should use the pihole IP address for DNS, or if you have it on your router, you can specify it there. That’s how you do whole home ad-blocking. I’m going to do that for now, we’ll see if I regret it, because if it blocks ads which services require, my household might not be thrilled when Netflix stops working or something like that.\n…please hold…\nThe aftermath Okay so everything did break in my home network. I had to:\nUpdate DNS on my router Only primary is set to pihole address No secondary Reboot the router Reboot any devices that were being annoying After that things seem to be working, and look, I’m blocking ads!\nBegone, ads! Disappointingly it appears that Mozilla Firefox has a bunch of telemetry requests immediately, which I guess makes sense as I’m using it while I write this, but I always hoped Firefox was a little better than that.\nIf anyone is new to Pihole and happens to be following this, at all times you have the ability to both:\nAdd any site you want to the blocklist Turn off adblocking entirely for as long as you want So if you notice things are breaking, move on over to your handy Pihole dashboard, turn it off, and see if that helps. If it does, you can identify the domain you want to let through, without turning everything off and go from there.\nSetting Up Pihole DNS Okay great, we have Pihole setup, we’re blocking ads as a nice added bonus, let’s setup the Pihole DNS registry that routes all .home traffic to my Ubuntu server running all of my other services.\nI referenced this gist, it looks surprisingly easy. 99% of the work of this process was getting the right hardware to put it on, and getting everything installed and working. Basically the networking. I hate networking.\nAnyways, for Pihole v6, which I actually had a hard time finding a decent amount of docs for, but I ended up with this:\nI have the wonderfully creative 'server' domain chosen. But it doesn’t work!\nI learned today (after ChatGPT lied to me) that you need to have x.y, meaning instead I had to change home to home.server. This is a bit frustrating, since if you look at the example, it makes it seem like you can just use a single word.\nSo now that I’ve updated to home.server, I can address my home server by using that directly in browser, in CLI, anywhere as long as I’m on my local network and that pretty much wraps it up!\nConclusion So we have successfully:\nImaged a Raspberry Pi from scratch Installed Pihole Established home-wide ad blocking with pihole by using it as DNS for my entire home network Established a 1 line local DNS, that points the domain home.server to my Ubuntu server from my last homelab post. Now that this is complete, I should be able to use Traefik how I hoped to, and follow guides like this one. I’ll do my best to document my journey on that when I get there.\n",
+  "wordCount" : "1159",
+  "inLanguage": "en",
+  "image":"https://nathanemb.github.io/codetrails/piholebanner.webp","datePublished": "2025-05-08T21:46:45-04:00",
+  "dateModified": "2025-05-08T21:46:45-04:00",
+  "author":{
+    "@type": "Person",
+    "name": "Nathan Embaugh"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Nathan Embaugh | codetrails",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://nathanemb.github.io/codetrails/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://nathanemb.github.io/codetrails/" accesskey="h" title="Nathan Embaugh | codetrails (Alt + H)">Nathan Embaugh | codetrails</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://nathanemb.github.io/codetrails/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://nathanemb.github.io/codetrails/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://nathanemb.github.io/codetrails/">Home</a>&nbsp;»&nbsp;<a href="https://nathanemb.github.io/codetrails/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Shut Your Pihole - Ad Blocking and Local DNS
+    </h1>
+    <div class="post-meta"><span title='2025-05-08 21:46:45 -0400 EDT'>May 8, 2025</span>&nbsp;·&nbsp;6 min&nbsp;·&nbsp;Nathan Embaugh&nbsp;|&nbsp;<a href="https://github.com/NathanEmb/codetrails/content/posts/3-shut-your-pihole/index.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+<figure class="entry-cover">
+            <img loading="eager"
+                srcset='https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/piholebanner_hu_79c657261084459f.webp 360w,https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/piholebanner_hu_e71c3415361b6272.webp 480w,https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/piholebanner.webp 690w'
+                src="https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/piholebanner.webp"
+                sizes="(min-width: 768px) 720px, 100vw"
+                width="690" height="184"
+                alt="Homelab">
+        <figcaption>Pihole fights ads, and provides local dns!</figcaption>
+</figure>
+  <div class="post-content"><p>If you remember my <a href="../2-first-home-lab-post">first homelab post</a> I mentioned at the end that I wanted to setup a reverse proxy for all the services that I&rsquo;m currently self-hosting.</p>
+<p>Well, the first step in doing that I&rsquo;ve recently learned is that you need to have a DNS server that directs all traffic to your domain, to the appropriate location. So first, I need to pick a domain to use. Since this is just local, I&rsquo;m going to use <code>home</code>.</p>
+<p>The end goal is that if I visit <code>http://frigate.home</code> in my web browser, when on my home network, it should be smart enough to route the request to my server. That&rsquo;s the DNS server&rsquo;s job. What happens once the traffic is directed to the server? That&rsquo;s for another post, about my reverse proxy (<a href="https://traefik.io/traefik/">Traefik</a> I&rsquo;m coming for you.).</p>
+<h2 id="pihole">Pihole<a hidden class="anchor" aria-hidden="true" href="#pihole">#</a></h2>
+<p>For those who don&rsquo;t know, pihole is a fairly popular adblocking solution, that works by maintaining a list of common sources of ads based on dns, and defends your home from them bravely.</p>
+<figure style="text-align: center;">
+  <img src="pi-fighting.png" alt="Raspberry Pi man fights ads" style="max-height: 200px; margin: 0 auto;" />
+  <figcaption></figcaption>
+</figure>
+<p>It&rsquo;s impressive because it can provide pretty well done whole-home adblocking, network monitoring, DNS server, and even a DHCP server if you want. And all of this functionality is very lightweight!</p>
+<p>So lightweight that it runs on a Raspberry Pi without even blinking. Mine in question is the Raspberry Pi 4 (1GB) that I&rsquo;ve had for about 5 years. I used to run a Discord bot off of it, then a Reddit scraper, but it&rsquo;s actually been powered off for a while&hellip;now that I have my mini PC chugging away with its massive 8GB of RAM I&rsquo;ve left the Pi to rest and collect dust.</p>
+<h2 id="resurrecting-the-pi">Resurrecting the Pi<a hidden class="anchor" aria-hidden="true" href="#resurrecting-the-pi">#</a></h2>
+<p>I have some stuff on this Pi, but I forgot my access credentials, and honestly I don&rsquo;t care enough so I&rsquo;m just going to reflash its SD card and start fresh. Everyone deserves a fresh start.</p>
+<p>I&rsquo;m using <a href="https://www.raspberrypi.com/documentation/computers/getting-started.html#raspberry-pi-imager">this guide</a> and it&rsquo;s all really quite straightforward. Download the OS, flash it onto the SD card, set it up so that it allows SSH, and maybe make the credentials whatever you want right away. I highly recommend not using pi/raspberry as your user/pass&hellip;everyone knows about it.</p>
+<figure style="text-align: center;">
+  <img src="pi-install.png" alt="Imaging my Pi" style="max-height: 200px; margin: 0 auto;" />
+  <figcaption></figcaption>
+</figure>
+<p>I chose the Raspbian x65 Light, so it&rsquo;s headless, no desktop, no GUI, just ssh and a terminal. I used to hate headless installs, but now I&rsquo;m a nerd and I prefer it, because monitors are a pain and the terminal is pretty good and there&rsquo;s all sorts of guides out there on how to use it.</p>
+<h2 id="setting-up-pihole">Setting up Pihole<a hidden class="anchor" aria-hidden="true" href="#setting-up-pihole">#</a></h2>
+<h3 id="install-pihole">Install Pihole<a hidden class="anchor" aria-hidden="true" href="#install-pihole">#</a></h3>
+<p>So now that I&rsquo;ve got a fresh new Pi it&rsquo;s time to install Pihole. I&rsquo;m using this install <a href="https://docs.pi-hole.net/main/basic-install/">guide</a>. I debated using Docker, but I like this being on bare-metal and available via CLI. It also avoids all of the nasty networking that I&rsquo;m still not great with when using Docker.</p>
+<p>Once you&rsquo;ve got the installer running, follow its prompts. Your Pi does need to have a static IP address, hopefully you&rsquo;ve got a router that can do that but there are other ways to do it, so make sure you do that properly.</p>
+<p>The setup is pretty full featured, and we&rsquo;re thankful for that. So now my Pihole is running at my raspberry pi <code>http://{ip-address-here}/admin</code> and it looks great.</p>
+<figure style="text-align: center;">
+  <img src="pihole-dashboard.png" alt="Fresh Pihole Install" style="max-height: 300px; margin: 0 auto;" />
+  <figcaption>So nice, clean, and pretty, but no traffic :/</figcaption>
+</figure>
+<h3 id="troubleshooting">Troubleshooting<a hidden class="anchor" aria-hidden="true" href="#troubleshooting">#</a></h3>
+<p>I did have a small issue where it didn&rsquo;t have the list of domains that are ad domains, but you simply have to go to Tools&gt;Update Gravity&gt;Update and it pulls the most recent list of domains.</p>
+<p>Notice that I have zero queries. This is suspicious, because all of our dumb connected devices are making calls out to the internet ALL the time. It&rsquo;s because traffic isn&rsquo;t being routed through pihole quite yet.</p>
+<h3 id="routing-dns">Routing DNS<a hidden class="anchor" aria-hidden="true" href="#routing-dns">#</a></h3>
+<p>To do this, you need to either specify on every device that they should use the pihole IP address for DNS, or if you have it on your router, you can specify it there. That&rsquo;s how you do <em>whole</em> home ad-blocking. I&rsquo;m going to do that for now, we&rsquo;ll see if I regret it, because if it blocks ads which services require, my household might not be thrilled when Netflix stops working or something like that.</p>
+<p>&hellip;please hold&hellip;</p>
+<h3 id="the-aftermath">The aftermath<a hidden class="anchor" aria-hidden="true" href="#the-aftermath">#</a></h3>
+<p>Okay so everything did break in my home network. I had to:</p>
+<ol>
+<li>Update DNS on my router
+<ul>
+<li>Only primary is set to pihole address</li>
+<li>No secondary</li>
+</ul>
+</li>
+<li>Reboot the router</li>
+<li>Reboot any devices that were being annoying</li>
+</ol>
+<p>After that things seem to be working, and look, I&rsquo;m blocking ads!</p>
+<figure style="text-align: center;">
+  <img src="pi-block.png" alt="Ads blocked counter ticks up" style="max-height: 300px; margin: 0 auto;" />
+  <figcaption> Begone, ads!</figcaption>
+</figure>
+<p>Disappointingly it appears that Mozilla Firefox has a bunch of telemetry requests immediately, which I guess makes sense as I&rsquo;m using it while I write this, but I always hoped Firefox was a little better than that.</p>
+<p>If anyone is new to Pihole and happens to be following this, at all times you have the ability to both:</p>
+<ol>
+<li>Add any site you want to the blocklist</li>
+<li>Turn off adblocking entirely for as long as you want</li>
+</ol>
+<p>So if you notice things are breaking, move on over to your handy Pihole dashboard, turn it off, and see if that helps. If it does, you can identify the domain you want to let through, without turning everything off and go from there.</p>
+<h2 id="setting-up-pihole-dns">Setting Up Pihole DNS<a hidden class="anchor" aria-hidden="true" href="#setting-up-pihole-dns">#</a></h2>
+<p>Okay great, we have Pihole setup, we&rsquo;re blocking ads as a nice added bonus, let&rsquo;s setup the Pihole DNS registry that routes all <code>.home</code> traffic to my Ubuntu server running all of my other services.</p>
+<p>I referenced this <a href="https://gist.github.com/johndturn/a53d0a16c8aa5e564f5f2b7f53282254">gist</a>, it looks surprisingly easy. 99% of the work of this process was getting the right hardware to put it on, and getting everything installed and working. Basically the networking. I hate networking.</p>
+<p>Anyways, for Pihole v6, which I actually had a hard time finding a decent amount of docs for, but I ended up with this:</p>
+<figure style="text-align: center;">
+  <img src="local-dns.png" alt="Local DNS GUI" style="max-height: 300px; margin: 0 auto;" />
+  <figcaption>I have the wonderfully creative 'server' domain chosen.</figcaption>
+</figure>
+<p>But it doesn&rsquo;t work!</p>
+<p>I learned today (after ChatGPT lied to me) <strong>that you need to have x.y, meaning instead I had to change <code>home</code> to <code>home.server</code></strong>. This is a bit frustrating, since if you look at the example, it makes it seem like you can just use a single word.</p>
+<p>So now that I&rsquo;ve updated to <code>home.server</code>, I can address my home server by using that directly in browser, in CLI, anywhere as long as I&rsquo;m on my local network and that pretty much wraps it up!</p>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>So we have successfully:</p>
+<ol>
+<li>Imaged a Raspberry Pi from scratch</li>
+<li>Installed Pihole</li>
+<li>Established home-wide ad blocking with pihole by using it as DNS for my entire home network</li>
+<li>Established a 1 line local DNS, that points the domain <code>home.server</code> to my Ubuntu server from my last homelab post.</li>
+</ol>
+<p>Now that this is complete, I should be able to use Traefik how I hoped to, and follow guides like <a href="https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/">this one</a>. I&rsquo;ll  do my best to document my journey on that when I get there.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://nathanemb.github.io/codetrails/tags/homelab/">Homelab</a></li>
+      <li><a href="https://nathanemb.github.io/codetrails/tags/blog/">Blog</a></li>
+      <li><a href="https://nathanemb.github.io/codetrails/tags/raspberrypi/">Raspberrypi</a></li>
+      <li><a href="https://nathanemb.github.io/codetrails/tags/dns/">Dns</a></li>
+      <li><a href="https://nathanemb.github.io/codetrails/tags/adblocking/">Adblocking</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://nathanemb.github.io/codetrails/">Nathan Embaugh | codetrails</a></span>
+
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
