@@ -16,7 +16,7 @@ I have ~5 years of experience shared between the automotive industry and the bat
 
 ## Self-hosted Tinkering
 
-In my free time I like to tinker with self-hosted services/homelab-y things. I've got a mini PC running anywhere from 10-30 services at any given moment. See [my homelab post](./2-first-home-lab-post) to see more.
+In my free time I like to tinker with self-hosted services/homelab-y things. I've got a mini PC running anywhere from 10-30 services at any given moment. See [my homelab post](../2-first-home-lab-post) to see more.
 
 ## Education & Learning
 
