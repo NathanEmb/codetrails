@@ -10,40 +10,18 @@ date: 2025-05-04
 
 I'm a software engineer specializing in Python development for machine learning and data engineering applications. With several years of experience in the tech industry, I've worked on projects ranging from AI/ML implementations to data processing pipelines and cloud architecture.
 
-## What I Do
-
-I build scalable data systems, optimize machine learning workflows, and develop tools that make data more accessible and useful. My experience spans:
-
-- Designing cloud-based data architectures
-- Implementing ML models for practical applications
-- Performance optimization for data processing pipelines
-- Leading technical teams and fostering collaboration
-- Establishing robust engineering practices
-
 ## Professional Background
 
-My work experience centers around Python ecosystems for data science and engineering. I work extensively with:
+I have ~5 years of experience shared between the automotive industry and the battery industry. I've worked primiarily in Python, applying Machine Learning models, building web servers, and managing the go-to-production strategy.
 
-- Cloud platforms (AWS, Azure)
-- Containerization and orchestration (Docker, Kubernetes)
-- Data processing frameworks (Pandas, Spark)
-- Machine learning tools and libraries
-- DevOps and CI/CD pipelines
+## Self-hosted Tinkering
 
-## Home Lab/Self-hosted Enthusiast
-
-Beyond my professional work, I'm passionate about self-hosting and running my own home lab. I've set up and maintain several services that are always changing. It's amazing when it works, and frustrating when it doesn't!
-
-I enjoy taking control of my digital life through open-source solutions and local-first technology. You can read more about my setup in my [homelab post](../posts/2-first-home-lab-post/).
+In my free time I like to tinker with self-hosted services/homelab-y things. I've got a mini PC running anywhere from 10-30 services at any given moment. See [my homelab post](./2-first-home-lab-post) to see more.
 
 ## Education & Learning
 
-I'm currently pursuing a Master's degree in Computer Science with a focus on Machine Learning, building on my undergraduate foundation in engineering. I believe in continuous learning and regularly explore new technologies and techniques.
-
-## Beyond Code
-
-When I'm not coding, I enjoy video games, running, and playing with my cats. I also spend time tinkering with my home lab, automating parts of my home, and exploring new self-hosted applications. I'm passionate about solving complex problems with elegant solutions and helping teams deliver high-quality software that makes an impact.
+I'm currently pursuing a Master's degree in Computer Science with a focus on Machine Learning, building on my undergraduate foundation in engineering. At time of writing I'm in my 7th course, and will hopefully be out within the year.
 
 ## About This Site
 
-This site serves as both my professional portfolio and a technical notebook where I document my explorations in [Hugo](../posts/1-how-to-use-hugo/), home lab projects, and other technical adventures.
+This site is mostly just a technical notebook where I document my explorations in [Hugo](../posts/1-how-to-use-hugo/), home lab projects, and other technical adventures.
