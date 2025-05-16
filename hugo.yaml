@@ -26,7 +26,7 @@ params:
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: true
   editPost:
-    URL: "https://github.com/NathanEmb/codetrails/content"
+    URL: "https://github.com/NathanEmb/codetrails/issues"
     Text: "Suggest Changes" # edit text
     appendFilePath: true
 
