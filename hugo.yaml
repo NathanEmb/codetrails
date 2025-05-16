@@ -28,7 +28,7 @@ params:
   editPost:
     URL: "https://github.com/NathanEmb/codetrails/issues"
     Text: "Suggest Changes" # edit text
-    appendFilePath: true
+    appendFilePath: false
 
   analytics:
     # Google Analytics
