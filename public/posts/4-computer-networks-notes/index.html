@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>CS6250 - Computer Networks - Notes | Nathan Embaugh | codetrails</title>
+<meta name="keywords" content="school, OMSCS, Computer Networks, notes">
+<meta name="description" content="My notes on Computer Networks from GTech&rsquo;s OMSCS.">
+<meta name="author" content="Nathan Embaugh">
+<link rel="canonical" href="https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/">
+<link crossorigin="anonymous" href="/codetrails/assets/css/stylesheet.f49d66caae9ea0fd43f21f29e71a8d3e284517ed770f2aa86fa012953ad3c9ef.css" integrity="sha256-9J1myq6eoP1D8h8p5xqNPihFF&#43;13Dyqob6ASlTrTye8=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://nathanemb.github.io/codetrails/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://nathanemb.github.io/codetrails/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://nathanemb.github.io/codetrails/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://nathanemb.github.io/codetrails/apple-touch-icon.png">
+<link rel="mask-icon" href="https://nathanemb.github.io/codetrails/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-TR2MH8J8BF"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-TR2MH8J8BF');
+        }
+      </script><meta property="og:url" content="https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/">
+  <meta property="og:site_name" content="Nathan Embaugh | codetrails">
+  <meta property="og:title" content="CS6250 - Computer Networks - Notes">
+  <meta property="og:description" content="My notes on Computer Networks from GTech’s OMSCS.">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-05-24T20:48:59-04:00">
+    <meta property="article:modified_time" content="2025-05-24T20:48:59-04:00">
+    <meta property="article:tag" content="School">
+    <meta property="article:tag" content="OMSCS">
+    <meta property="article:tag" content="Computer Networks">
+    <meta property="article:tag" content="Notes">
+    <meta property="og:image" content="https://nathanemb.github.io/codetrails/osi_model_7_layers.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nathanemb.github.io/codetrails/osi_model_7_layers.png">
+<meta name="twitter:title" content="CS6250 - Computer Networks - Notes">
+<meta name="twitter:description" content="My notes on Computer Networks from GTech&rsquo;s OMSCS.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://nathanemb.github.io/codetrails/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "CS6250 - Computer Networks - Notes",
+      "item": "https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "CS6250 - Computer Networks - Notes",
+  "name": "CS6250 - Computer Networks - Notes",
+  "description": "My notes on Computer Networks from GTech\u0026rsquo;s OMSCS.",
+  "keywords": [
+    "school", "OMSCS", "Computer Networks", "notes"
+  ],
+  "articleBody": "Lesson 1 - Introduction, History, and Internet Architecture History of the internet The internet began as many things in tech did, from DARPA.\nSpecifically:\nJ.C.R. Licklider proposed the “Galactic Network” (1962) Attached a computer in Stanford to a computer at MIT, thus beginning computers talking to each other The ARPANET (1969) UCSB, UCLA, Stanford, and U of Utah interlink Network Control Protocol (NCP), an initial ARPANET host-to-host protocol (1970) The first protocol was designed to handle increasing number of computers, first app built on this was email Internetworking and TCP/IP (1973) NCP became TCP/IP, IP for addressing and forwarding packets, TCP for flow control and recovery from lost packets The Domain Name System (DNS) (1983) and the World Wide Web (WWW) (1990) As the internet exploded with content and endpoints, they needed a way to turn domains into IP addresses. In walks DNS. Internet Architecture The internet was built in layers. Each layeer is supposed to have its own job, and not rely on any of the layers above or below it.\nThink of a person as a bit of data, then watch them fly from one airport to another and you get the idea.\nSo there is an originally designed theoretical layer named the OSI model, which had 7 layers, and then the layers that were actually implemented, known as the Internet Protocol Stack.\nThese layers are not as perfect as we would hope, specifically sometimes they do rely on the other layers or they both have methods of solving the same problem like error recovery.\nNotice that the Session and Presentation layers disappear in the Internet Protocol Stack, those are handled in the ports of each network device. The logic that is accomplished in those layers still happens, just all in one place.\nApplication Layer The data here is a message.\nThis is the layer we all interact with all the time.\nHTTP (web) SMTP (e-mail) FTP (transfers files between two end hosts) DNS (translates domain names to IP addresses) Takes the content that we want to ship around, and does all the encoding and decoding needed to actually USE it.\nThe Presentation Layer The presentation layer plays the intermediate role of formatting the information that it receives from the layer below and delivering it to the application layer. For example, some functionalities of this layer are formatting a video stream or translating integers from big endian to little endian format.\nThe Session Layer The session layer is responsible for the mechanism that manages the different transport streams that belong to the same session between end-user application processes. For example, in the case of a teleconference application, it is responsible to tie together the audio stream and the video stream.\nThe Transport Layer The data here is a segment.\nEnd to End communication between hosts.\nTransmission Control Protocol (TCP) User Datagram Protocol (UDP) TCP is better connection-oriented services, guarantees delivery, manages flow control, and controls congestion. This is the USPS, slow but reliable (except TCP doesn’t lose mail like The USPS).\nUDP is fast and guarantees nothing. Recievers and Senders using UDP must be able to handle segments getting dropped, delayed, or not making it entirely. But they should be faster when everything is working compared to TCP\nThe Network Layer The data here is a datagram.\nThis is where IP comes into play. This layer is responsible for connecting one computer to another, via the IP address that everyone has.\nThe Data Link Layer The data here is a frame.\nThis layer is responsible for moving the frames from one node (host or router/switch) to the next node. This uses things like:\nEthernet Point-to-point Protocol (PPP) Wi-Fi The Physical Layer The actual hardware translation. Translating electricity into bits based on ethernet, coax, fiber, etc.\nEncapsulation These layers work on the idea of encapsulation and de-encapsulation. So encapsulation is take a chunk of data, package it up, add a header to it and pass it on. Then de-encapsulation is using the headers to decode each chunk of data, untill all you’re left with is the data/message.\nThis method is what allows people to build upon the existing infrastructure of the internet, but still make new things.\nThe End to End (e2e) Principle The e2e principle shaped the internet as we know it today.\nEssentially the principle is that 99% of the complexity should be at the ends of the communications. This allows the underlying infrastructure to be simple, but expandable, and allows people working at the different ends to iterate and create new things quickly.\nIf they had to change the underlying architecture everytime they wanted to change anything it would bring development speed to a crawl.\nBeneficial exceprt from the lecture:\nMany people argue that the e2e principle allowed the internet to grow rapidly because evolving innovation took place at the network edge, in the form of numerous applications and a plethora of services, rather than in the middle of the network, which could be hard to modify later.\nWhat were the designers’ original goals that led to the e2e principle?\nMoving functions and services closer to the applications that use them increases the flexibility and the autonomy of the application designer to offer these services to the needs of the specific application.\nThus, the higher-level protocol layers are more specific to an application. Whereas the lower-level protocol layers are free to organize the lower-level network resources to achieve application design goals more efficiently and independently of the specific application.\nViolations of e2e All rules are meant to be broken.\nFirewalls, NAT boxes, and traffic filters all break the e2e principle, and usually for good reason.\nNAT routers provide a way to make up for the fact that there aren’t that many IP addresses available in IPv4. Instead of EVERY device having it’s own worldwide public IP address, you give your home 1 IP address, and then every device behind that has its own local address.\nThis means that whenever a message is sent to your PC it goes:\nWeb \u003e Router (Public IP)\u003e End Device (local IP)\nThe router is breaking some rules of e2e, becacuse it is intervening and inspecting data.\nThis is the notes reasoning for why:\nWhy do NAT boxes violate the e2e principle? The hosts behind NAT boxes are not globally addressable or routable. As a result, it is not possible for other hosts on the public Internet to initiate connections to these devices. So, if we have a host behind a NAT and a host on the public Internet, they cannot communicate by default without the intervention of a NAT box. Some workarounds allow hosts to initiate connections to hosts that exist behind NATs. For example, Session Traversal Utilities for NAT, or STUN, is a tool that enables hosts to discover NATs and the public IP address and port number that the NAT has allocated for the applications for which the host wants to communicate. Also, UDP hole punching establishes bidirectional UDP connections between hosts behind NATs.\nThe Hourglass Shape of the Internet The internet is curvy.\nNo really, there’s a ton on each end of it, but the middle is pretty narrow. Specifically, TCP, UDP, IP are really the backbone of literally everything. See below:\nAll roads lead to IP, and TCP/UDP. Researchers have actually done a lot of work to see why this is. They called it the evolutionary architecture model. They did a bunch of in depth quanitifications of why/what the internet is and how they got there and drew some interesting conclusions.\nIn an ideal world where we could do it all over they came up with the following:\nFinally, in terms of future and entirely new Internet architectures, the EvoArch model predicts that even if these brand-new architectures do not have the shape of an hourglass initially, they will probably do so as they evolve, which will lead to new ossified protocols. The model suggests that one way to proactively avoid these ossification effects that we now experience with TCP/IP is for a network architect to design the functionality of each layer so that the waist is wider, consisting of several protocols that offer largely non-overlapping but general services, so that they do not compete with each other.\nInterconnecting Hosts and Networks Talking about how to theoretically communicate between computers is important, but hardware actually makes the physical connections.\nThose are:\nRepeaters and Hubs They operate on the physical layer (L1) as they receive and forward digital signals to connect different Ethernet segments. They provide connectivity between hosts that are directly connected (in the same network). The advantage is that they are simple and inexpensive devices, and they can be arranged in a hierarchy. Unfortunately, hosts that are connected through these devices belong to the same collision domain, meaning that they compete for access to the same link.\nBridges and Layer-2 Switches These devices can enable communication between hosts that are not directly connected. They operate on the data link layer (L2) based on MAC addresses. They receive packets and forward them to the appropriate destination. A limitation is the finite bandwidth of the outputs. If the arrival rate of the traffic is higher than the capacity of the outputs, then packets are temporarily stored in buffers. But if the buffer space gets full, then this can lead to packet drops.\nRouters and Layer-3 Switches These are devices that operate on the network layer (L3).\nLearning Bridges A bridge is a piece of hardware that manages the connection between many devices, connected to the same piece of hardware.\nThe bridge is able to understand what devices are on port 1, what devices are on port 2, and so on. This is like a home network switch. You can connect many devices to it, and it handles knowing where the data needs to end up.\nThe Looping Problem The problem with these bridges, is that you can create a loop.\nif A connects to B which connects to C which connects to A, you’ve created a loop. This can result in never ending looping!\nThis is handled by running a spanning tree algorithm. The goal of the spanning tree algorithm is to identify which ports when used will eliminate any endless looping.\nThis works by operating in rounds, and then by removing bridges from the network until you only have one path to every node. This is accomplished by running in rounds the following process:\nEvery node sends: Sender Node ID Root ID as percieved by sender Distance from root node Each node selects the best configuration in order of If root of the one configuration has a smaller ID If roots have equal IDs choose one with smaller distance to the root If they have the same distance, choose configuration with smallest sender ID A node stops sending configuration messages over a link (port) when it receives a configuration message from a neighbor that is: either closer to the root has the same distance from the root, but it has a smaller ID. We can see this process completed in the following images:\nThen after tree spanning:\nLesson 2 Coming soon….\n",
+  "wordCount" : "1855",
+  "inLanguage": "en",
+  "image":"https://nathanemb.github.io/codetrails/osi_model_7_layers.png","datePublished": "2025-05-24T20:48:59-04:00",
+  "dateModified": "2025-05-24T20:48:59-04:00",
+  "author":{
+    "@type": "Person",
+    "name": "Nathan Embaugh"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Nathan Embaugh | codetrails",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://nathanemb.github.io/codetrails/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://nathanemb.github.io/codetrails/" accesskey="h" title="Nathan Embaugh | codetrails (Alt + H)">Nathan Embaugh | codetrails</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://nathanemb.github.io/codetrails/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://nathanemb.github.io/codetrails/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://nathanemb.github.io/codetrails/">Home</a>&nbsp;»&nbsp;<a href="https://nathanemb.github.io/codetrails/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      CS6250 - Computer Networks - Notes
+    </h1>
+    <div class="post-meta"><span title='2025-05-24 20:48:59 -0400 EDT'>May 24, 2025</span>&nbsp;·&nbsp;9 min&nbsp;·&nbsp;Nathan Embaugh&nbsp;|&nbsp;<a href="https://github.com/NathanEmb/codetrails/issues/new/choose" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+<figure class="entry-cover">
+            <img loading="eager"
+                srcset='https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/osi_model_7_layers_hu_a75976601a15ce17.png 360w,https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/osi_model_7_layers_hu_eef6607b514803c3.png 480w,https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/osi_model_7_layers_hu_3532c72e7119b318.png 720w,https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/osi_model_7_layers_hu_3771e8c5c8ca8464.png 1080w,https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/osi_model_7_layers_hu_e79f2da8efd67dc.png 1500w,https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/osi_model_7_layers.png 5667w'
+                src="https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/osi_model_7_layers.png"
+                sizes="(min-width: 768px) 720px, 100vw"
+                width="5667" height="2834"
+                alt="The OSI model.">
+        <figcaption>The theoretical OSI model.</figcaption>
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#lesson-1---introduction-history-and-internet-architecture" aria-label="Lesson 1 - Introduction, History, and Internet Architecture">Lesson 1 - Introduction, History, and Internet Architecture</a><ul>
+                        
+                <li>
+                    <a href="#history-of-the-internet" aria-label="History of the internet">History of the internet</a></li>
+                <li>
+                    <a href="#internet-architecture" aria-label="Internet Architecture">Internet Architecture</a><ul>
+                        
+                <li>
+                    <a href="#application-layer" aria-label="Application Layer">Application Layer</a></li>
+                <li>
+                    <a href="#the-presentation-layer" aria-label="The Presentation Layer">The Presentation Layer</a></li>
+                <li>
+                    <a href="#the-session-layer" aria-label="The Session Layer">The Session Layer</a></li>
+                <li>
+                    <a href="#the-transport-layer" aria-label="The Transport Layer">The Transport Layer</a></li>
+                <li>
+                    <a href="#the-network-layer" aria-label="The Network Layer">The Network Layer</a></li>
+                <li>
+                    <a href="#the-data-link-layer" aria-label="The Data Link Layer">The Data Link Layer</a></li>
+                <li>
+                    <a href="#the-physical-layer" aria-label="The Physical Layer">The Physical Layer</a></li></ul>
+                </li>
+                <li>
+                    <a href="#encapsulation" aria-label="Encapsulation">Encapsulation</a></li>
+                <li>
+                    <a href="#the-end-to-end-e2e-principle" aria-label="The End to End (e2e) Principle">The End to End (e2e) Principle</a><ul>
+                        
+                <li>
+                    <a href="#violations-of-e2e" aria-label="Violations of e2e">Violations of e2e</a></li></ul>
+                </li>
+                <li>
+                    <a href="#the-hourglass-shape-of-the-internet" aria-label="The Hourglass Shape of the Internet">The Hourglass Shape of the Internet</a></li>
+                <li>
+                    <a href="#interconnecting-hosts-and-networks" aria-label="Interconnecting Hosts and Networks">Interconnecting Hosts and Networks</a><ul>
+                        
+                <li>
+                    <a href="#repeaters-and-hubs" aria-label="Repeaters and Hubs">Repeaters and Hubs</a></li>
+                <li>
+                    <a href="#bridges-and-layer-2-switches" aria-label="Bridges and Layer-2 Switches">Bridges and Layer-2 Switches</a></li>
+                <li>
+                    <a href="#routers-and-layer-3-switches" aria-label="Routers and Layer-3 Switches">Routers and Layer-3 Switches</a></li></ul>
+                </li>
+                <li>
+                    <a href="#learning-bridges" aria-label="Learning Bridges">Learning Bridges</a><ul>
+                        
+                <li>
+                    <a href="#the-looping-problem" aria-label="The Looping Problem">The Looping Problem</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#lesson-2" aria-label="Lesson 2">Lesson 2</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="lesson-1---introduction-history-and-internet-architecture">Lesson 1 - Introduction, History, and Internet Architecture<a hidden class="anchor" aria-hidden="true" href="#lesson-1---introduction-history-and-internet-architecture">#</a></h2>
+<h3 id="history-of-the-internet">History of the internet<a hidden class="anchor" aria-hidden="true" href="#history-of-the-internet">#</a></h3>
+<p>The internet began as many things in tech did, from DARPA.</p>
+<p>Specifically:</p>
+<ol>
+<li>J.C.R. Licklider proposed the &ldquo;Galactic Network&rdquo; (1962)
+<ul>
+<li>Attached a computer in Stanford to a computer at MIT, thus beginning computers talking to each other</li>
+</ul>
+</li>
+<li>The ARPANET (1969)
+<ul>
+<li>UCSB, UCLA, Stanford, and U of Utah interlink</li>
+</ul>
+</li>
+<li>Network Control Protocol (NCP), an initial ARPANET host-to-host protocol (1970)
+<ul>
+<li>The first protocol was designed to handle increasing number of computers, first app built on this was email</li>
+</ul>
+</li>
+<li>Internetworking and TCP/IP (1973)
+<ul>
+<li>NCP became TCP/IP, IP for addressing and forwarding packets, TCP for flow control and recovery from lost packets</li>
+</ul>
+</li>
+<li>The Domain Name System (DNS) (1983) and the World Wide Web (WWW) (1990)
+<ul>
+<li>As the internet exploded with content and endpoints, they needed a way to turn domains into IP addresses. In walks DNS.</li>
+</ul>
+</li>
+</ol>
+<h3 id="internet-architecture">Internet Architecture<a hidden class="anchor" aria-hidden="true" href="#internet-architecture">#</a></h3>
+<p>The internet was built in layers. Each layeer is supposed to have its own job, and not rely on any of the layers above or below it.</p>
+<p>Think of a person as a bit of data, then watch them fly from one airport to another and you get the idea.</p>
+<p><img alt="Internet as a flight path diagram" loading="lazy" src="/codetrails/posts/4-computer-networks-notes/Screen%20Shot%202020-01-16%20at%2011.09.35%20AM.png"></p>
+<p>So there is an originally designed theoretical layer named the OSI model, which had 7 layers, and then the layers that were actually implemented, known as the Internet Protocol Stack.</p>
+<p><img alt="OSI Model vs actual Internet Model" loading="lazy" src="/codetrails/posts/4-computer-networks-notes/Network%20Layers.jpg"></p>
+<p>These layers are not as perfect as we would hope, specifically sometimes they do rely on the other layers or they both have methods of solving the same problem like error recovery.</p>
+<p>Notice that the Session and Presentation layers disappear in the Internet Protocol Stack, those are handled in the <em>ports</em> of each network device. The logic that is accomplished in those layers still happens, just all in one place.</p>
+<h4 id="application-layer">Application Layer<a hidden class="anchor" aria-hidden="true" href="#application-layer">#</a></h4>
+<p>The data here is a <strong>message</strong>.</p>
+<p>This is the layer we all interact with all the time.</p>
+<ul>
+<li>HTTP (web)</li>
+<li>SMTP (e-mail)</li>
+<li>FTP (transfers files between two end hosts)</li>
+<li>DNS (translates domain names to IP addresses)</li>
+</ul>
+<p>Takes the content that we want to ship around, and does all the encoding and decoding needed to actually USE it.</p>
+<h4 id="the-presentation-layer">The Presentation Layer<a hidden class="anchor" aria-hidden="true" href="#the-presentation-layer">#</a></h4>
+<p>The presentation layer plays the intermediate role of formatting the information that it receives from the layer below and delivering it to the application layer. For example, some functionalities of this layer are formatting a video stream or translating integers from big endian to little endian format.</p>
+<h4 id="the-session-layer">The Session Layer<a hidden class="anchor" aria-hidden="true" href="#the-session-layer">#</a></h4>
+<p>The session layer is responsible for the mechanism that manages the different transport streams that belong to the same session between end-user application processes. For example, in the case of a teleconference application, it is responsible to tie together the audio stream and the video stream.</p>
+<h4 id="the-transport-layer">The Transport Layer<a hidden class="anchor" aria-hidden="true" href="#the-transport-layer">#</a></h4>
+<p>The data here is a <strong>segment</strong>.</p>
+<p>End to End communication between hosts.</p>
+<ul>
+<li>Transmission Control Protocol (TCP)</li>
+<li>User Datagram Protocol (UDP)</li>
+</ul>
+<p>TCP is better <em>connection</em>-oriented services, guarantees delivery, manages flow control, and controls congestion. This is the USPS, slow but reliable (except TCP doesn&rsquo;t lose mail like The USPS).</p>
+<p>UDP is fast and guarantees <em>nothing</em>. Recievers and Senders using UDP must be able to handle segments getting dropped, delayed, or not making it entirely. But they should be faster when everything is working compared to TCP</p>
+<h4 id="the-network-layer">The Network Layer<a hidden class="anchor" aria-hidden="true" href="#the-network-layer">#</a></h4>
+<p>The data here is a <strong>datagram</strong>.</p>
+<p>This is where IP comes into play. This layer is responsible for connecting one computer to another, via the IP address that everyone has.</p>
+<h4 id="the-data-link-layer">The Data Link Layer<a hidden class="anchor" aria-hidden="true" href="#the-data-link-layer">#</a></h4>
+<p>The data here is a <strong>frame</strong>.</p>
+<p>This layer is responsible for moving the frames from one node (host or router/switch) to the next node. This uses things like:</p>
+<ol>
+<li>Ethernet</li>
+<li>Point-to-point Protocol (PPP)</li>
+<li>Wi-Fi</li>
+</ol>
+<h4 id="the-physical-layer">The Physical Layer<a hidden class="anchor" aria-hidden="true" href="#the-physical-layer">#</a></h4>
+<p>The actual hardware translation. Translating electricity into bits based on ethernet, coax, fiber, etc.</p>
+<h3 id="encapsulation">Encapsulation<a hidden class="anchor" aria-hidden="true" href="#encapsulation">#</a></h3>
+<p>These layers work on the idea of encapsulation and de-encapsulation. So encapsulation is  take a chunk of data, package it up, add a header to it and pass it on. Then de-encapsulation is using the headers to decode each chunk of data, untill all you&rsquo;re left with is the data/message.</p>
+<p><img alt="encapsulation vs de-encapsulation" loading="lazy" src="/codetrails/posts/4-computer-networks-notes/0_tDSGidTRt7KrG6BR.webp"></p>
+<p>This method is what allows people to build upon the existing infrastructure of the internet, but still make new things.</p>
+<h3 id="the-end-to-end-e2e-principle">The End to End (e2e) Principle<a hidden class="anchor" aria-hidden="true" href="#the-end-to-end-e2e-principle">#</a></h3>
+<p>The e2e principle shaped the internet as we know it today.</p>
+<p>Essentially the principle is that 99% of the complexity should be at the ends of the communications. This allows the underlying infrastructure to be simple, but expandable, and allows people working at the different ends to iterate and create new things quickly.</p>
+<p>If they had to change the underlying architecture everytime they wanted to change anything it would bring development speed to a crawl.</p>
+<p>Beneficial exceprt from the lecture:</p>
+<p>Many people argue that the e2e principle allowed the internet to grow rapidly because evolving innovation took place at the network edge, in the form of numerous applications and a plethora of services, rather than in the middle of the network, which could be hard to modify later.</p>
+<blockquote>
+<p>What were the designers’ original goals that led to the e2e principle?</p>
+<blockquote>
+<p>Moving functions and services closer to the applications that use them increases the flexibility and the autonomy of the application designer to offer these services to the needs of the specific application.</p></blockquote></blockquote>
+<blockquote>
+<p>Thus, the higher-level protocol layers are more specific to an application. Whereas the lower-level protocol layers are free to organize the lower-level network resources to achieve application design goals more efficiently and independently of the specific application.</p></blockquote>
+<h4 id="violations-of-e2e">Violations of e2e<a hidden class="anchor" aria-hidden="true" href="#violations-of-e2e">#</a></h4>
+<p>All rules are meant to be broken.</p>
+<p>Firewalls, NAT boxes, and traffic filters all break the e2e principle, and usually for good reason.</p>
+<p>NAT routers provide a way to make up for the fact that there aren&rsquo;t that many IP addresses available in IPv4. Instead of EVERY device having it&rsquo;s own worldwide public IP address, you give your home 1 IP address, and then every device behind that has its own local address.</p>
+<p>This means that whenever a message is sent to your PC it goes:</p>
+<p>Web &gt; Router (Public IP)&gt; End Device (local IP)</p>
+<p>The router is breaking some rules of e2e, becacuse it is intervening and inspecting data.</p>
+<p>This is the notes reasoning for why:</p>
+<blockquote>
+<p>Why do NAT boxes violate the e2e principle?
+The hosts behind NAT boxes are not globally addressable or routable. As a result, it is not possible for other hosts on the public Internet to initiate connections to these devices. So, if we have a host behind a NAT and a host on the public Internet, they cannot communicate by default without the intervention of a NAT box.
+Some workarounds allow hosts to initiate connections to hosts that exist behind NATs. For example, Session Traversal Utilities for NAT, or STUN, is a tool that enables hosts to discover NATs and the public IP address and port number that the NAT has allocated for the applications for which the host wants to communicate. Also, UDP hole punching establishes bidirectional UDP connections between hosts behind NATs.</p></blockquote>
+<h3 id="the-hourglass-shape-of-the-internet">The Hourglass Shape of the Internet<a hidden class="anchor" aria-hidden="true" href="#the-hourglass-shape-of-the-internet">#</a></h3>
+<p>The internet is curvy.</p>
+<p>No really, there&rsquo;s a ton on each end of it, but the middle is pretty narrow. Specifically, TCP, UDP, IP are really the backbone of literally everything. See below:</p>
+<p><img alt="hourglass internet" loading="lazy" src="/codetrails/posts/4-computer-networks-notes/L1-1%20Evolutionary%20Architecture%20Model.jpg"></p>
+<p>All roads lead to IP, and TCP/UDP. Researchers have actually done a lot of work to see why this is. They called it the evolutionary architecture model. They did a bunch of in depth quanitifications of why/what the internet is and how they got there and drew some interesting conclusions.</p>
+<p>In an ideal world where we could do it all over they came up with the following:</p>
+<blockquote>
+<p>Finally, in terms of future and entirely new Internet architectures, the EvoArch model predicts that even if these brand-new architectures do not have the shape of an hourglass initially, they will probably do so as they evolve, which will lead to new ossified protocols. The model suggests that one way to proactively avoid these ossification effects that we now experience with TCP/IP is for a network architect to design the functionality of each layer so that the waist is wider, consisting of several protocols that offer largely non-overlapping but general services, so that they do not compete with each other.</p></blockquote>
+<h3 id="interconnecting-hosts-and-networks">Interconnecting Hosts and Networks<a hidden class="anchor" aria-hidden="true" href="#interconnecting-hosts-and-networks">#</a></h3>
+<p>Talking about how to theoretically communicate between computers is important, but hardware actually makes the physical connections.</p>
+<p>Those are:</p>
+<h4 id="repeaters-and-hubs">Repeaters and Hubs<a hidden class="anchor" aria-hidden="true" href="#repeaters-and-hubs">#</a></h4>
+<p>They operate on the physical layer (L1) as they receive and forward digital signals to connect different Ethernet segments. They provide connectivity between hosts that are directly connected (in the same network). The advantage is that they are simple and inexpensive devices, and they can be arranged in a hierarchy. Unfortunately, hosts that are connected through these devices belong to the same collision domain, meaning that they compete for access to the same link.</p>
+<h4 id="bridges-and-layer-2-switches">Bridges and Layer-2 Switches<a hidden class="anchor" aria-hidden="true" href="#bridges-and-layer-2-switches">#</a></h4>
+<p>These devices can enable communication between hosts that are not directly connected. They operate on the data link layer (L2) based on MAC addresses. They receive packets and forward them to the appropriate destination. A limitation is the finite bandwidth of the outputs. If the arrival rate of the traffic is higher than the capacity of the outputs, then packets are temporarily stored in buffers. But if the buffer space gets full, then this can lead to packet drops.</p>
+<h4 id="routers-and-layer-3-switches">Routers and Layer-3 Switches<a hidden class="anchor" aria-hidden="true" href="#routers-and-layer-3-switches">#</a></h4>
+<p>These are devices that operate on the network layer (L3).</p>
+<h3 id="learning-bridges">Learning Bridges<a hidden class="anchor" aria-hidden="true" href="#learning-bridges">#</a></h3>
+<p>A bridge is a piece of hardware that manages the connection between many devices, connected to the same piece of hardware.</p>
+<p><img alt="learning bridge" loading="lazy" src="/codetrails/posts/4-computer-networks-notes/L1-4%20Illustration%20of%20a%20Learning%20Bridge.jpg"></p>
+<p>The bridge is able to understand what devices are on port 1, what devices are on port 2, and so on. This is like a home network switch. You can connect many devices to it, and it handles knowing where the data needs to end up.</p>
+<h4 id="the-looping-problem">The Looping Problem<a hidden class="anchor" aria-hidden="true" href="#the-looping-problem">#</a></h4>
+<p>The problem with these bridges, is that you can create a loop.</p>
+<p>if A connects to B which connects to C which connects to A, you&rsquo;ve created a loop. This can result in never ending looping!</p>
+<p>This is handled by running a spanning tree algorithm. The goal of the spanning tree algorithm is to identify which ports when used will eliminate any endless looping.</p>
+<p>This works by operating in rounds, and then by removing bridges from the network until you only have one path to every node. This is accomplished by running in rounds the following process:</p>
+<ol>
+<li>Every node sends:
+<ul>
+<li>Sender Node ID</li>
+<li>Root ID as percieved by sender</li>
+<li>Distance from root node</li>
+</ul>
+</li>
+<li>Each node selects the best configuration in order of
+<ul>
+<li>If root of the one configuration has a smaller ID</li>
+<li>If roots have equal IDs choose one with smaller distance to the root</li>
+<li>If they have the same distance, choose configuration with smallest sender ID</li>
+</ul>
+</li>
+<li>A node stops sending configuration messages over a link (port) when it receives a configuration message from a neighbor that is:
+<ul>
+<li>either closer to the root</li>
+<li>has the same distance from the root, but it has a smaller ID.</li>
+</ul>
+</li>
+</ol>
+<p>We can see this process completed in the following images:</p>
+<p><img alt="pre-tree-span" loading="lazy" src="/codetrails/posts/4-computer-networks-notes/Screen%20Shot%202020-01-16%20at%2011.36.30%20AM.png"></p>
+<p>Then after tree spanning:</p>
+<p><img alt="post-tree-spanning" loading="lazy" src="/codetrails/posts/4-computer-networks-notes/Screen%20Shot%202020-01-16%20at%2011.38.09%20AM.png"></p>
+<h2 id="lesson-2">Lesson 2<a hidden class="anchor" aria-hidden="true" href="#lesson-2">#</a></h2>
+<p>Coming soon&hellip;.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://nathanemb.github.io/codetrails/tags/school/">School</a></li>
+      <li><a href="https://nathanemb.github.io/codetrails/tags/omscs/">OMSCS</a></li>
+      <li><a href="https://nathanemb.github.io/codetrails/tags/computer-networks/">Computer Networks</a></li>
+      <li><a href="https://nathanemb.github.io/codetrails/tags/notes/">Notes</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://nathanemb.github.io/codetrails/">Nathan Embaugh | codetrails</a></span>
+
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>OMSCS on Nathan Embaugh | codetrails</title>
+    <link>https://nathanemb.github.io/codetrails/tags/omscs/</link>
+    <description>Recent content in OMSCS on Nathan Embaugh | codetrails</description>
+    <image>
+      <title>Nathan Embaugh | codetrails</title>
+      <url>https://nathanemb.github.io/codetrails-logo.png</url>
+      <link>https://nathanemb.github.io/codetrails-logo.png</link>
+    </image>
+    <generator>Hugo -- 0.147.1</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 24 May 2025 20:48:59 -0400</lastBuildDate>
+    <atom:link href="https://nathanemb.github.io/codetrails/tags/omscs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CS6250 - Computer Networks - Notes</title>
+      <link>https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/</link>
+      <pubDate>Sat, 24 May 2025 20:48:59 -0400</pubDate>
+      <guid>https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/</guid>
+      <description>My notes on Computer Networks from GTech&amp;rsquo;s OMSCS.</description>
+    </item>
+  </channel>
+</rss>

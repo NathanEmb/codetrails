@@ -11,8 +11,15 @@
     </image>
     <generator>Hugo -- 0.147.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 08 May 2025 21:46:45 -0400</lastBuildDate>
+    <lastBuildDate>Sat, 24 May 2025 20:48:59 -0400</lastBuildDate>
     <atom:link href="https://nathanemb.github.io/codetrails/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CS6250 - Computer Networks - Notes</title>
+      <link>https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/</link>
+      <pubDate>Sat, 24 May 2025 20:48:59 -0400</pubDate>
+      <guid>https://nathanemb.github.io/codetrails/posts/4-computer-networks-notes/</guid>
+      <description>My notes on Computer Networks from GTech&amp;rsquo;s OMSCS.</description>
+    </item>
     <item>
       <title>Shut Your Pihole - Ad Blocking and Local DNS</title>
       <link>https://nathanemb.github.io/codetrails/posts/3-shut-your-pihole/</link>
