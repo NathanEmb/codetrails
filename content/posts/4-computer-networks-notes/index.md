@@ -216,6 +216,435 @@ Then after tree spanning:
 
 ![post-tree-spanning](<Screen Shot 2020-01-16 at 11.38.09 AM.png>)
 
-## Lesson 2
+## Lesson 2 - The Transport Layer (TCP)
 
-Coming soon....
+This lesson is going to talk about the actual protocol responsible for transporting data from one location to another, TCP. The logical connection between two hosts is done in the transport layer.
+
+The transport layer recieves a message from the application layer and appends its own header on to it. This is known as a segment. The segment is then sent to the Network layer where it happily bounced through all the routers, bridges, and switches that might be on its path.
+
+### Transport Layer intro
+Why do we need a transport layer? Why not just send messages directly from the application layer to the network layer? Because the network layer guarantees __nothing__. The transport layer guarantees delivery, and data integrity in a way that wouldn't have been done otherwise.
+
+As mentioned previously there are two main transport layer protocols User Datagram Protocol (UDP) and Transmission Control Protocol (TCP).
+
+UDP just tries to quickly send data, and doesn't do much else. As such it provides no guarantees and puts the responsibility on the application layer to do things like verify integrity and handle dropped messages.
+
+TCP on the other hand does have these extra bells and whistles built in and thus it is much more reliable, if not a tad slower than UDP.
+
+### Multiplexing
+
+Multiplexing is the ability for many hosts to use the same network simultaneously. Consider two computers browsing the internet at the same time, or better yet, a computer that is simultaneously browsing the internet and streaming music, it has two incoming data sources, and used in two different ways.
+
+We need to be able to handle this complexity. The Transport layer uses ports to do this. Each application gets one port, and listens only to that port. 
+
+There is __Connectionless__ and __Connection Oriented__ multiplexing. One based on a constant connection, and one is not. 
+
+We have names for each direction of this multiplexing operation.
+
+Demultiplexing - Delivering data to the appropriate socket.
+
+Multiplexing - Taking data from all the sockets and putting it into the network layer.
+
+### Connectionless Multiplexing
+
+Connectionless multiplexing is the simpler case. The transport layer has a segment which has the content, a source and source port, and a destination and a destination port. It recieves the data from the source port, and makes its best effort at delivering to the destination port.
+
+![Connectionless Multiplexing](<Screen Shot 2020-01-16 at 9.34.42 PM.png>)
+
+If the destination recieves it, great, the network layer will route it to the correct port, and then the message will have been successfully delivered.
+
+These are UDP sockets. It's very direct, with no oversight as to what actually happens to the message.
+
+### Connection Oriented Multiplexing
+
+Connection Oriented multiplexing brings in a lot more complexity.
+
+![Connection Oriented Multiplexing](<Screen Shot 2020-01-16 at 9.36.30 PM.png>)
+
+TCP requires going through a TCP server. The TCP server has a listener process that waits for incoming connection requests, and when it gets it handles setting everything up so that the destination is ready to recieve the message.
+
+> Note: If a server has many clients contacting it on the same port, it's not an issue because they have unique IP addresses (hopefully) and they can distinguish the difference betweent he two that way.
+
+### A word on UDP
+
+UDP lacks reliability of TCP mainly because it doesn't require establishing a connection.
+
+That lack of reliability makes it better for the following reasons:
+1. No congestion control - No process watches ever packet to make sure it should be sent
+2. No connection management - We don't have to wait for a socket to be opened, so it just sends quickly
+
+Both of these result in lower latency transmission, which is good for some things. Things like multiplayer video games, DNS servers, and other networking hosts, all like to use higher speed protocols.
+
+This puts the onus on the developers on each end to ensure quality, and handle if errors occur, but when things are working well, then things are very speedy.
+
+![udp makeup](<L2 Diagrams-14.png>)
+
+The one quality mechanism UDP provides is a checksum, so you can in fact check that the data that's sent is what it was supposed to be. It creates a checksum by adding together the bits of the source port, destination port and the length of the packet. It then performs a ones complement. That is the checksum.
+
+The reciever takes the source port, destination port, length of packet, and the checksum and adds them all together. Because the checksum is the ones complement, when they are added together it should end up as all ones.
+
+### TCP
+
+#### Three way handshake
+
+    Step 1: The TCP client sends a special segment (containing no data) with the SYN bit set to 1. The client also generates an initial sequence number (client_isn) and includes it in this special TCP SYN segment.
+
+Step 2: The server, upon receiving this packet, allocates the required resources for the connection and sends back the special "connection-granted" segment which we call SYNACK segment. This packet has the SYN bit set to 1, the acknowledgement field of the TCP segment header set to client_isn+1, and a randomly chosen initial sequence number (server_isn) for the server.  
+
+Step 3: When the client receives the SYNACK segment, it also allocates buffer and resources for the connection and sends an acknowledgment with SYN bit set to 0.
+
+![three-way-handshake](<2 TCP Three-Way Handshake.jpg>)
+
+#### Connectino tear down
+Connection Teardown
+
+Step 1: When the client wants to end the connection, it sends a segment with FIN bit set to 1 to the server.
+
+Step 2: The server acknowledges that it has received the connection closing request and is now working on closing the connection.
+
+Step 3: The server then sends a segment with FIN bit set to 1, indicating that connection is closed.
+
+Step 4: The client sends an ACK for it to the server. It also waits for sometime to resend this acknowledgment in case the first ACK segment is lost.
+
+![teardown](<Screen Shot 2020-01-16 at 9.47.18 PM.png>)
+
+### Reliable Transmission (TCP)
+
+TCP guarantees all packets delivered in order. This is a very helpful reliability for developers to build on.
+
+To do this the sender must know what the reciever successfully got. This is accomplished via ARQ (Automatic Repeat Request). If a sender doesn't get a message that ARQ1 was recieved in a certain timeframe, then it will re-send it. 
+
+**Stop and Wait ARQ** 
+
+Guess how long it should take, if you dont' get a response, send it again. This can work but is tricky. If you send to much you're retransmitting for no reason, and wiat too long your connection is slow.
+
+TCP uses **Selective ACK** which basically waits for the reciever to say hey I didn't get this packet yet, and if it reaches a certain threshold like 3, then it will quickly resend that particular packet. This allows most of the time to be spent actively sending data, and the ability to recover from dropped packets.
+
+This does require the ability to buffer packets until you have everything you need in order.
+
+### Transmission Control (TCP)
+
+Deciding how much of a link bandwidth to use is a bit complicated. If you send too much for the reciever that could be an issue, or maybe the network can't handle it, or any other amount of things that could go wrong. 
+
+So TCP implements a couple things to help that.
+
+
+#### Flow Control
+
+Flow control is where TCP tries to identify the recievers buffer that it is recieving data with, and tries to match the sender window size to that. Every ACK message includes a `rwnd` value which says how much buffer space is available.
+
+The sender uses this value to ensure it never sends more bytes than is available in the receiver buffer. 
+
+If this value hits zero it would stop, but TCP instead send packets of 1 byte until it gets a response with a `rwnd` greater than zero.
+
+#### Congestion Control
+
+Congestion control is making sure we don't overload any of the links on the way from one host to another.
+
+Good congestion control is:
+- Efficient - use most of the network
+- Fair - everyone gets equal amounts
+- Low delay - Low delay is good for things that need to have small lag like video conferences
+- Fast convergence - everyone gets their bandwidth quickly
+
+##### Network Assisted
+
+Network assisted congestion control relies on pieces of the network sending feedback about what's happening. This could fail when the network is heavily congested though, kind of rendering it useless.
+
+##### End to End
+
+End to end congestion control gets nothing from the network and instead infers congestion from the hosts. This supports the general principle of making the complexity be at the ends of the networks.
+
+This is mostly done via packet delay (how long did it take to get here) and packet loss (how many times do I need to resend). With these two things you have a rough understanding of network performance at any given moment.
+
+It employs a congestion window, a number indicating roughly how much space is left in the network. This increases until congestion is detected, and then the window is made smaller to reduce congestion.
+
+Ultimately the max size of a TCP packet is the minimum of the reciever buffer and the congestion window.
+
+THere are many different methods of increasing congestion window size:
+
+- Additive
+- Multiplicative
+- TCP Reno
+- AIMD
+
+Many of these employ "Slow start" where they start at a low-ish speed and ramp up. This protects from overwhelming the network right at the start. With timeouts or dropped connections being common you can see why this would be useful.
+
+TCP isn't always fair, but using some of these congestion methods will do a pretty good job of it.
+
+#### TCP Throughput
+
+TCP Throughput looks like a sawtooth because of these congestion control mechanisms.
+
+It gets up to the limit, then drops off, then gets up to the limit then drops off.
+
+![throughput](<Screen Shot 2020-01-16 at 10.17.59 PM.png>)
+
+## Lesson 3 - Intradomain Routing (The Network Layer)
+
+This session focuses on the act of routing on the network layer in a single domain. Ideally we understand what it takes for two hosts to share data by the end of this.
+
+We'll talk about:
+
+- Intradomain Routing Algorithms
+    - Link state
+    - Distance vector
+- Intradomain Protocols
+    - Open Shortest Path First (OSPF)
+    - Routing Information Protocol (RIF)
+
+### Routing
+
+Given two hosts that share the same default router (first-hop router) we know that one host will send a packet to the default router, but what happens next?
+
+In a network with many routers, whenever a router recieves a packet, it must consult the forwarding table it maintains, and send the packet to the next router in line. This is referred to as forwarding and is not necessarily the same as routing.
+
+Routing is the act of determining the best path to be traveled from one location to another. Intradomain routing is what we will focus on and it is what happens when both hosts are in the same administrative domain.
+
+Interior Gateway Protocols (IGP) are what handle this type of routing. The two major types we'll cover are  link-state and distance-vector routing algorithms. They are graph theory algorithms with edges and nodes.
+
+
+#### Link State Routing
+
+Surprise, Djikstra's algorithm is here again.
+
+In link state, all link costs are known and the network topology is also fully known.
+
+From the lecture directly.
+
+> Let’s introduce some basic terminology. By u, we represent our source node. By v, we represent every other node in the network. By D(v), we represent the cost of the current least cost path from u to v.  By p(v), we represent the previous node along the current least cost path from u to v. By c(u,v), we represent the cost from u to directly attached neighbor v. By N', we represent the subset of nodes along the current least-cost path from u to v.
+
+![pseudocode for link-state algo](<L3_1 Link State Algorithm.jpg>)
+
+Basically we initialize with either:
+
+- Known cost because it's a link directly connected to the node we're initializing
+- Infinity cost, because we know it will be less than that but we have something to compare against
+
+Then we continue looping through the network, looking for a path with lower costs than our current cost, until we don't find one. This is a fun  application of Djikstra's algorithm, where each router essentially computes Djikstra's algorithm from itself to all other routers in the network.
+
+This is a  pretty costly algorithm at O(n^2) complexity. It also requires that you know everything about the network which is probably why this is intradomain and not interdomain.
+
+#### Distance Vector Routing
+
+The DV algorithm is iterative, asynchronous, and distributed.
+
+DV is based on the Bellman Ford algorithm. Every node maintains a distance vector to all of the other nodes, and it occasionally shares that information. When a node recieves a new distance vector they use it to update their own vector.
+
+The Bellman Ford (BF) equation is the heart of each update: `Dx(y) = minv{c(x,v) + Dv(y)}`
+
+![BF illustration](BF-updated.png)
+
+See the psuedocode below:
+
+![DV pseudocode](<Screen Shot 2020-01-17 at 5.36.51 PM.png>)
+
+So essentially, continuously the nodes maintain a list of costs for routes to certain nodes, and these costs are updated whenever nodes send their costs. So instead of every node needing to know every cost, it allows the nodes to only know and focus on the costs of its immediate neighbors, and then relies on other nodes sending its current list of costs occasionally.
+
+This is different from Link State routing because it is distributed, but they are all still computing the most efficient path through the tree.
+
+##### An simple example
+
+[initialization](<Screen Shot 2020-01-17 at 5.40.22 PM.png>)
+
+![second iteration](<Screen Shot 2020-01-17 at 5.42.05 PM.png>)
+
+![third iteration](<Screen Shot 2020-01-17 at 6.56.28 PM.png>)
+
+##### Pitfalls of DV
+
+What if the link cost changes? In some cases this is handled quickly, and in other cases it can lead to a "count-to-infinity" problem.
+
+**Say a link cost decreases:**
+
+![link decrease](<Screen Shot 2020-01-17 at 6.59.26 PM-1.png>)
+
+
+1. At time t0, y detects that cost to x has changed from 4 to 1, so it updates its distance vector and sends it to its neighbors.
+2. At time t1, z receives the update from y. Now z thinks it can reach x through y with a cost of 2, so it sends its new distance vector to its neighbors.
+3. At time t2, y receives the update from z. Y does not change its distance vector, so it does not send any update.
+
+The update is fully propogated pretty quickly.
+
+**Say a link cost increases:**
+
+![link increase](<Screen Shot 2020-01-17 at 7.00.44 PM.png>)
+
+1. At t0, y detects that the cost has changed, and now it will update its distance vector thinking that it can still reach x through z with a total cost of 5+1=6.
+2. At t1, we have a routing loop where z thinks it can reach x through y, and y thinks it can reach x through z. This will cause the packets to be bouncing back and forth between y and z until their tables change.
+3. Nodes z and y keep updating each other about their new cost to reach x. For example, y computes its new cost to be 6 and then informs z. Then z computes its new cost to be 7, and then informs y, and so on.
+
+The key here is that Node Z, is saying Hey I can definitely reach X, and the cost as Z knows it, is 5. So Node Y says sweet, if I go through Node Z, it's the cost of our link (1) + the cost of Z > X, but the cost of Z > X isn't actually 5 anymore, it's 50.
+
+So they have to iterate until the cost is greater than 50, at which point it will use the real path.
+
+The reason that we can't directly say, "hey no the link cost increased by a ton your table is wrong" is because we don't know the structure of the network. All we know is X > Y costs a certain value, with no understanding of which links do that.
+
+So instead we have to keep iterating through until the costs are actually updated. This can create a lot of packet bouncing.
+
+This is solved by something called *poison reverse* where a node says a cost is infinity if it isn't the cheapest path to a certain node. This only works for 2 nodes.
+
+#### Routing Information Protocol (RIP)
+
+RIP is based on Distance Vectors, but instead of maintaining vectors of distances, they instead maintain entire routing tables with one row for each subnet.
+
+#### Open Shortest Path First
+
+OSPF is a routing protocol that uses link-state to find the best path between source and destination routers. It was created after RIP by ISPs with extra things like authentication messages, multiple same-cost paths, and support for hierarchical routing within a single domain.
+
+OSPF will have one AS (Autonomous System) as the backbone, and routes to other OSPF AS on the network. To go from one Area to another, they must move through the backbone router.
+
+There's a lot more in the notes but tbh they're pretty complicated! It seems that these routers in the send Link State advertisements which communicates the routers local topology. This results in a complete network map, that updates when the network updates.
+
+These LSAs are processsed as so:
+
+![How the router processes](<Screen Shot 2020-01-19 at 7.18.54 PM-2.png>)
+
+### Hot Potato Routing
+
+Sometimes you have to leave your local network, and enter into interdomain routing.
+
+To do this usually you have to find an egress point and the process of finding that egress point is an intradomain routing problem.
+
+Generally hot potato routing is referrnig to finding the closest/least costly egress point in a given network. The hot potato part of it is that there are many egress points and which one is chosen is not always clear. This routing method of finding the shortest path does make things consistent instead of sometimes going to egress A and sometimes going to egress B.
+
+## Lesson 4 - Interdomain Routing and AS Relationships
+
+[Lesson 3](#lesson-3---intradomain-routing-the-network-layer) focused on intradomain routing, but what about when we need to leave our domain?
+
+The internet is an ecosystem of thousands if not millions of networks operated independently, but still connected to each other. This lesson we'll learn about BGP.
+
+### The Internet
+
+![Internet Ecosystem](<Screen Shot 2020-01-17 at 7.09.27 PM.png>)
+
+The internet started very hierarchical but has been flattening as more IXPs and CDNs have been added.
+
+Each of the types of infrastructure above can be an Autonomous System (AS) which is a group of routers who are under the same authority. I think like, my house technically is an AS that I manage, but not sure about that.
+
+Routing between AS's relies on Border Gateway Protocol (BGP) to exchange information with each other. 
+
+### AS Ecosystem
+
+There's two main interactions between AS's.
+
+- Provider-Customer - Like me paying my ISP for internet
+- Peer - One ISP routing to another ISP because they need their network to get to location x. This requires traffic levels to be pretty similar so that one party isn't gaining more than the other.
+
+![isp map](<L4 Diagram Recreations Updated Ben-1.png>)
+
+See how green cloud ISP can't peer with orange cloud ISPs, because it's too large. But all the orange cloud ISPs are peer relationships because they're similarly sized.
+
+Providers can charge fixed rate or based on usage, totally up to them.
+
+### Internet Business
+
+Importing and Exporting routes is the heart of BGP. Deciding which import/exports to operate and make available is a technical and business decision.
+
+#### Exporting Routes
+
+Export routes come from:
+
+- Routes from customers
+- Routes from providers
+- Routes from peers
+
+Which of these are chosen to advertise to other AS's is a business decision.
+
+
+#### Importing Routes
+
+Again, they're picky based on which routes are going to bring the most value to the business.
+
+Usually it's this order:
+
+1. An AS wants to ensure that routes toward its customers do not traverse other ASes, unnecessarily generating costs.
+2. An AS uses routes learned from peers since these are usually "free" (under the peering agreement).
+3. An AS resorts to importing routes learned from providers only when necessary for connectivity since these will add to costs.
+
+### Border Gateway Protocol (BGP)
+
+#### BGP Design Goals
+
+- Scalability - The internet will never stop growing, try to handle it
+- Express routing policies (ERP) - Allows ASes to make routing decisions and do it privately
+- Allow cooperation among ASes - Allows ASes to make their own decision and leet business drive the connections
+- Security - This was added on as it was found to be necessary
+
+#### BGP Basics
+
+**BGP Peers** send messages over **BGP Sessions** over a semi-permanent TCP port connection. A session is initiated from one router to another with an OPEN message which is then followed by sharing routing tables.
+
+eBGP is an external BGP session, between two ASes. iBGP is an internal BGP session, in a singular AS.
+
+![eBGP and iBGP](<Screen Shot 2020-01-17 at 7.28.06 PM.png>)
+
+Once the session is started they use:
+
+- UPDATE - if any updates are made to the Route table, share it
+- KEEPALIVE - Keeps session going, no changes
+
+BGP relies on prefix reachability, a list of IP addresses that prefix all the destinations. This is how the export and import routes are communicated.
+
+Other parameters:
+
+**Path Attributes** are also shared with other providers with parameters like:
+
+- ASPATH - Contains Autonomous System Number and helps choose between multiple routes and stops loops
+- NEXT HOP - Provides the next router's IP address so that other routers can store in their forwarding table the best path
+
+#### iBGP vs eBGP
+
+iBGP is meant for sharing paths of how to get out of an AS, it's not an IGP that gives intradomain networking, but instead a way of telling nodes inside of AS how they can communicate with external ASes.
+
+eBGP is the method of communicating between ASes the available external routes.
+
+![ebgp vs abgp](<L4 Diagram Recreations Updated Ben-3.png>)
+
+#### BGP Router Process
+
+![bgp routing](<Screen Shot 2020-01-17 at 7.48.26 PM.png>)
+
+When a router recieves a new list of policies it takes them all in, and then has a decision making process to determine the best routes for it to use.
+
+The operator of this router can determine what is important to them (usually cost related) and make decisions based on that. Here's an example decision process.
+
+![BGP router decision chart](<Screen Shot 2020-01-17 at 7.44.30 PM.png>)
+
+Important decision makers are:
+
+LocalPref - Decided by operating AS, things like choose the cheaper route (customers first, then peers, etc)
+MED - Determined by the neighboring AS, determine which link they would prefer you to use
+
+#### BGP Issues
+
+Two main things:
+
+- Misconfiguration - Improper configuration can bring networks down for a lot of reasons
+  - Can be reduced by limiting size of tables and number of changes
+- Scalability - Large routing tables are problematic.
+
+A lot of work went into reducing routing table sizes. They will do things like use default routing, route aggregation, and something called **flap damping**. Flap damping is a technique that limits the number of updates to a given prefix over time. If it goes over a certain limit, it will silence that prefixes updates until a set time has passed.
+
+This is configurable by domain, allowing you to choose when and where you will accept a lot of updates and when you won't.
+
+### Peering at IXPs
+
+ASes peer with each other, where do they do that? One place is an Internet Exchange Point (IXP). They are purpose built infrastructure to facilitate peering.
+
+Internet Exchange Points (IXPs) are critical physical infrastructures where Autonomous Systems (ASes) can directly interconnect and exchange traffic. These facilities are typically housed in secure, well-powered data centers and consist of robust switch fabrics to ensure reliability and fault tolerance. ASes participating in IXPs must have a public ASN, a BGP-capable router, and agree to the IXP’s terms. Once connected, ASes can publicly peer and exchange traffic settlement-free, paying only for connection and port usage, not traffic volume. This makes IXPs more cost-effective and efficient than traditional third-party traffic routing.
+
+IXPs have grown in popularity due to their ability to handle massive volumes of traffic and play a crucial role in improving network performance and reducing costs by keeping local traffic local. They also offer defensive benefits, such as DDoS mitigation, since they observe a large portion of Internet traffic and can help stop malicious activity before it reaches the intended target. Furthermore, IXPs provide a rich environment for research and innovation, particularly in areas like security and Software Defined Networking (SDN), and are evolving into hubs of technology development beyond just traffic exchange.
+
+In addition to public and private peering services, IXPs offer a wide range of features such as route servers, SLAs, remote peering via resellers, mobile network peering, and DDoS blackholing. Some IXPs also provide free value-added services like DNS root servers and time distribution. These offerings, along with the ability to form fast and scalable peering agreements, have made IXPs essential infrastructure for global Internet connectivity, performance, and resilience.
+
+#### Route Servers
+
+IXPs use route servers to handle the large number of ASes that they service.
+
+In summary, a Route Server (RS) does the following:
+
+- It collects and shares routing information from its peers or participants of the IXP that connect to the RS.
+- It executes its own BGP decision process and re-advertises the resulting information (e.g., best route selection) to all RS's peer routers.
+
+It's basically offloading all the configuration work from the AS to the IXP operator. It's what allows people like me to buy a domain and get reliable routing from anywhere in the world to it.
