@@ -235,9 +235,9 @@ TCP on the other hand does have these extra bells and whistles built in and thus
 
 Multiplexing is the ability for many hosts to use the same network simultaneously. Consider two computers browsing the internet at the same time, or better yet, a computer that is simultaneously browsing the internet and streaming music, it has two incoming data sources, and used in two different ways.
 
-We need to be able to handle this complexity. The Transport layer uses ports to do this. Each application gets one port, and listens only to that port. 
+We need to be able to handle this complexity. The Transport layer uses ports to do this. Each application gets one port, and listens only to that port.
 
-There is __Connectionless__ and __Connection Oriented__ multiplexing. One based on a constant connection, and one is not. 
+There is **Connectionless** and **Connection Oriented** multiplexing. One based on a constant connection, and one is not. 
 
 We have names for each direction of this multiplexing operation.
 
@@ -312,7 +312,7 @@ Step 4: The client sends an ACK for it to the server. It also waits for sometime
 
 TCP guarantees all packets delivered in order. This is a very helpful reliability for developers to build on.
 
-To do this the sender must know what the reciever successfully got. This is accomplished via ARQ (Automatic Repeat Request). If a sender doesn't get a message that ARQ1 was recieved in a certain timeframe, then it will re-send it. 
+To do this the sender must know what the reciever successfully got. This is accomplished via ARQ (Automatic Repeat Request). If a sender doesn't get a message that ARQ1 was recieved in a certain timeframe, then it will re-send it.
 
 **Stop and Wait ARQ** 
 
@@ -648,3 +648,249 @@ In summary, a Route Server (RS) does the following:
 - It executes its own BGP decision process and re-advertises the resulting information (e.g., best route selection) to all RS's peer routers.
 
 It's basically offloading all the configuration work from the AS to the IXP operator. It's what allows people like me to buy a domain and get reliable routing from anywhere in the world to it.
+
+
+## Lesson 5 and 6 - Router Design and Algorithms
+
+Routers are what do the heavy lifting for actually moving data from one point to another. The prior lessons established many pieces and parts of that puzzle.
+
+In short, a router needs to be able to recieve an incoming packet on an input link, read its destination, and then send it to the correct output link. Simple in theory, difficult in practice, and more importantly, at scale. Then add on top of just forwarding requirements things like security requirements, quality of service, and other more advanced things, the job becomes difficult.
+
+### Router Components
+
+**The main job of a router is to implement the forwarding plane functions and the control plane functions.**
+
+#### Forwarding (Switching) function
+
+The action of transferring a packet from an incoming link, to an outbound link. This should be very fast, on the scale of a few nanoseconds. I believe this is what a nice simple 5 port network switch is, and that's all it is.
+
+![what's in a router](<L5 & L6 updated Mary Ben reviewed-2.png>)
+
+![what's in a router zoomed](<L5 & L6 updated Mary Ben reviewed-3.png>)
+
+**Input Ports**
+
+Input ports do the following:
+
+1. Physically terminate the link
+2. Processes datalink (decapsuling)
+3. Performs lookup function, consulting forwarding table to determine where it should go
+
+
+**Switching Fabric***
+
+This actually moves the packet from the input port, to the output port, using the results from the input port that tells where the packet needs to go.
+
+Three types of switching fabrics:
+- Memory
+- Bus
+- Crossbar
+
+**Output ports**
+
+All this does is recieve the data from the switching fabric and send it. Specifically:
+
+1. Queue the packets for transfer
+2. Encapsulate the packets
+3. Send them over the physical output port
+
+![output port](<L5 & L6 updated Mary Ben reviewed-4-1.png>)
+
+
+#### Control Plane function
+
+The control plane refers to:
+
+- Implementing routing protocols (like the ones from earlier sessions)
+- Maintaining routing tables
+- Computing the forwarding table
+
+All of these functions are written software in the routing processor, or in the case of an SDN, could be implemented by a remote router.
+
+![alt text](<L5 & L6 updated Mary Ben reviewed-5.png>)
+
+### Router Architecture
+
+Model of a router:
+
+![router architecture overview](<Screen Shot 2020-02-05 at 6.00.52 PM.png>)
+
+Using the image as a guide we can walk through the path that common tasks take. First we lookup the destination of an incoming packet.
+
+1. Lookup
+    1. Packet arrives at input link
+    2. Lookup output link in forwarding table (Forwarding Information Base FIB)
+    3. Resolve any ambiguities
+        - Longest Prefix matching
+        - Packet classification
+2. Switching
+    - After lookup is completed the packet is switched, from input link to output link. Modern routers use crossbar switches for this task.
+    - *Some complications occur when many inputs want to send to the same output*
+3. Queuing
+    - Using various queuing logics, if an output port is congested, each packet enters the queue to wait its turn to use the hardware.
+
+    - Types of queues used:
+        - First In First Out (FIFO)
+        - Weighted Fair Queuing
+4. Header Validation and Checksum
+    - Check version number, validate checksum, decrement ttl
+5. Route processing
+    - Build route using protocols like RIP, OSPF, and BGP
+6. Protocol Processing (Including:)
+    - Simple Network Management Protocol (SNMP) - Counters for remote inspection
+    - TCP/UDP for remote communication
+    - Internet Control Message Protocol (ICMP) for sending error messages (eg: TTL is exceeded)
+
+### Switching Fabric
+
+The switching fabric is where most of the logic is implemented in a router, forwarding packets from source to destination.
+
+There are several ways to accomplish this.
+
+#### Switching via memory
+
+Physical I/O ports operate as I/O devices in an operating system.
+
+1. Input port receives packet
+2. Send interrupt to routing processor
+3. Packet written to memory
+4. Processor looks at header to get destination address
+5. Lookup output port from forwarding table
+6. Copy from memory into output ports buffer
+
+![switching via memory diagram](<Screen Shot 2020-02-05 at 6.08.02 PM-1.png>)
+
+#### Switching via bus
+
+Bus based switching doesn't require a processor.
+
+1. Input port receives packet
+2. Input port marks which destination port it should be for with an internal header
+3. Send it to the bus where all output ports receive the packet
+    - Only the port its supposed to go to accepts it
+
+This design is limited by the speed of the bus as only one packet can traverse it at a time.
+
+![switching via bus diagram](<Screen Shot 2020-02-05 at 6.09.47 PM.png>)
+
+#### Switching via interconnection network
+
+A crossbar switch is an interconnection network that connects N inputs to N outputs using 2N buses.
+
+![crossbar network diagram](<Crossbar Network.png>)
+
+This allows many packets at once to traverse the switching fabric, as long as they have different input and output ports. This is done my giving the switching fabric control of the busses, and closing the connections to make the links only when there is a packet that needs to make that journey.
+
+### Router Challenges
+
+There are a couple fundamental challenges to overcome for routers at scale.
+
+1. Bandwidth and Internet population scaling
+    - Rapidly increasing number of devices (endpoints)
+    - Rapidly increasing volume of data
+    - New types of links like optical links (fiber) which increase transfer but increase complexity
+2. Services at high speeds
+
+#### Common bottlenecks
+
+![common bottlenecks table](<Screen Shot 2020-02-05 at 6.15.27 PM.png>)
+
+A little bit more detail:
+
+**Longest prefix matching** - Due to the ever increasing number of devices on the internet, it's impossible to hold a table for *all* of them. So instead devices are grouped into prefixes. But then you need good algorithms to deal with the prefixes.
+
+**Service differentiation** - If you want to be able to provide priority to some packets and not to others, you need more complex logic to handle that. At scale.
+
+**Switching Limitations** - At high speeds, the hardware can become a problem, causing bottlenecks at the I/O ports or even on the switching hardware.
+
+**Bottlenecks about services** - Providing a reliable, fast, secure service that is **guaranteed** is difficult. Entire companies are built around doing this so that others don't have to.
+
+### Prefix matching
+
+Prefixing is a way to group endpoints together to make lookup tables less large.
+
+**Prefix Notation:**
+
+There are several ways to notate prefixes.
+
+1. Dot decimal
+    - 16 bit (132.234) becomes binary of 1000010011101010
+2. Slash notation
+    - A/L, A=Address, L=Length
+    - 132.238.0.0/16
+3. Masking
+    - 123.234.0.0/16 is written as 123.234.0.0 with a mask 255.255.0.0
+    - The mask 255.255.0.0 denotes that only the first 16 bits are important. 
+
+This prefixing helped, because we were running out of IP addresses, quickly. But it introduced the issue of *longest matching prefix lookup*.
+
+The main router performance metric is how quickly it can do a full lookup. There are four common problem areas:
+
+1. A large amount of traffic is concurrent flows of short duration, making caching not very useful.
+2. Lookup speed is important, the most costly part of that is accessing memory
+3. An unstable routing protocol may result in more updates to the table and slower updates, adding milliseconds of time to the table update time.
+4. Cost vs performance, really expensive memory is fast, cheaper memory is slower
+    - how to decide which is which likely depends on application
+
+
+![common issues](<L5 & L6 updated Mary Ben reviewed-7.png>)
+
+#### Unibit Tries
+
+Given this prefix db:
+
+![unibit db](<L5 & L6 Diagram Recreations Ben updated-1.png>)
+
+Results in this trie:
+
+![unibit trie](<L5 & L6 Diagram Recreations Ben updated-2.png>)
+
+These are the steps we follow to perform a prefix match:
+
+1. We begin the search for a longest prefix match by tracing the trie path.
+2. We continue the search until we fail (no match or an empty pointer)
+3. When our search fails, the last known successful prefix traced in the path is our match and our returned value.
+
+Two notes:
+
+1. If a prefix is a substring of another prefix, the smaller string is stored in the path to the longer (more specific prefix). For example, P4 = 1* is a substring of P2 = 111*, and thus P4 is stored inside a node towards the path to P2.
+
+2. One-way branches. There may be nodes that only contain one pointer. For example, let’s consider the prefix P3 = 11001. After we match 110 we will be expecting to match 01. But in our prefix database, we don’t have any prefixes that share more than the first 3 bits with P3. So if we had such nodes represented in our trie, we would have nodes with only one pointer. The nodes with only one pointer each are called one-way branches. For efficiency, we compress these one-way branches to a single text string with 2 bits (shown as node P9).
+
+#### Multibit Tries
+
+Unibit tries are very efficient but it requires a large amount of memory accesses to achieve. For highspeed links it is not plausible to access memory that many times. Instead we use strides. A stride is the number of bits to check at each step.
+
+So an alternative to unibit tries are the multibit tries. A multibit trie is a trie where each node has 2k  children, where k is the stride. Next, we will see that we can have two flavors of multibit tries: fixed-length stride tries and variable-length stride tries. 
+
+##### Prefix expansion
+
+One quick problem you may run into with multibit, is if you have a stride length of 2, you could miss prefixes like 101* so this is handled via expansion:
+
+![prefix expansion table](<L5 & L6 updated Mary Ben reviewed-9.png>)
+
+#### Fixed Stride Example
+
+Using a fixed stride length of three, let's do an example. Using the same database as the prior example.
+
+Some key points to note here:
+
+1. Every element in a trie represents two pieces of information: a pointer and a prefix value.
+2. The prefix search moves ahead with the preset length in n-bits (3 in this case) 
+3. When the path is traced by a pointer, we remember the last matched prefix (if any).
+4. Our search ends when an empty pointer is met. At that time, we return the last matched prefix as our final prefix match.
+
+![routing image fixed stride length](<L5+6-8 Fixed Stride.jpg>)
+
+#### Variable Stride Length
+
+Variable Stride lenght allows us to save memory and still get all of the addresses.
+
+![variable example image](<L5+6-9 Variable Stride.jpg>)
+
+Some key points about variable stride:
+
+1. Every node can have a different number of bits to be explored.
+2. The optimizations to the stride length for each node are all done to save trie memory and the least memory accesses.
+3. An optimum variable stride is selected by using dynamic programming
+
