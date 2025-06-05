@@ -33,7 +33,7 @@ Specifically:
 
 ### Internet Architecture
 
-The internet was built in layers. Each layeer is supposed to have its own job, and not rely on any of the layers above or below it.
+The internet was built in layers. Each layer is supposed to have its own job, and not rely on any of the layers above or below it.
 
 Think of a person as a bit of data, then watch them fly from one airport to another and you get the idea.
 
@@ -77,9 +77,9 @@ End to End communication between hosts.
 - Transmission Control Protocol (TCP)
 - User Datagram Protocol (UDP)
 
-TCP is better *connection*-oriented services, guarantees delivery, manages flow control, and controls congestion. This is the USPS, slow but reliable (except TCP doesn't lose mail like The USPS).
+TCP is better *connection*-oriented services, guarantees delivery, manages flow control, and controls congestion. This is the USPS, slow but reliable (except TCP doesn't lose mail like the USPS).
 
-UDP is fast and guarantees *nothing*. Recievers and Senders using UDP must be able to handle segments getting dropped, delayed, or not making it entirely. But they should be faster when everything is working compared to TCP
+UDP is fast and guarantees *nothing*. Receivers and Senders using UDP must be able to handle segments getting dropped, delayed, or not making it entirely. But they should be faster when everything is working compared to TCP.
 
 #### The Network Layer
 
@@ -103,7 +103,7 @@ The actual hardware translation. Translating electricity into bits based on ethe
 
 ### Encapsulation
 
-These layers work on the idea of encapsulation and de-encapsulation. So encapsulation is  take a chunk of data, package it up, add a header to it and pass it on. Then de-encapsulation is using the headers to decode each chunk of data, untill all you're left with is the data/message.
+These layers work on the idea of encapsulation and de-encapsulation. So encapsulation is to take a chunk of data, package it up, add a header to it and pass it on. Then de-encapsulation is using the headers to decode each chunk of data, until all you're left with is the data/message.
 
 ![encapsulation vs de-encapsulation](0_tDSGidTRt7KrG6BR.webp)
 
@@ -115,9 +115,9 @@ The e2e principle shaped the internet as we know it today.
 
 Essentially the principle is that 99% of the complexity should be at the ends of the communications. This allows the underlying infrastructure to be simple, but expandable, and allows people working at the different ends to iterate and create new things quickly.
 
-If they had to change the underlying architecture everytime they wanted to change anything it would bring development speed to a crawl.
+If they had to change the underlying architecture every time they wanted to change anything it would bring development speed to a crawl.
 
-Beneficial exceprt from the lecture:
+Beneficial excerpt from the lecture:
 
 Many people argue that the e2e principle allowed the internet to grow rapidly because evolving innovation took place at the network edge, in the form of numerous applications and a plethora of services, rather than in the middle of the network, which could be hard to modify later.  
 
@@ -132,15 +132,15 @@ All rules are meant to be broken.
 
 Firewalls, NAT boxes, and traffic filters all break the e2e principle, and usually for good reason.
 
-NAT routers provide a way to make up for the fact that there aren't that many IP addresses available in IPv4. Instead of EVERY device having it's own worldwide public IP address, you give your home 1 IP address, and then every device behind that has its own local address.
+NAT routers provide a way to make up for the fact that there aren't that many IP addresses available in IPv4. Instead of EVERY device having its own worldwide public IP address, you give your home 1 IP address, and then every device behind that has its own local address.
 
 This means that whenever a message is sent to your PC it goes:
 
 Web > Router (Public IP)> End Device (local IP)
 
-The router is breaking some rules of e2e, becacuse it is intervening and inspecting data.
+The router is breaking some rules of e2e, because it is intervening and inspecting data.
 
-This is the notes reasoning for why:
+This is the notes' reasoning for why:
 
 > Why do NAT boxes violate the e2e principle?
 >The hosts behind NAT boxes are not globally addressable or routable. As a result, it is not possible for other hosts on the public Internet to initiate connections to these devices. So, if we have a host behind a NAT and a host on the public Internet, they cannot communicate by default without the intervention of a NAT box.
@@ -154,7 +154,7 @@ No really, there's a ton on each end of it, but the middle is pretty narrow. Spe
 
 ![hourglass internet](<L1-1 Evolutionary Architecture Model.jpg>)
 
-All roads lead to IP, and TCP/UDP. Researchers have actually done a lot of work to see why this is. They called it the evolutionary architecture model. They did a bunch of in depth quanitifications of why/what the internet is and how they got there and drew some interesting conclusions.
+All roads lead to IP, and TCP/UDP. Researchers have actually done a lot of work to see why this is. They called it the evolutionary architecture model. They did a bunch of in depth quantifications of why/what the internet is and how they got there and drew some interesting conclusions.
 
 In an ideal world where we could do it all over they came up with the following:
 
@@ -198,7 +198,7 @@ This works by operating in rounds, and then by removing bridges from the network
 
 1. Every node sends:
     - Sender Node ID
-    - Root ID as percieved by sender
+    - Root ID as perceived by sender
     - Distance from root node
 2. Each node selects the best configuration in order of
     - If root of the one configuration has a smaller ID
@@ -220,7 +220,7 @@ Then after tree spanning:
 
 This lesson is going to talk about the actual protocol responsible for transporting data from one location to another, TCP. The logical connection between two hosts is done in the transport layer.
 
-The transport layer recieves a message from the application layer and appends its own header on to it. This is known as a segment. The segment is then sent to the Network layer where it happily bounced through all the routers, bridges, and switches that might be on its path.
+The transport layer receives a message from the application layer and appends its own header on to it. This is known as a segment. The segment is then sent to the Network layer where it happily bounces through all the routers, bridges, and switches that might be on its path.
 
 ### Transport Layer intro
 Why do we need a transport layer? Why not just send messages directly from the application layer to the network layer? Because the network layer guarantees __nothing__. The transport layer guarantees delivery, and data integrity in a way that wouldn't have been done otherwise.
@@ -247,11 +247,11 @@ Multiplexing - Taking data from all the sockets and putting it into the network 
 
 ### Connectionless Multiplexing
 
-Connectionless multiplexing is the simpler case. The transport layer has a segment which has the content, a source and source port, and a destination and a destination port. It recieves the data from the source port, and makes its best effort at delivering to the destination port.
+Connectionless multiplexing is the simpler case. The transport layer has a segment which has the content, a source and source port, and a destination and a destination port. It receives the data from the source port, and makes its best effort at delivering to the destination port.
 
 ![Connectionless Multiplexing](<Screen Shot 2020-01-16 at 9.34.42 PM.png>)
 
-If the destination recieves it, great, the network layer will route it to the correct port, and then the message will have been successfully delivered.
+If the destination receives it, great, the network layer will route it to the correct port, and then the message will have been successfully delivered.
 
 These are UDP sockets. It's very direct, with no oversight as to what actually happens to the message.
 
@@ -261,16 +261,16 @@ Connection Oriented multiplexing brings in a lot more complexity.
 
 ![Connection Oriented Multiplexing](<Screen Shot 2020-01-16 at 9.36.30 PM.png>)
 
-TCP requires going through a TCP server. The TCP server has a listener process that waits for incoming connection requests, and when it gets it handles setting everything up so that the destination is ready to recieve the message.
+TCP requires going through a TCP server. The TCP server has a listener process that waits for incoming connection requests, and when it gets it handles setting everything up so that the destination is ready to receive the message.
 
-> Note: If a server has many clients contacting it on the same port, it's not an issue because they have unique IP addresses (hopefully) and they can distinguish the difference betweent he two that way.
+> Note: If a server has many clients contacting it on the same port, it's not an issue because they have unique IP addresses (hopefully) and they can distinguish the difference between the two that way.
 
 ### A word on UDP
 
 UDP lacks reliability of TCP mainly because it doesn't require establishing a connection.
 
 That lack of reliability makes it better for the following reasons:
-1. No congestion control - No process watches ever packet to make sure it should be sent
+1. No congestion control - No process watches every packet to make sure it should be sent
 2. No connection management - We don't have to wait for a socket to be opened, so it just sends quickly
 
 Both of these result in lower latency transmission, which is good for some things. Things like multiplayer video games, DNS servers, and other networking hosts, all like to use higher speed protocols.
@@ -281,7 +281,7 @@ This puts the onus on the developers on each end to ensure quality, and handle i
 
 The one quality mechanism UDP provides is a checksum, so you can in fact check that the data that's sent is what it was supposed to be. It creates a checksum by adding together the bits of the source port, destination port and the length of the packet. It then performs a ones complement. That is the checksum.
 
-The reciever takes the source port, destination port, length of packet, and the checksum and adds them all together. Because the checksum is the ones complement, when they are added together it should end up as all ones.
+The receiver takes the source port, destination port, length of packet, and the checksum and adds them all together. Because the checksum is the ones complement, when they are added together it should end up as all ones.
 
 ### TCP
 
@@ -295,7 +295,7 @@ Step 3: When the client receives the SYNACK segment, it also allocates buffer an
 
 ![three-way-handshake](<2 TCP Three-Way Handshake.jpg>)
 
-#### Connectino tear down
+#### Connection tear down
 Connection Teardown
 
 Step 1: When the client wants to end the connection, it sends a segment with FIN bit set to 1 to the server.
@@ -304,7 +304,7 @@ Step 2: The server acknowledges that it has received the connection closing requ
 
 Step 3: The server then sends a segment with FIN bit set to 1, indicating that connection is closed.
 
-Step 4: The client sends an ACK for it to the server. It also waits for sometime to resend this acknowledgment in case the first ACK segment is lost.
+Step 4: The client sends an ACK for it to the server. It also waits for some time to resend this acknowledgment in case the first ACK segment is lost.
 
 ![teardown](<Screen Shot 2020-01-16 at 9.47.18 PM.png>)
 
@@ -312,30 +312,30 @@ Step 4: The client sends an ACK for it to the server. It also waits for sometime
 
 TCP guarantees all packets delivered in order. This is a very helpful reliability for developers to build on.
 
-To do this the sender must know what the reciever successfully got. This is accomplished via ARQ (Automatic Repeat Request). If a sender doesn't get a message that ARQ1 was recieved in a certain timeframe, then it will re-send it.
+To do this the sender must know what the receiver successfully got. This is accomplished via ARQ (Automatic Repeat Request). If a sender doesn't get a message that ARQ1 was received in a certain timeframe, then it will re-send it.
 
 **Stop and Wait ARQ** 
 
-Guess how long it should take, if you dont' get a response, send it again. This can work but is tricky. If you send to much you're retransmitting for no reason, and wiat too long your connection is slow.
+Guess how long it should take, if you don't get a response, send it again. This can work but is tricky. If you send too much you're retransmitting for no reason, and wait too long your connection is slow.
 
-TCP uses **Selective ACK** which basically waits for the reciever to say hey I didn't get this packet yet, and if it reaches a certain threshold like 3, then it will quickly resend that particular packet. This allows most of the time to be spent actively sending data, and the ability to recover from dropped packets.
+TCP uses **Selective ACK** which basically waits for the receiver to say hey I didn't get this packet yet, and if it reaches a certain threshold like 3, then it will quickly resend that particular packet. This allows most of the time to be spent actively sending data, and the ability to recover from dropped packets.
 
 This does require the ability to buffer packets until you have everything you need in order.
 
 ### Transmission Control (TCP)
 
-Deciding how much of a link bandwidth to use is a bit complicated. If you send too much for the reciever that could be an issue, or maybe the network can't handle it, or any other amount of things that could go wrong. 
+Deciding how much of a link bandwidth to use is a bit complicated. If you send too much for the receiver that could be an issue, or maybe the network can't handle it, or any other amount of things that could go wrong. 
 
 So TCP implements a couple things to help that.
 
 
 #### Flow Control
 
-Flow control is where TCP tries to identify the recievers buffer that it is recieving data with, and tries to match the sender window size to that. Every ACK message includes a `rwnd` value which says how much buffer space is available.
+Flow control is where TCP tries to identify the receiver's buffer that it is receiving data with, and tries to match the sender window size to that. Every ACK message includes a `rwnd` value which says how much buffer space is available.
 
 The sender uses this value to ensure it never sends more bytes than is available in the receiver buffer. 
 
-If this value hits zero it would stop, but TCP instead send packets of 1 byte until it gets a response with a `rwnd` greater than zero.
+If this value hits zero it would stop, but TCP instead sends packets of 1 byte until it gets a response with a `rwnd` greater than zero.
 
 #### Congestion Control
 
@@ -359,9 +359,9 @@ This is mostly done via packet delay (how long did it take to get here) and pack
 
 It employs a congestion window, a number indicating roughly how much space is left in the network. This increases until congestion is detected, and then the window is made smaller to reduce congestion.
 
-Ultimately the max size of a TCP packet is the minimum of the reciever buffer and the congestion window.
+Ultimately the max size of a TCP packet is the minimum of the receiver buffer and the congestion window.
 
-THere are many different methods of increasing congestion window size:
+There are many different methods of increasing congestion window size:
 
 - Additive
 - Multiplicative
@@ -391,13 +391,13 @@ We'll talk about:
     - Distance vector
 - Intradomain Protocols
     - Open Shortest Path First (OSPF)
-    - Routing Information Protocol (RIF)
+    - Routing Information Protocol (RIP)
 
 ### Routing
 
 Given two hosts that share the same default router (first-hop router) we know that one host will send a packet to the default router, but what happens next?
 
-In a network with many routers, whenever a router recieves a packet, it must consult the forwarding table it maintains, and send the packet to the next router in line. This is referred to as forwarding and is not necessarily the same as routing.
+In a network with many routers, whenever a router receives a packet, it must consult the forwarding table it maintains, and send the packet to the next router in line. This is referred to as forwarding and is not necessarily the same as routing.
 
 Routing is the act of determining the best path to be traveled from one location to another. Intradomain routing is what we will focus on and it is what happens when both hosts are in the same administrative domain.
 
@@ -406,7 +406,7 @@ Interior Gateway Protocols (IGP) are what handle this type of routing. The two m
 
 #### Link State Routing
 
-Surprise, Djikstra's algorithm is here again.
+Surprise, Dijkstra's algorithm is here again.
 
 In link state, all link costs are known and the network topology is also fully known.
 
@@ -421,21 +421,21 @@ Basically we initialize with either:
 - Known cost because it's a link directly connected to the node we're initializing
 - Infinity cost, because we know it will be less than that but we have something to compare against
 
-Then we continue looping through the network, looking for a path with lower costs than our current cost, until we don't find one. This is a fun  application of Djikstra's algorithm, where each router essentially computes Djikstra's algorithm from itself to all other routers in the network.
+Then we continue looping through the network, looking for a path with lower costs than our current cost, until we don't find one. This is a fun application of Dijkstra's algorithm, where each router essentially computes Dijkstra's algorithm from itself to all other routers in the network.
 
-This is a  pretty costly algorithm at O(n^2) complexity. It also requires that you know everything about the network which is probably why this is intradomain and not interdomain.
+This is a pretty costly algorithm at O(n^2) complexity. It also requires that you know everything about the network which is probably why this is intradomain and not interdomain.
 
 #### Distance Vector Routing
 
 The DV algorithm is iterative, asynchronous, and distributed.
 
-DV is based on the Bellman Ford algorithm. Every node maintains a distance vector to all of the other nodes, and it occasionally shares that information. When a node recieves a new distance vector they use it to update their own vector.
+DV is based on the Bellman Ford algorithm. Every node maintains a distance vector to all of the other nodes, and it occasionally shares that information. When a node receives a new distance vector they use it to update their own vector.
 
 The Bellman Ford (BF) equation is the heart of each update: `Dx(y) = minv{c(x,v) + Dv(y)}`
 
 ![BF illustration](BF-updated.png)
 
-See the psuedocode below:
+See the pseudocode below:
 
 ![DV pseudocode](<Screen Shot 2020-01-17 at 5.36.51 PM.png>)
 
@@ -443,7 +443,7 @@ So essentially, continuously the nodes maintain a list of costs for routes to ce
 
 This is different from Link State routing because it is distributed, but they are all still computing the most efficient path through the tree.
 
-##### An simple example
+##### A simple example
 
 [initialization](<Screen Shot 2020-01-17 at 5.40.22 PM.png>)
 
@@ -464,7 +464,7 @@ What if the link cost changes? In some cases this is handled quickly, and in oth
 2. At time t1, z receives the update from y. Now z thinks it can reach x through y with a cost of 2, so it sends its new distance vector to its neighbors.
 3. At time t2, y receives the update from z. Y does not change its distance vector, so it does not send any update.
 
-The update is fully propogated pretty quickly.
+The update is fully propagated pretty quickly.
 
 **Say a link cost increases:**
 
@@ -496,7 +496,7 @@ OSPF will have one AS (Autonomous System) as the backbone, and routes to other O
 
 There's a lot more in the notes but tbh they're pretty complicated! It seems that these routers in the send Link State advertisements which communicates the routers local topology. This results in a complete network map, that updates when the network updates.
 
-These LSAs are processsed as so:
+These LSAs are processed as so:
 
 ![How the router processes](<Screen Shot 2020-01-19 at 7.18.54 PM-2.png>)
 
@@ -506,7 +506,7 @@ Sometimes you have to leave your local network, and enter into interdomain routi
 
 To do this usually you have to find an egress point and the process of finding that egress point is an intradomain routing problem.
 
-Generally hot potato routing is referrnig to finding the closest/least costly egress point in a given network. The hot potato part of it is that there are many egress points and which one is chosen is not always clear. This routing method of finding the shortest path does make things consistent instead of sometimes going to egress A and sometimes going to egress B.
+Generally hot potato routing is referring to finding the closest/least costly egress point in a given network. The hot potato part of it is that there are many egress points and which one is chosen is not always clear. This routing method of finding the shortest path does make things consistent instead of sometimes going to egress A and sometimes going to egress B.
 
 ## Lesson 4 - Interdomain Routing and AS Relationships
 
@@ -568,7 +568,7 @@ Usually it's this order:
 
 - Scalability - The internet will never stop growing, try to handle it
 - Express routing policies (ERP) - Allows ASes to make routing decisions and do it privately
-- Allow cooperation among ASes - Allows ASes to make their own decision and leet business drive the connections
+- Allow cooperation among ASes - Allows ASes to make their own decision and let business drive the connections
 - Security - This was added on as it was found to be necessary
 
 #### BGP Basics
@@ -605,7 +605,7 @@ eBGP is the method of communicating between ASes the available external routes.
 
 ![bgp routing](<Screen Shot 2020-01-17 at 7.48.26 PM.png>)
 
-When a router recieves a new list of policies it takes them all in, and then has a decision making process to determine the best routes for it to use.
+When a router receives a new list of policies it takes them all in, and then has a decision making process to determine the best routes for it to use.
 
 The operator of this router can determine what is important to them (usually cost related) and make decisions based on that. Here's an example decision process.
 
@@ -624,7 +624,7 @@ Two main things:
   - Can be reduced by limiting size of tables and number of changes
 - Scalability - Large routing tables are problematic.
 
-A lot of work went into reducing routing table sizes. They will do things like use default routing, route aggregation, and something called **flap damping**. Flap damping is a technique that limits the number of updates to a given prefix over time. If it goes over a certain limit, it will silence that prefixes updates until a set time has passed.
+A lot of work went into reducing routing table sizes. They will do things like use default routing, route aggregation, and something called **flap damping**. Flap damping is a technique that limits the number of updates to a given prefix over time. If it goes over a certain limit, it will silence that prefix's updates until a set time has passed.
 
 This is configurable by domain, allowing you to choose when and where you will accept a lot of updates and when you won't.
 
@@ -654,7 +654,7 @@ It's basically offloading all the configuration work from the AS to the IXP oper
 
 Routers are what do the heavy lifting for actually moving data from one point to another. The prior lessons established many pieces and parts of that puzzle.
 
-In short, a router needs to be able to recieve an incoming packet on an input link, read its destination, and then send it to the correct output link. Simple in theory, difficult in practice, and more importantly, at scale. Then add on top of just forwarding requirements things like security requirements, quality of service, and other more advanced things, the job becomes difficult.
+In short, a router needs to be able to receive an incoming packet on an input link, read its destination, and then send it to the correct output link. Simple in theory, difficult in practice, and more importantly, at scale. Then add on top of just forwarding requirements things like security requirements, quality of service, and other more advanced things, the job becomes difficult.
 
 ### Router Components
 
@@ -673,7 +673,7 @@ The action of transferring a packet from an incoming link, to an outbound link. 
 Input ports do the following:
 
 1. Physically terminate the link
-2. Processes datalink (decapsuling)
+2. Processes datalink (decapsulating)
 3. Performs lookup function, consulting forwarding table to determine where it should go
 
 
@@ -688,7 +688,7 @@ Three types of switching fabrics:
 
 **Output ports**
 
-All this does is recieve the data from the switching fabric and send it. Specifically:
+All this does is receive the data from the switching fabric and send it. Specifically:
 
 1. Queue the packets for transfer
 2. Encapsulate the packets
@@ -767,7 +767,7 @@ Bus based switching doesn't require a processor.
 1. Input port receives packet
 2. Input port marks which destination port it should be for with an internal header
 3. Send it to the bus where all output ports receive the packet
-    - Only the port its supposed to go to accepts it
+    - Only the port it's supposed to go to accepts it
 
 This design is limited by the speed of the bus as only one packet can traverse it at a time.
 
@@ -779,7 +779,7 @@ A crossbar switch is an interconnection network that connects N inputs to N outp
 
 ![crossbar network diagram](<Crossbar Network.png>)
 
-This allows many packets at once to traverse the switching fabric, as long as they have different input and output ports. This is done my giving the switching fabric control of the busses, and closing the connections to make the links only when there is a packet that needs to make that journey.
+This allows many packets at once to traverse the switching fabric, as long as they have different input and output ports. This is done by giving the switching fabric control of the buses, and closing the connections to make the links only when there is a packet that needs to make that journey.
 
 ### Router Challenges
 
@@ -884,7 +884,7 @@ Some key points to note here:
 
 #### Variable Stride Length
 
-Variable Stride lenght allows us to save memory and still get all of the addresses.
+Variable Stride length allows us to save memory and still get all of the addresses.
 
 ![variable example image](<L5+6-9 Variable Stride.jpg>)
 
