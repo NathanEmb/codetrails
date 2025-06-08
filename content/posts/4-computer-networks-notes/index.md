@@ -26,7 +26,7 @@ Specifically:
      - UCSB, UCLA, Stanford, and U of Utah interlink
 3. Network Control Protocol (NCP), an initial ARPANET host-to-host protocol (1970)
     - The first protocol was designed to handle increasing number of computers, first app built on this was email
-4. Internetworking and TCP/IP (1973)
+4. Inter-networking and TCP/IP (1973)
     - NCP became TCP/IP, IP for addressing and forwarding packets, TCP for flow control and recovery from lost packets
 5. The Domain Name System (DNS) (1983) and the World Wide Web (WWW) (1990)
     - As the internet exploded with content and endpoints, they needed a way to turn domains into IP addresses. In walks DNS.
@@ -158,7 +158,7 @@ All roads lead to IP, and TCP/UDP. Researchers have actually done a lot of work 
 
 In an ideal world where we could do it all over they came up with the following:
 
->Finally, in terms of future and entirely new Internet architectures, the EvoArch model predicts that even if these brand-new architectures do not have the shape of an hourglass initially, they will probably do so as they evolve, which will lead to new ossified protocols. The model suggests that one way to proactively avoid these ossification effects that we now experience with TCP/IP is for a network architect to design the functionality of each layer so that the waist is wider, consisting of several protocols that offer largely non-overlapping but general services, so that they do not compete with each other. 
+>Finally, in terms of future and entirely new Internet architectures, the EvoArch model predicts that even if these brand-new architectures do not have the shape of an hourglass initially, they will probably do so as they evolve, which will lead to new ossified protocols. The model suggests that one way to proactively avoid these ossification effects that we now experience with TCP/IP is for a network architect to design the functionality of each layer so that the waist is wider, consisting of several protocols that offer largely non-overlapping but general services, so that they do not compete with each other.
 
 ### Interconnecting Hosts and Networks
 
@@ -174,8 +174,8 @@ They operate on the physical layer (L1) as they receive and forward digital sign
 
  These devices can enable communication between hosts that are not directly connected. They operate on the data link layer (L2) based on MAC addresses. They receive packets and forward them to the appropriate destination. A limitation is the finite bandwidth of the outputs. If the arrival rate of the traffic is higher than the capacity of the outputs, then packets are temporarily stored in buffers. But if the buffer space gets full, then this can lead to packet drops.
 
- #### Routers and Layer-3 Switches
- 
+#### Routers and Layer-3 Switches
+
 These are devices that operate on the network layer (L3).
 
 ### Learning Bridges
@@ -223,7 +223,8 @@ This lesson is going to talk about the actual protocol responsible for transport
 The transport layer receives a message from the application layer and appends its own header on to it. This is known as a segment. The segment is then sent to the Network layer where it happily bounces through all the routers, bridges, and switches that might be on its path.
 
 ### Transport Layer intro
-Why do we need a transport layer? Why not just send messages directly from the application layer to the network layer? Because the network layer guarantees __nothing__. The transport layer guarantees delivery, and data integrity in a way that wouldn't have been done otherwise.
+
+Why do we need a transport layer? Why not just send messages directly from the application layer to the network layer? Because the network layer guarantees **nothing**. The transport layer guarantees delivery, and data integrity in a way that wouldn't have been done otherwise.
 
 As mentioned previously there are two main transport layer protocols User Datagram Protocol (UDP) and Transmission Control Protocol (TCP).
 
@@ -237,7 +238,7 @@ Multiplexing is the ability for many hosts to use the same network simultaneousl
 
 We need to be able to handle this complexity. The Transport layer uses ports to do this. Each application gets one port, and listens only to that port.
 
-There is **Connectionless** and **Connection Oriented** multiplexing. One based on a constant connection, and one is not. 
+There is **Connectionless** and **Connection Oriented** multiplexing. One based on a constant connection, and one is not.
 
 We have names for each direction of this multiplexing operation.
 
@@ -270,6 +271,7 @@ TCP requires going through a TCP server. The TCP server has a listener process t
 UDP lacks reliability of TCP mainly because it doesn't require establishing a connection.
 
 That lack of reliability makes it better for the following reasons:
+
 1. No congestion control - No process watches every packet to make sure it should be sent
 2. No connection management - We don't have to wait for a socket to be opened, so it just sends quickly
 
@@ -296,6 +298,7 @@ Step 3: When the client receives the SYNACK segment, it also allocates buffer an
 ![three-way-handshake](<2 TCP Three-Way Handshake.jpg>)
 
 #### Connection tear down
+
 Connection Teardown
 
 Step 1: When the client wants to end the connection, it sends a segment with FIN bit set to 1 to the server.
@@ -314,7 +317,7 @@ TCP guarantees all packets delivered in order. This is a very helpful reliabilit
 
 To do this the sender must know what the receiver successfully got. This is accomplished via ARQ (Automatic Repeat Request). If a sender doesn't get a message that ARQ1 was received in a certain timeframe, then it will re-send it.
 
-**Stop and Wait ARQ** 
+**Stop and Wait ARQ**
 
 Guess how long it should take, if you don't get a response, send it again. This can work but is tricky. If you send too much you're retransmitting for no reason, and wait too long your connection is slow.
 
@@ -324,16 +327,15 @@ This does require the ability to buffer packets until you have everything you ne
 
 ### Transmission Control (TCP)
 
-Deciding how much of a link bandwidth to use is a bit complicated. If you send too much for the receiver that could be an issue, or maybe the network can't handle it, or any other amount of things that could go wrong. 
+Deciding how much of a link bandwidth to use is a bit complicated. If you send too much for the receiver that could be an issue, or maybe the network can't handle it, or any other amount of things that could go wrong.
 
 So TCP implements a couple things to help that.
-
 
 #### Flow Control
 
 Flow control is where TCP tries to identify the receiver's buffer that it is receiving data with, and tries to match the sender window size to that. Every ACK message includes a `rwnd` value which says how much buffer space is available.
 
-The sender uses this value to ensure it never sends more bytes than is available in the receiver buffer. 
+The sender uses this value to ensure it never sends more bytes than is available in the receiver buffer.
 
 If this value hits zero it would stop, but TCP instead sends packets of 1 byte until it gets a response with a `rwnd` greater than zero.
 
@@ -342,6 +344,7 @@ If this value hits zero it would stop, but TCP instead sends packets of 1 byte u
 Congestion control is making sure we don't overload any of the links on the way from one host to another.
 
 Good congestion control is:
+
 - Efficient - use most of the network
 - Fair - everyone gets equal amounts
 - Low delay - Low delay is good for things that need to have small lag like video conferences
@@ -387,11 +390,11 @@ This session focuses on the act of routing on the network layer in a single doma
 We'll talk about:
 
 - Intradomain Routing Algorithms
-    - Link state
-    - Distance vector
+  - Link state
+  - Distance vector
 - Intradomain Protocols
-    - Open Shortest Path First (OSPF)
-    - Routing Information Protocol (RIP)
+  - Open Shortest Path First (OSPF)
+  - Routing Information Protocol (RIP)
 
 ### Routing
 
@@ -402,7 +405,6 @@ In a network with many routers, whenever a router receives a packet, it must con
 Routing is the act of determining the best path to be traveled from one location to another. Intradomain routing is what we will focus on and it is what happens when both hosts are in the same administrative domain.
 
 Interior Gateway Protocols (IGP) are what handle this type of routing. The two major types we'll cover are  link-state and distance-vector routing algorithms. They are graph theory algorithms with edges and nodes.
-
 
 #### Link State Routing
 
@@ -458,7 +460,6 @@ What if the link cost changes? In some cases this is handled quickly, and in oth
 **Say a link cost decreases:**
 
 ![link decrease](<Screen Shot 2020-01-17 at 6.59.26 PM-1.png>)
-
 
 1. At time t0, y detects that cost to x has changed from 4 to 1, so it updates its distance vector and sends it to its neighbors.
 2. At time t1, z receives the update from y. Now z thinks it can reach x through y with a cost of 2, so it sends its new distance vector to its neighbors.
@@ -522,7 +523,7 @@ The internet started very hierarchical but has been flattening as more IXPs and 
 
 Each of the types of infrastructure above can be an Autonomous System (AS) which is a group of routers who are under the same authority. I think like, my house technically is an AS that I manage, but not sure about that.
 
-Routing between AS's relies on Border Gateway Protocol (BGP) to exchange information with each other. 
+Routing between AS's relies on Border Gateway Protocol (BGP) to exchange information with each other.
 
 ### AS Ecosystem
 
@@ -550,7 +551,6 @@ Export routes come from:
 - Routes from peers
 
 Which of these are chosen to advertise to other AS's is a business decision.
-
 
 #### Importing Routes
 
@@ -649,7 +649,6 @@ In summary, a Route Server (RS) does the following:
 
 It's basically offloading all the configuration work from the AS to the IXP operator. It's what allows people like me to buy a domain and get reliable routing from anywhere in the world to it.
 
-
 ## Lesson 5 and 6 - Router Design and Algorithms
 
 Routers are what do the heavy lifting for actually moving data from one point to another. The prior lessons established many pieces and parts of that puzzle.
@@ -676,12 +675,12 @@ Input ports do the following:
 2. Processes datalink (decapsulating)
 3. Performs lookup function, consulting forwarding table to determine where it should go
 
-
 **Switching Fabric***
 
 This actually moves the packet from the input port, to the output port, using the results from the input port that tells where the packet needs to go.
 
 Three types of switching fabrics:
+
 - Memory
 - Bus
 - Crossbar
@@ -695,7 +694,6 @@ All this does is receive the data from the switching fabric and send it. Specifi
 3. Send them over the physical output port
 
 ![output port](<L5 & L6 updated Mary Ben reviewed-4-1.png>)
-
 
 #### Control Plane function
 
@@ -820,7 +818,7 @@ There are several ways to notate prefixes.
     - 132.238.0.0/16
 3. Masking
     - 123.234.0.0/16 is written as 123.234.0.0 with a mask 255.255.0.0
-    - The mask 255.255.0.0 denotes that only the first 16 bits are important. 
+    - The mask 255.255.0.0 denotes that only the first 16 bits are important.
 
 This prefixing helped, because we were running out of IP addresses, quickly. But it introduced the issue of *longest matching prefix lookup*.
 
@@ -831,7 +829,6 @@ The main router performance metric is how quickly it can do a full lookup. There
 3. An unstable routing protocol may result in more updates to the table and slower updates, adding milliseconds of time to the table update time.
 4. Cost vs performance, really expensive memory is fast, cheaper memory is slower
     - how to decide which is which likely depends on application
-
 
 ![common issues](<L5 & L6 updated Mary Ben reviewed-7.png>)
 
@@ -853,7 +850,7 @@ These are the steps we follow to perform a prefix match:
 
 Two notes:
 
-1. If a prefix is a substring of another prefix, the smaller string is stored in the path to the longer (more specific prefix). For example, P4 = 1* is a substring of P2 = 111*, and thus P4 is stored inside a node towards the path to P2.
+1. If a prefix is a substring of another prefix, the smaller string is stored in the path to the longer (more specific prefix). For example, P4 = 1*is a substring of P2 = 111*, and thus P4 is stored inside a node towards the path to P2.
 
 2. One-way branches. There may be nodes that only contain one pointer. For example, let’s consider the prefix P3 = 11001. After we match 110 we will be expecting to match 01. But in our prefix database, we don’t have any prefixes that share more than the first 3 bits with P3. So if we had such nodes represented in our trie, we would have nodes with only one pointer. The nodes with only one pointer each are called one-way branches. For efficiency, we compress these one-way branches to a single text string with 2 bits (shown as node P9).
 
@@ -861,7 +858,7 @@ Two notes:
 
 Unibit tries are very efficient but it requires a large amount of memory accesses to achieve. For highspeed links it is not plausible to access memory that many times. Instead we use strides. A stride is the number of bits to check at each step.
 
-So an alternative to unibit tries are the multibit tries. A multibit trie is a trie where each node has 2k  children, where k is the stride. Next, we will see that we can have two flavors of multibit tries: fixed-length stride tries and variable-length stride tries. 
+So an alternative to unibit tries are the multibit tries. A multibit trie is a trie where each node has 2k  children, where k is the stride. Next, we will see that we can have two flavors of multibit tries: fixed-length stride tries and variable-length stride tries.
 
 ##### Prefix expansion
 
@@ -876,7 +873,7 @@ Using a fixed stride length of three, let's do an example. Using the same databa
 Some key points to note here:
 
 1. Every element in a trie represents two pieces of information: a pointer and a prefix value.
-2. The prefix search moves ahead with the preset length in n-bits (3 in this case) 
+2. The prefix search moves ahead with the preset length in n-bits (3 in this case)
 3. When the path is traced by a pointer, we remember the last matched prefix (if any).
 4. Our search ends when an empty pointer is met. At that time, we return the last matched prefix as our final prefix match.
 
@@ -893,4 +890,3 @@ Some key points about variable stride:
 1. Every node can have a different number of bits to be explored.
 2. The optimizations to the stride length for each node are all done to save trie memory and the least memory accesses.
 3. An optimum variable stride is selected by using dynamic programming
-
