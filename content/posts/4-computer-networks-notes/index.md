@@ -2,7 +2,7 @@
 date: '2025-05-24T20:48:59-04:00'
 draft: false
 title: 'CS6250 - Computer Networks - Notes'
-summary: "My notes on Computer Networks from GTech's OMSCS."
+summary: "My notes on Computer Networks from Georgia Tech's OMSCS."
 tags: ["school", "OMSCS", "Computer Networks", "notes"]
 cover:
     image: osi_model_7_layers.png
