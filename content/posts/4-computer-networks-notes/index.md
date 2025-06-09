@@ -890,3 +890,211 @@ Some key points about variable stride:
 1. Every node can have a different number of bits to be explored.
 2. The optimizations to the stride length for each node are all done to save trie memory and the least memory accesses.
 3. An optimum variable stride is selected by using dynamic programming
+
+### Packet Classification
+
+We've talked aout prefix matching and how it attempts to solve the issue of an ever growing internet with many devices and many ip addresses.
+
+What it doesn't do is provide advanced features like paying attention to source addresses, tcp flags, etc.
+
+Packet classification tackles those challenges.
+
+Common examples:
+
+1. Firewalls - Routers implement firewalls to filter inbound and outbound traffic based on a pre-determined set of policies.
+2. Resource Reservation Protocols - To reserve bandwidth between a source and destination
+3. Routing based on traffic type - If a certain type of traffic is more time sensitive, move it to the front of the queue
+
+![example advanced routing](<Screen Shot 2020-02-05 at 6.20.46 PM.png>)
+
+#### Simple Classifiers
+
+- Linear Search - Perform a search through a rules database for every packet, works fine for simple rules, struggles at large amounts of rules
+- Caching - Caching is usefule but has issues
+  - Even an 80-90% cache rate still results in many searches
+  - A 90% cache rate still has ~0.1 milliseconds of search, which is pretty slow in this context
+- Passing Labels - Setup "Label Switched Paths" between sites, 
+  - Multiprotocol Label Switching (MPLS) and DiffServ use this
+  - MPLS: router A does classification, and then all intermediate routers just read it and use it, instead of doing their own classification
+  - DiffServ: Applies special markers at the edges to mark a packet for special quality-of-service
+
+#### Fast Searching - Using Set Pruning Tries
+
+Assume a two dimensional rule that only cares about source and destination IPs.
+
+![two dimensional rule table](<L5+6-11 Example with 7 Destination Source Rules.jpg>)
+
+We can build a trie (similar to earlier in this section), where each leaf node is another trie
+
+![trie graph](<L5+6-12 Packet Classification.jpg>)
+
+>By S1, we denote the source prefix of rule R1, S2 of rule R2, etc. Thus for every destination prefix D in the destination trie, we "prune" the set of rules to those compatible with D.
+>We first match the destination IP address in a packet in the destination trie. Then we traverse the corresponding source trie to find the longest prefix match for the source IP. The algorithm keeps track of the lowest-cost matching rule. Finally, the algorithm concludes with the least-cost rule.
+>Challenge: The problem that we need to solve now is which source prefixes to store at the sources tries? For example, let's consider the destination D = 00*. Both rules R4 and R5 have D as the destination prefix. So the source tries for D will need to include the source prefixes 1* and 11*. 
+>But if we restrict to 1* and 11*, this is not sufficient. Because the prefix 0*, also matches 00*,  and it is found in rules R1, R2, R3, R7. So we will need to include all the corresponding source prefixes.
+>Moving forward, the problem with the set pruning tries is memory explosion. Because a source prefix can occur in multiple destination tries.
+
+#### Reducing Memory Using Backtracking
+
+Set pruning has a high cost in memory to reduce time. So we can trade memory for time and try to solve this problem.
+
+From the lecture:
+
+>The set pruning approach has a high cost in memory to reduce time.
+>The opposite approach is to pay in time to reduce memory.
+>Let's assume a destination prefix D. The backtracking approach has each destination prefix D point to a source trie that stores the rules whose destination field is exactly D. The search algorithm then performs a "backtracking" search on the source tries associated with all ancestors of D.
+>So first, the algorithm goes through the destination trie and finds the longest destination prefix D matching the header. Then it works its way back up the destination trie and searches the source trie associated with every ancestor prefix of D that points to a nonempty source trie. 
+>Since each rule is stored exactly once, the memory requirements are lower than the previous scheme. But, the lookup cost for backtracking is worse than for set-pruning tries.
+
+#### Grid of Tries
+
+We've tried Backtracking (high time lower memory), and set pruning (memory explosion). Both fail for their own reasons.
+
+Grid of tries approach takes backtracking and reduces wasted time by precomputing. When backtracking if there is a failure point in the source trie, we have a "switch pointer" which takes you directly to the next possible source trie containing a matching rule.
+
+![trie network](<Screen Shot 2020-02-05 at 6.24.35 PM.png>)
+
+At places where there may be a failure to get to a matching rule, we can go directly to the next most likely place to find a rule, with precomputed switch pointers.
+
+![trie network with switch pointers](<Screen Shot 2020-02-05 at 6.25.59 PM.png>)
+
+### Scheduling
+
+Now we talk about scheduling. Given a N-by-N crossbar switch with N input lines, N output lines, and N2 crosspoint we need to ensure that each input link is only connected to one output link at any given time *and* we want to maximize throughput by having the as many parallel routes open at one time as possible.
+
+#### Take a Ticket Algorithm
+
+Every output link has a queue, when an input link would like to use that queue it gets a ticket, and waits until it is called to send its packet and the route is opened.
+
+Round 1:
+
+![take a ticket graph](<L5+6 take_a_ticket_1.png>)
+
+Round 2:
+
+![take a ticket round 2](<L5+6 take_a_ticket_2.png>)
+
+Round 3:
+![take a ticket round 3](<L5+6 take_a_ticket_3.jpg>)
+
+and here is an overview of how this all plays out:
+
+![overview of take a ticket](<Screen Shot 2020-02-05 at 6.33.12 PM.png>)
+
+One thing to note here is that all of the other messages that are going to other nodes are blocked by the fact that they all wanted to go to output 1 first. This is "Head of line" blocking caused by take a ticket.
+
+#### Avoiding Head of Line with Take a Ticket
+
+#### Output Queuing
+
+Given an N-by-N crossbar switch can we try to send to an output link without queuing? Then it would only need to block packets which are headed for the same destination. To do this the fabric must run N times faster than the input links.
+
+A practical approach to this is the knockout scheme. It breaks up packets into fixed sizes k (which is smaller than N). Then if the fabric needs to only run k times as fast as an input link instead of N.
+
+In some cases this can be broken and there are primitive switching rules to handle this.
+
+- k = 1 and N = 2. Randomly pick the output that is chosen. The switching element, in this case, is called a concentrator.
+- k = 1 and N > 2. One output is chosen out of N possible outputs. We can use the same strategy of multiple 2-by-2 concentrators in this case.
+- k needs to be chosen out of N possible cells, with k and N arbitrary values. We create k knockout trees to calculate the first k winners.
+
+The drawback of this approach is it is complex to implement.
+
+#### Parallel Iterative Matching
+
+This approach still allows queuing but in a way that avoids head-of-line blocking. It starts with taking each incoming link's queue and breaking it into virtual queues for each output link.
+
+![iterative queue 1](<Screen Shot 2020-02-05 at 6.41.14 PM.png>)
+
+![interative queue 2](<Screen Shot 2020-02-05 at 6.42.38 PM.png>)
+
+![iterative queue 3](<Screen Shot 2020-02-05 at 6.43.46 PM.png>)
+
+If an input receives multiple grants, it randomly picks between the two. This allows more packets to attempt to go through more quickly at the same time, and is more efficient than take-a-ticket.
+
+#### Scheduling Intro
+
+Busy routers rely on scheduling for routing updates, management queries, and data packets. Since linkspeeds are climbing over 40 gigabit, this needs to be done **very** quickly.
+
+##### FIFO with tail drop
+
+This is a simple first in first out queue, but if the queue is larger than its limit, the packets at the "tail" are dropped off.
+
+##### Quality of Service
+
+The FIFO approach has pretty bad quality of service with not guaranteed delivery due to dropping packets in the tail.
+
+This is bad for the following reasons:
+
+###### Router support for congestion
+
+Congestion in the internet is increasingly possible as the usage has increased faster than the link speeds. While most traffic is based on TCP (which has its own ways to handle congestion), additional router support can improve the throughput of sources by helping handle congestion.
+
+###### Providing QoS guarantees to flows
+
+During periods of backup, these packets tend to flood the buffers at an output link. If we use FIFO with tail drop, this blocks other flows, resulting in important connections on the clients’ end freezing. This provides a sub-optimal experience to the user, indicating a change is necessary!
+
+###### Fair sharing of links among competing flows
+
+One way to enable fair sharing is to guarantee certain bandwidths to a flow. Another way is to guarantee the delay through a router for a flow. This is noticeably important for video flows – without a bound on delays, live video streaming will not work well.
+
+#### Bit by Bit Round Robin
+
+FIFO might drop packets. So we can use round robin to fix that. Pure round robin struggles though if one link has different packet sizes than the other, which might result in one link getting better service than the other.
+
+Bit by Bit fixes this. The idea is that even though we can't split packets up bit by bit, we can kind of do it virtually to help inform scheduling decisions. Using a lot of fancy math we can determine the round in which a packet finishes sending.
+
+The Bit by Bit round robin then works by sending the packet which has the smallest finishing round number. Consider the following example:
+
+![round robin bit by bit queue](<L5 & L6 updated Mary Ben reviewed-13.png>)
+
+F is their finishing number, in their respective queues.
+
+![round robin bit by  bit rnd 2](<L5 & L6 updated Mary Ben reviewed-14.png>)
+
+We can see F=1002 is sent first, because it had the earliers round finishing number. It was the "most starved" packet during the prior scheduling round.
+
+![rnd 3](<L5 & L6 updated Mary Ben reviewed-15.png>)
+
+![rnd 4](<L5 & L6 updated Mary Ben reviewed-16.png>)
+
+This is fair, but introduces new complexities. Specifically maintaining a priority queue becomes very expensive, and takes a long time, which isn't feasible at gigabit speeds.
+
+#### Deficit Round Robin
+
+Round robin guaranteed delay and bandwidth fairness, but many applications only care aobut bandwidth fairness. So a simple constant-time round robin could get that done much more simply.
+
+>We assign a quantum size, Qi, and a deficit counter, Di, for each flow. The quantum size determines the share of bandwidth allocated to that flow. For each turn of round-robin, the algorithm will serve as many packets in the flow i with size less than (Qi + Di). If packets remain in the queue, it will store the remaining bandwidth in Di for the next run. However, if all packets in the queue are serviced in that turn, it will clear Di to 0 for the next turn.
+
+Consider the following:
+
+![deficit 1](<L5+6-14 Deficit Round robin.jpg>)
+
+![deficit 2](<L5+6-15 Deficit Round robin 2.jpg>)
+
+>In this router, there are four flows – F1, F2, F3, and F4. The quantum size for all flows is 500. Initially, the deficit counters for all flows are set to 0. Initially, the round-robin pointer points to the first flow. The first packet of size 200 will be sent through. However, the funds are insufficient to send the second packet of size 750. Thus, a deficit of 300 will remain in D1. For F2, the first packet of size 500 will be sent, leaving D2 empty.
+>Similarly, the first packets of F3 and F4 will be sent with D3 = 400 and D4 = 320 after the first iteration. For the second iteration, the D1+ Q1 = 800, meaning there are sufficient funds to send the second and third packets through. Since there are no remaining packets, D1 will be set to 0 instead of 30 (the actual remaining amount).
+
+#### Token Bucket
+
+Sometimes we want to limit flows of certain data types without having to put them into another queue.
+
+Token bucket shaping can accomplish this through things like limiting burstiness of flow by limiting the average rate, and limiting the burst maximum size allowed.
+
+![token bucket flow](<Screen Shot 2020-02-05 at 6.48.08 PM.png>)
+
+If a packet comes and needs to hit the bucket, the bucket has to have enough available tokens, otherwise it fails. That's how you limit burst.
+
+The problem with this is only one queue per flow. If a flow has a full token bucket it may block other flows. Token policing solves this.
+
+#### Leaky Bucket (Token Policing)
+
+Policing and shaping both help limit the output of a link but in different ways.
+
+![policing vs shaping](<L5+6-18 Leaky Bucket.jpg>)
+
+- Policer: When the traffic rate reaches the maximum configured rate, excess traffic is dropped, or the packet's setting or "marking" is changed. The output rate appears as a saw-toothed wave.
+- Shaper: A shaper typically retains excess packets in a queue or a buffer, and this excess is scheduled for later transmission. The result is that excess traffic is delayed instead of dropped. Thus, the flow is shaped or smoothed when the data rate is higher than the configured rate. Traffic shaping and policing can work in tandem.
+
+Leaky bucket refers to the Token Bucket implementation with a constant output rate. If a packet were to make a bucket overflow it is discarded, but the same time things aren't sent in burst, but at a constant "leak" rate.
+
+![leaky bucket](<L5+6-19Leaky bucket 2.jpg>)
