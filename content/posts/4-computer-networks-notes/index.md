@@ -815,7 +815,7 @@ There are several ways to notate prefixes.
     - 16 bit (132.234) becomes binary of 1000010011101010
 2. Slash notation
     - A/L, A=Address, L=Length
-    - 132.238.0.0/16
+    - 132.234.0.0/16
 3. Masking
     - 123.234.0.0/16 is written as 123.234.0.0 with a mask 255.255.0.0
     - The mask 255.255.0.0 denotes that only the first 16 bits are important.
