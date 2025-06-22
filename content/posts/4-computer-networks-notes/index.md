@@ -1098,3 +1098,356 @@ Policing and shaping both help limit the output of a link but in different ways.
 Leaky bucket refers to the Token Bucket implementation with a constant output rate. If a packet were to make a bucket overflow it is discarded, but the same time things aren't sent in burst, but at a constant "leak" rate.
 
 ![leaky bucket](<L5+6-19Leaky bucket 2.jpg>)
+
+## Lesson 7 - Software Defined Networking
+
+Software Defined Networking (SDN) was borne of the need to separate the control plane from the data plane.
+
+### Why did SDN arise?
+
+There was a need to make computer networks more programmable, because there is a diversity of equipment  on every network, and many proprietary technologies.
+
+#### Diversity of Equipment
+
+Routers, switches, firewalls, network address translators, server load balancers, intrusion detection systems, oh my! These are just some of the types of devices that get put on a network.
+
+Even with a centralized network controller, there are so many different protocols and interfaces that need support, it creates quite a lot of work to support it.
+
+#### Proprietary Technologies
+
+Switches and routers often ran proprietary software. Likely done to encourage people to buy all of a certain brand, but in instances where that's not feasible for one reason or another then something has to deal with those differences.
+
+SDN looks to fix all of these issues with ✨software✨. It does this by separating tasks. Specifically separating the control plane and the data plane.
+
+### History of SDNs
+
+The history of SDN can be divided into three phases:
+
+1. Active networks
+2. Control and data plane separation
+3. OpenFlow API and network operating systems
+
+#### Active Networks
+
+From the mid 1990s until the early 2000s the internet of course exploded. This required new porotocols which were to be created by the Internet Engineering Task Force (IETF). This process sucked and then other things sprung up to fill the holes.
+
+It led to the growth of active networks which used wanted a programming interface which exposed many resources and allowed customization of functionalities for subsets of packets passing through the network. This was opposite to the belief that a simple network core was important to internet success.
+
+There were two prevalent programming models in active networking with the difference being where code is executed:
+
+1. Capsule Model - carried in band pockets
+2. Programmable router/switch model - established out of band mechanisms
+
+The main **pushers** of active networks was
+
+- Reduction in computation cost, enables more processing
+- Advancement in programming languages, enabled things that were previously not possible, of if they were possible, were unsafe
+- Advances in rapid code compliation and formal methods
+- Funding from DARPA (DARPA just keeps showing up)
+
+The main **pullers** of active networks was:
+
+- Network service providers were frustrated with long timelines to deploy new network services
+- Third parties wanting to get more control on an individual level
+- Unified control over middleboxes
+
+These pulls are similar pulls to the current pulls for SDN.
+
+Active networks made three major contributions to CDNs:
+
+- Programmable functions in the network to lower the barrier to innovation
+  - Active networks were one of the first to use the idea of programmable networks to overcome the slow speed of innovation in computer networks.
+  - Lots of focus was on programming the control plane, but active networks tried to add some to the data plane
+  - This is similar to OpenFlow and other SDN ideas that are being used
+- Network virtualization, the ability to demultiplex software programs based on packet headers
+  - Active networking produced a framework that described a platform that would support experimentation, this led to virtualization
+- Unified Architecture for middlebox orchestration
+  - Control over middleboxes was never fully realized in Active networks but some of its research is benefitting network function virtualization
+
+Active Networks main reason for *not* beocming main stream is due to the fact that it was too ambitious. It required people to program in Java, which was not guaranteed, and did not have security as a focus from the beginning, which scared people.
+
+#### Control and data plane separation
+
+Control and data plane separation was from around 2001 to 2007. Network operators were desperate to have better management tools of their traffic as the network popularity exploded.
+
+It was identified that many of the main issues had to do with the tight coupling of the control and data planes.
+
+The main **pushers** of control and data plane separation were:
+
+- Higher link speeds in backbone networks
+- Internet service providers had a difficult time meeting the increased reliability and new services
+- Servers had substantially more memory and processing resources than things made even 1 or 2 years earlier
+- Open source routing software lowered the barrier to creating centralized routing controllers
+
+These pushes resulted in:
+
+- Open interface between control and data planes
+- Logically centralized control of the network
+
+It was different from active networking in the following ways:
+
+- Focused on spurring innovation by and for network administrators
+- Emphasized programmability in the control domain rather than the data domain
+- Worked towards network-wide visibility and control rather than device level
+
+The main **pullers** of control and data plane separation were:
+
+- Selecting between network paths based on current traffic load
+- Minimizing disruptions during planned routing changes
+- Redirecting/dropping suspected attack traffic (firewall)
+- Allow customers more control over traffic flow
+- Offering value add services for virtual private network customers
+
+Most of this work was completed within an ISP, with not much cross ISP interfacing. There were a couple concepts which were taken into SDN design:
+
+1. Logically centralized control using an open interface
+2. Distributed state management
+
+People thought this was a bad idea because what if the controller failed. In addition to this people were nervous about distributed network maps instead of the routers knowing the whole picture.
+
+#### OpenFlow API and network operating systems
+
+This took place during 2007 to 2010.
+
+The OpenFlow API was borne fromm an interest in the idea of network experimentation at scale. It balanced fully programmable networks with real world deployments.
+
+It was built on existing hardware but enabled more functions that prior controllers. This dependency was based on hardware flexibility, but it enabled immediate deployment.
+
+OpenFlow switches follow this:
+
+- Each switch contains a table of packet-handling rules
+- Each rule has a pattern, list of actions, set of counters, and priority
+
+Once a packet is recieved it determines the highest priority matching rule, performas the action associated with it, and increments the counter
+
+The main **pushers** of this technology were:
+
+- Switch chipset vendors had already started to allow programmers to control some forwarding behaviors
+- Allowed other companies to build their own switches without making a data plane
+- Enabling OpenFlow was easy to deploy based on a simple firmware upgrade
+
+The main **pullers* of this technology were:
+
+- OpenFlow was meeting the need of conducting large scale experimentation on network architectures
+- OpenFlow was useful in data-center networks that had a need to manage network traffic
+- Companies started investing more in programmers for cotnrol programs and less on proprietary hardware, allowing smaller players to get in the game
+
+OpenFlow's Key Effects:
+
+- Generalized network device and functions
+- Provided a vision of a network operating system
+- Distributed state management techniques
+
+### Separating the Data Plane and the Control Plane
+
+SDN is different from the traditional networking approaaches because it separates the control and data plane. 
+
+The reasons for this separations are:
+
+- Independent evolution and development
+  - Routing __and__ forwarding are tied to a single piece of hardware, meaning the only easy time to upgrade, is when you do the whole thing. By separating them, routing can grow while forwarding stays the same, and vice versa. Coupling makes things difficult.
+- Control from high-level software program
+  - Using software to compute forwarding tables means higher order programs can control router behavior. Not being attached to the forwarding plane makes this simpler.
+
+It's best for both planes that they go their separate ways :)
+
+This then enables:
+
+1. Data Centers, large data centers with oodles of compute, but using that compute can become even more difficult if you're rigidly attached to the forwarding hardware
+2. Routing, separating the two allows more complex routing
+3. Enterprise networks. SDN can imporve sescurity of networks by protecting from things like DDoS by simply dropping traffic at strategic locations
+4. Research networks. You can colocate research and production networks, allowing for experimentation on live traffic without interfering with said live traffic
+
+Traditional Router:
+![traditional router](<Screen Shot 2020-02-20 at 5.05.39 PM.png>)
+
+SDN approach:
+![sdn routing approach](<Screen Shot 2020-02-20 at 5.07.41 PM.png>)
+
+### SDN Architecture
+
+The main components af an SDN network are:
+- SDN controlled network elements - The infrastructure layer is responsible for the forwarding of traffic in a network based on rules from the SDN control plane
+- SDN controller - Logically centralized entity that acts as the interface between network element and network control applications
+- Network control applications - Programs that manage the underlying network by observing network elements through the SDN controller
+
+![SDN architecture](<Screen Shot 2020-02-20 at 5.11.16 PM.png>)
+
+#### Four defining features
+
+The four defining features of SDN architecture are
+
+- Flow-based forwarding
+- Separation of data plane and control plane
+- Netowrk control functions
+- A programmable network
+
+##### Flow-based forwarding
+
+The rules for forwarding packets can be computed based on any number of header values from various layers. This differes from the prior approach in which only the destination IP address determined the forwarding of a packet. OpenFlow allowed up to 11 header field values to be used
+
+#### Separation of data plane and control plane
+SDN controlled switches only operate on the data plane executing rules in the flow tables, created and managed by entirely separate servers
+
+#### Network control functions
+
+The SDN control plane usually runs on multiple servers for increased performance and availability. It also consists of two componetns
+
+1. Controller
+2. Network applications
+
+The controller maintains up to date network state info and provides it to network control applications. This is used by the applications to monitor and control network devices
+
+#### A programmable network
+
+Since you have the network-control applications which act as the "brain" of the SDN control plane you can do things like network management, traffic engineering, security, automation, etc. Something like determining the end-to-end path between sources and destinations in the network using Dijkstra wink wink.
+
+### SDN Controller Architecture
+
+The SDN controller is a part of the SDN control plane. It acts as an interface between the network elements and the network-control applications.
+
+#### SDN Controller Layers
+
+- Communication Layer - Communicating between the controller and network elements
+- Network-wide state-management layer - Stores information of network-state
+- Interface to the network-control application - communicating between controller and applications
+
+##### Communication Layer
+
+This layer has a protocol which the SDN controller and the network controlled elements communicate. This protocol is used so that network devices can send things like new device joining, heartbeat indicators, etc. The communication between SDN controller and the controlled devices is the "southbound" interface. OpenFlow does this.
+
+![communication layer slide](<Screen Shot 2020-02-20 at 5.16.13 PM.png>)
+
+##### Network-wide state-management layer
+
+This is pretty self-explanatory, everything that has to do with the network state that is managed by the controller. State of hosts, links, switches and copies of flow tables of various switches. This is what is used by the control plane to configure flow tables.
+
+##### Interface to the network-control application
+
+This layer is the "northbound" interface and how the SDN controller interacts with network-control applications. Network control applications read/write network state, flow tables, etc in the state-management layer. The SDN controller can also notify applications of changes in state as well.
+
+Generally these SDN controllers are implemented in a distributed fashion in order to achieve fault tolerance, high availability and efficiency.
+
+## Lesson 8 - Software Defined Networking (Part 2)
+
+Again, CDN is a more independently layered approach to Routing
+
+![CDN layers screenshot](<Screen Shot 2020-02-29 at 1.00.18 PM.png>)
+
+### SDN Advantages compared to Traditional
+
+1. Shared Abstractions. Middlebox services (or network functionalities) can be programmed easily since the abstractions provided by the control platform and network programming langauges can be shared
+2. Consistency of same network information. All network apps have the same global view leading to more consistent policy decisions while reussing control plane modules
+3. Locality of functionality placement. Previously middlebox locations were strategic decisions and often big constraints. With SDN middleboxes can be whereever
+4. Simpler Integration. It's easier to integrate to SDN things than traditional proprietary boxes
+
+![sdn advantages slide](<Screen Shot 2020-02-29 at 1.06.37 PM.png>)
+
+### SDN Landscape
+
+Again SDN can be viewed as layers:
+
+![sdn layers](<Screen Shot 2020-02-29 at 1.12.27 PM.png>)
+
+(a) is plane-oriented view, (b) is the SDN layers, (c) is a system design perspective.
+
+### SDN Architecture
+
+![Overview image](<Screen Shot 2020-02-29 at 1.10.04 PM.png>)
+
+#### Infrastructure
+
+Instead of needing routers with switching and control plane, physical networking equipment only needs to do simple forwarding. All logic comes from a centralized control system.
+
+#### Southbound Interfaces
+
+Communications between control and forwarding elements (switches) is on the southbound interface. These APIs are tightly coupled with the forwarding elements. The most popular implementation is OpenFlow.
+
+#### Network Virtualization
+
+A complete virtualization of a network needs to support arbitrary network topoligies and addressing scheemes, similar to the computing layer. VLAN, NAT and MLPS can provide this full virtualization but this is a box-by-box basis configuration and there is no unifying abstraction to do this in a global manner. So this is one thing that takes a long time still.
+
+#### Network Operating Systems
+
+These operating systems abstract away many low level things like distribution among routing elements, allowing developers to focus on more complex applications. Examples are OpenDayLight, OpenContrail, etc
+
+#### Northbound Interfaces
+
+The Northbound interface is how the controller and the network applications talk. There is no set standard for this interface, but one key difference is it's usually purely software to software communication, unlike the southbound interface. Popular examples are Floodlight, Trema, NOX, ettc.
+
+#### Language-based virtualization
+
+Allowing network devices to be interacted with via many ways at different levels of abstraction. Takes away device communication complexity without compromising security.
+
+#### Network programming langauges
+
+By having high level programming laguages in SDNs it gives more abstractions to make development more modular, things more reusable and do away with device specific low-level configurations.
+
+#### Network applications
+
+The functionalities implementing control plane logic and translates to commands in the data plane. There is avery wide range of options for these applications, doing things like routing, load balancing, security enforcement, and more.
+
+### SDN Infrastructure Layer
+
+SDN infrastructure contains routers, switches, and appliance hardware.
+
+The physical devices have no embedded intelligence, as it's delegated to the central control system, the Network Operating System (NOS). These are built on open-souce interfaces to encourage improvements and growth to the networking sphere.
+
+A data plane devices forwards packets, a controller is a software stack running  on commodity hardware. The most widely used data plane device is a model derived from OpenFlow. There's a pipeline of flow tables where each entry should have a matching rule, actions to be executed on matching packets, counters keeping statistics of matching packets.
+
+In OpenFlow device 
+
+1. Packet arrives
+2. Lookup starts, either matches with rule or misses
+3. Resolve
+    1. forward to outgoing port
+    2. encapsulate and send to controller
+    3. drop packet
+    4. send to normal processing pipeline
+    5. send to next flow table
+
+### SDN Southbound interrfaces
+
+Sounthbound interfaces are the APIs separting the **control plane** and the **data plane**. Since switch hardware takes time to design and engineer, this has settled on a standard protoocol of OpenFlow. 
+
+The OpenFlow protocol supports three info sources:
+
+1. Event based messages sent by forwarding devices to the controller when there is a link or port change
+2. Flow statistics generated by forwarding devices and collected by controller
+3. Packetss sent by forwarding devices when they don't know what to do with them
+
+The controller and network operating system uses this flow of information to make decisions and maintain states/maps/flow charts.
+
+### SDN Controllers - Centralized vs Distributed
+
+The core controllerr functions are:
+- Topology
+- Statistics
+- Notifications
+- Device Mangement
+- Shortest Path forwarding
+- Security mechanisms
+
+#### Centralized controllers
+
+A single entity manages all forwarding devices in the network. This has a single point of failure and can have a hard time scaling. Some enterprise class networks and data centers use archietctures that allow this and use giant mult-threaded designs alllowing for large amounts of throughput even on a single server.
+
+#### Distributed controllers
+
+Distributed controlling can scale to meet practically and requirement, because it's built in to the design to scale as needed. It can be a centralized cluster of nodes, or a physically distributed set of elements. If a provider has multiple data centers, they might even do a hybrid where each center has a cluster, but they talk physically in a physically distributed manner.
+
+#### Open Network Operating System
+
+This is an example of a distributed SDN control platform.
+
+![ONOS controller](<Screen Shot 2020-02-29 at 3.47.37 PM.png>)
+
+ONOS has several instances running in a cluster. The network state is shared across these instances by maintaining a global view. The view is made with network topology and state information.
+
+Forwarding and policy decisions come from the view, OpenFlow managers recieve changes, and switches are programmed.
+
+Titan is a graph database and Cassandra a distributed key-value store work together to create the view. They interact with this using the Blueprints Graph API.
+
+The ONOS archictecture can scale out and offers fault tolerance. In ONOS there is a master controller for a group of switches, and the propagation of state changes is handled solely by the master instance of that switch. This is distributed by adding more instances, reducing number of switches to contoller instances.
+
+Fault tolerance is achieved by handling failures via election, where if the master controller of a switch fails, the rest of the ONOS instances it is connected to fomr on consensu on who the new master should be for each of the switches that were failed.
